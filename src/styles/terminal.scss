@@ -1,0 +1,50 @@
+$terminal-background-color: #121;
+$terminal-primary-color: #8f2;
+$terminal-input-height: 50px;
+$terminal-font-family: "Courier New", Courier, monospace;
+$terminal-font-size: 1.5em;
+
+.terminal-root {
+  background-color: $terminal-background-color;
+  color: $terminal-primary-color;
+  width: 100%;
+  height: 100%;
+  font-family: $terminal-font-family;
+  font-size: $terminal-font-size;
+
+  .terminal-output {
+    position: relative;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    padding-top: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: $terminal-input-height;
+    overflow: hidden;
+    word-wrap: break-word;
+  }
+
+  .terminal-input {
+    width: 100%;
+    height: $terminal-input-height;
+    position: relative;
+    bottom: $terminal-input-height;
+    padding: 3px;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    background-color: $terminal-background-color;
+    color: $terminal-primary-color;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: inherit;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
