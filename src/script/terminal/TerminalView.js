@@ -50,7 +50,7 @@ export default class TerminalView extends View {
   }
 
   print(txt) {
-    let lengthLimit = 10000;
+    let lengthLimit = 20000;
     let inputElement = this._view.output.element;
     let content = inputElement.innerHTML;
     content += txt;
@@ -65,6 +65,15 @@ export default class TerminalView extends View {
 
   onSubmit(callback) {
     this._onSubmitCallbackList.push(callback);
+  }
+
+  disable() {
+    this._view.input.textField.element.disabled = true;
+  }
+
+  enable() {
+    this._view.input.textField.element.disabled = false;
+    this._view.input.textField.element.focus();
   }
 
 }

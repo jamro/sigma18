@@ -23,6 +23,32 @@ $terminal-font-size: 1.5em;
     padding-bottom: $terminal-input-height;
     overflow: hidden;
     word-wrap: break-word;
+
+    .terminal-command {
+      margin-top: 0.5em;
+      color: $terminal-background-color;
+      background-color: $terminal-primary-color;
+    }
+
+    .terminal-chat {
+      margin: 5px 5px 5px 25px;
+
+      p {
+        display: block;
+        border: 1px solid $terminal-primary-color;
+        margin: 0px;
+        padding: 5px;
+        font-style: italic;
+      }
+
+      small {
+        display: block;
+        font-style: normal;
+        font-weight: bold;
+        margin-bottom: 0px;
+      }
+    }
+
   }
 
   .terminal-input {

@@ -9,6 +9,7 @@ export default class Terminal {
   }
 
   commandReceived(command) {
+    this._view.print(`<div class="terminal-command"><strong>&gt;</strong> ${command}</div>`);
     //clean command up
     command = command.split(" ");
     command = command.map((cmd) => cmd.trim());

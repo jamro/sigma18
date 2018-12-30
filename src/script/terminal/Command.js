@@ -13,7 +13,7 @@ export default class Command {
   }
 
   validate(command) {
-    return false;
+    return (command[0].toLowerCase() == this.getName().toLowerCase());
   }
 
   exec(command) {
@@ -26,6 +26,14 @@ export default class Command {
 
   println(msg) {
     this._terminal._view.println(msg);
+  }
+
+  disableInput() {
+    this._terminal._view.disable();
+  }
+
+  enableInput() {
+    this._terminal._view.enable();
   }
 
 }
