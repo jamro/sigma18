@@ -69,7 +69,7 @@ export default class ComCommand extends Command {
         return;
     }
 
-    this.printChat(`Exploring location on ${directionFull}... Move! Move! Move!`);
+    this.printChat(`Exploring location on the ${directionFull}... Move! Move! Move!`);
     this.disableInput();
     this._squad.requestMove(dx, dy, () => {
       let pos = this._squad.getPosition();
