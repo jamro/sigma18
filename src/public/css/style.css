@@ -1,0 +1,38 @@
+body {
+  background-color: #000;
+  color: #fff;
+  margin: 0px;
+  padding: 0px;
+}
+
+#overlay {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  margin: 0px;
+  width: 1920px;
+  height: 1080px;
+  background-image: url('../img/gwgc201819_overlay.png');
+  display: block;
+  border: 3px solid black;
+}
+
+#screen-a {
+  background-color: #888;
+  color: #000;
+  position: absolute;
+  width: 1025px;
+  height: 770px;
+  left: 64px;
+  top: 185px;
+}
+
+#screen-b {
+  background-color: #888;
+  color: #000;
+  position: absolute;
+  width: 721px;
+  height: 482px;
+  left: 1140px;
+  top: 77px;
+}

@@ -1,0 +1,43 @@
+{
+  "name": "sigma18",
+  "version": "1.0.0",
+  "description": "Game for Gynvael's Winter GameDev Challenge 2018/19",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "lint": "jshint --config ./jshint.config.json src/",
+    "build": "webpack --config ./webpack.config.js",
+    "watch": "webpack --watch --config ./webpack.config.js",
+    "serve": "webpack-dev-server --config ./webpack.config.js",
+    "size": "get-folder-size --folder ./dist/ --ignore=dist/img/gwgc201819_overlay.png",
+    "commit": "git-cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jamro@bitbucket.org/jamro/sigma18.git"
+  },
+  "author": "Krzysztof Jamroz <jamro@jamro.net>",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/jamro/sigma18#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "commitizen": "^3.0.5",
+    "copy-webpack-plugin": "^4.6.0",
+    "cpx": "^1.5.0",
+    "cz-conventional-changelog": "^2.1.0",
+    "get-folder-size": "^2.0.0",
+    "jshint": "^2.9.7",
+    "rimraf": "^2.6.2",
+    "webpack": "^4.28.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
