@@ -20,5 +20,6 @@ export default class HelpCommand extends Command {
         this.println(` * <strong>${name}</strong> - ${help}`);
       }
     }
+    this.println("Run <strong>[command] help</strong> for more info");
   }
 }
