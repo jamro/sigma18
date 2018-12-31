@@ -1,11 +1,17 @@
 import Command from '../Command.js';
-import {positionToString} from '../../common/utils.js';
 
 export default class ComCommand extends Command {
 
-  constructor(squad) {
+  constructor(squad, map) {
     super();
     this._squad = squad;
+    this._map = map;
+    this._directionMap = {
+      n: 'north',
+      s: 'south',
+      e: 'east',
+      w: 'west',
+    };
   }
 
   getName() {
@@ -34,7 +40,7 @@ export default class ComCommand extends Command {
   printChat(msg, from) {
     from = from ? from : 'hacker';
     let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
-    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>&quot;${msg}&quot;</p></div>`);
+    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 
   execStatus() {
@@ -42,8 +48,15 @@ export default class ComCommand extends Command {
     this.printChat(`Commander, what's going on?`, 'hacker');
     setTimeout(() => {
       let pos = this._squad.getPosition();
-      pos = positionToString(pos.x, pos.y);
-      this.printChat(`Our current position is ${pos}.`, 'commander');
+      let msg = `Our current position is ${pos.toString()}. <br/>\n<br/>\nPossible ways out:<br/>`;
+      let doors = this._map.getRoom(pos.x, pos.y).getDoors();
+
+      for(let direction in doors) {
+        if(doors[direction]) {
+          msg += ` * Door on the ${this._directionMap[direction]}<br/>`;
+        }
+      }
+      this.printChat(msg, 'commander');
       this.enableInput();
     }, 500);
   }
@@ -52,39 +65,23 @@ export default class ComCommand extends Command {
     let direction = command.length >= 3 ? command[2] : '';
     let dx = 0;
     let dy = 0;
-    let directionFull;
-    switch(direction.toLowerCase()) {
-      case 'n':
-        dy = -1;
-        directionFull = 'north';
-        break;
-      case 's':
-        dy = 1;
-        directionFull = 'south';
-        break;
-      case 'e':
-        dx = 1;
-        directionFull = 'east';
-        break;
-      case 'w':
-        dx = -1;
-        directionFull = 'west';
-        break;
-      default:
-        this.print('Error! Unknown direction. Available options are: n, e, s, w');
-        return;
-    }
+    direction = direction.toLowerCase()
     this.disableInput();
-    this.printChat(`Commander, check doors on the ${directionFull}.`, 'hacker');
+    this.printChat(`Commander, check doors on the ${this._directionMap[direction]}.`, 'hacker');
     setTimeout(() => {
-      this.printChat(`Exploring location on the ${directionFull}... Move! Move! Move!`, 'commander');
-
-      this._squad.requestMove(dx, dy, () => {
-        let pos = this._squad.getPosition();
-        pos = positionToString(pos.x, pos.y);
-        this.printChat(`Location ${pos} secured.`, 'commander');
+      let invalidReason = this._squad.validateMove(direction);
+      if(invalidReason) {
+        this.printChat(`Cannot move to the ${this._directionMap[direction]}! ${invalidReason}`, 'commander');
         this.enableInput();
-      });
+      } else {
+        this.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
+
+        this._squad.requestMove(direction, (result) => {
+          let pos = this._squad.getPosition().toString();
+          this.printChat(`Location ${pos} secured.`, 'commander');
+          this.enableInput();
+        });
+      }
     }, 500);
   }
 
