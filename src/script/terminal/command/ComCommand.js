@@ -76,7 +76,7 @@ export default class ComCommand extends Command {
       pos = positionToString(pos.x, pos.y);
       this.printChat(`Location ${pos} secured.`);
       this.enableInput();
-    })
+    });
 
   }
 

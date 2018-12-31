@@ -4,7 +4,7 @@ export default class Squad {
     this._position = {
       x: x | 0,
       y: y | 0
-    }
+    };
   }
 
   requestMove(dx, dy, done) {

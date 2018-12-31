@@ -3,4 +3,4 @@ export const positionToString = (x, y) => {
   x = letters.charAt(x);
 
   return `[${x}:${y}]`;
-}
+};
