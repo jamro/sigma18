@@ -38,6 +38,7 @@ export default class Squad {
     setTimeout(() => {
       let pos = this._map.getSquadPosition();
       this._map.setSquadPosition(pos.x + dx, pos.y + dy);
+      this._map.getRoom(pos.x + dx, pos.y + dy).visit();
       done();
     }, 500);
   }

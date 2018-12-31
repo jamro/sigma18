@@ -24,6 +24,13 @@ export default class Map {
     return this._squadPosition.clone();
   }
 
+  hasRoom(x, y) {
+    if(!this._grid[x] || !this._grid[x][y]) {
+      return false;
+    }
+    return true;
+  }
+
   getRoom(x, y) {
     if(!this._grid[x] || !this._grid[x][y]) {
       throw new Error('Room not found');

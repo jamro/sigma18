@@ -11,6 +11,7 @@ import MapRenderer from './map/MapRenderer.js';
 let map = new Map(10, 10);
 let squad = new Squad(map);
 map.setSquadPosition(3, 3);
+map.getRoom(3, 3).visit();
 
 map.addDoor(3, 3, 3, 4);
 map.addDoor(3, 3, 3, 2);

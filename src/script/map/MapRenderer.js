@@ -24,7 +24,9 @@ export default class MapRenderer {
     ctx.beginPath();
     for(let x=0; x <10; x++) {
       for(let y=0; y <10; y++) {
-        ctx.rect(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize, segmentSize, segmentSize);
+        if(this._map.hasRoom(x, y) && this._map.getRoom(x, y).isVisited()) {
+          ctx.rect(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize, segmentSize, segmentSize);
+        }
       }
     }
     ctx.stroke();

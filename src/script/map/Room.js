@@ -4,6 +4,7 @@ export default class Room {
 
   constructor(x, y) {
     this._position = new Position(x, y);
+    this._isVisited = false;
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
@@ -19,6 +20,14 @@ export default class Room {
 
   getPosition() {
     return this._position;
+  }
+
+  visit() {
+    this._isVisited = true;
+  }
+
+  isVisited() {
+    return this._isVisited;
   }
 
 }
