@@ -65,7 +65,7 @@ export default class ComCommand extends Command {
     let direction = command.length >= 3 ? command[2] : '';
     let dx = 0;
     let dy = 0;
-    direction = direction.toLowerCase()
+    direction = direction.toLowerCase();
     this.disableInput();
     this.printChat(`Commander, check doors on the ${this._directionMap[direction]}.`, 'hacker');
     setTimeout(() => {
