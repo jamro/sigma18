@@ -1,9 +1,8 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-module.exports = {
+let config = {
   mode: "production",
-  devtool: "source-map",
   entry: path.resolve(__dirname, 'src/script/index.js'),
   node: {
     fs: 'empty'
@@ -51,3 +50,11 @@ module.exports = {
     ])
   ]
 };
+
+module.exports = (env, argv) => {
+  if (argv.mode === 'development') {
+    config.devtool = 'source-map';
+  }
+
+  return config;
+}

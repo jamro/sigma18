@@ -6,10 +6,12 @@
   "scripts": {
     "clean": "rimraf dist",
     "lint": "jshint --config ./jshint.config.json src/",
-    "build": "webpack --config ./webpack.config.js",
-    "watch": "webpack --watch --config ./webpack.config.js",
-    "serve": "webpack-dev-server --config ./webpack.config.js",
-    "size": "get-folder-size --folder ./dist/ --ignore=dist/img/gwgc201819_overlay.png",
+    "build": "webpack --config ./webpack.config.js --mode=production",
+    "build:dev": "webpack --config ./webpack.config.js --mode=development",
+    "watch": "webpack --watch --config ./webpack.config.js --mode=development",
+    "serve": "webpack-dev-server --config ./webpack.config.js --mode=development",
+    "test": "./build/size.js",
+    "ci": "npm run-script lint && npm run-script build && npm run-script test",
     "commit": "git-cz"
   },
   "repository": {
