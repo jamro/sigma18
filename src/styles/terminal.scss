@@ -45,7 +45,25 @@ $terminal-font-size: 1.5em;
         display: block;
         font-style: normal;
         font-weight: bold;
-        margin-bottom: 0px;
+        margin: 10px auto 0px auto;
+      }
+    }
+
+    .terminal-chat-left {
+      small {
+        text-align: left;
+      }
+      p {
+        margin-right: 80px;
+      }
+    }
+
+    .terminal-chat-right {
+      small {
+        text-align: right;
+      }
+      p {
+        margin-left: 80px;
       }
     }
 

@@ -32,14 +32,20 @@ export default class ComCommand extends Command {
   }
 
   printChat(msg, from) {
-    from = from ? from : 'commander';
-    this.print(`<div class="terminal-chat"><small>${from}</small><p>&quot;${msg}&quot;</p></div>`);
+    from = from ? from : 'hacker';
+    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
+    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>&quot;${msg}&quot;</p></div>`);
   }
 
   execStatus() {
-    let pos = this._squad.getPosition();
-    pos = positionToString(pos.x, pos.y);
-    this.printChat(`Our current position is ${pos}.`);
+    this.disableInput();
+    this.printChat(`Commander, what's going on?`, 'hacker');
+    setTimeout(() => {
+      let pos = this._squad.getPosition();
+      pos = positionToString(pos.x, pos.y);
+      this.printChat(`Our current position is ${pos}.`, 'commander');
+      this.enableInput();
+    }, 500);
   }
 
   execGo(command) {
@@ -68,16 +74,18 @@ export default class ComCommand extends Command {
         this.print('Error! Unknown direction. Available options are: n, e, s, w');
         return;
     }
-
-    this.printChat(`Exploring location on the ${directionFull}... Move! Move! Move!`);
     this.disableInput();
-    this._squad.requestMove(dx, dy, () => {
-      let pos = this._squad.getPosition();
-      pos = positionToString(pos.x, pos.y);
-      this.printChat(`Location ${pos} secured.`);
-      this.enableInput();
-    });
+    this.printChat(`Commander, check doors on the ${directionFull}.`, 'hacker');
+    setTimeout(() => {
+      this.printChat(`Exploring location on the ${directionFull}... Move! Move! Move!`, 'commander');
 
+      this._squad.requestMove(dx, dy, () => {
+        let pos = this._squad.getPosition();
+        pos = positionToString(pos.x, pos.y);
+        this.printChat(`Location ${pos} secured.`, 'commander');
+        this.enableInput();
+      });
+    }, 500);
   }
 
   execHelp() {
