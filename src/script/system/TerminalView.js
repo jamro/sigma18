@@ -1,4 +1,4 @@
-import View from '../common/View.js';
+import View from './common/View.js';
 import '../../styles/terminal.scss';
 
 export default class TerminalView extends View {

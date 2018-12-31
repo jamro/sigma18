@@ -11,7 +11,7 @@ export default class Map {
     for(let x = 0; x < width; x++) {
       this._grid[x] = [];
       for(let y = 0; y < height; y++) {
-        this._grid[x][y] = new Room();
+        this._grid[x][y] = new Room(x, y);
       }
     }
   }
@@ -49,8 +49,14 @@ export default class Map {
       room2.addDoor(door, 'n');
     }
 
+    door.calculatePosition(room1, room2);
+
     this._doorList.push(door);
     return door;
+  }
+
+  getDoorList() {
+    return this._doorList;
   }
 
 }

@@ -8,7 +8,7 @@ export default class Position {
   toString() {
     let letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let x = letters.charAt(this.x);
-    let y = this.y;
+    let y = this.y+1;
 
     return `[${x}:${y}]`;
   }
