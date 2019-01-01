@@ -42,6 +42,13 @@ export default class ComCommand extends Command {
           msg += ` * ${state} door on the ${this._directionMap[direction]} (ID: ${doors[direction].getId()})<br/>`;
         }
       }
+      msg += "<br/>\nInventory:<br/>\n";
+      if(this._squad.getInventory().length == 0) {
+        msg += ' * nothing<br/>\n';
+      }
+      this._squad.getInventory().forEach((i) => {
+        msg += ` * ${i}<br/>\n`;
+      });
       this.printChat(msg, 'commander');
       this.enableInput();
     }, 500);
@@ -66,9 +73,16 @@ export default class ComCommand extends Command {
       } else {
         this.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
 
-        this._squad.requestMove(direction, (result) => {
+        this._squad.requestMove(direction, (items) => {
           let pos = this._squad.getPosition().toString();
-          this.printChat(`Location ${pos} secured.`, 'commander');
+          let msg = `Location ${pos} secured. `;
+
+          if(items.length > 0) {
+            msg += "We have found:<br/>";
+            items.forEach((i) => msg += ` * ${i}<br/>`);
+
+          }
+          this.printChat(msg, 'commander');
           this.enableInput();
         });
       }

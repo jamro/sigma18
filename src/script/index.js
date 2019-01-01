@@ -4,6 +4,7 @@ import ScreenView from './system/ScreenView.js';
 import HelpCommand from './system/command/HelpCommand.js';
 import ComCommand from './system/command/ComCommand.js';
 import DoorCommand from './system/command/DoorCommand.js';
+import Note from './item/Note.js';
 
 import Squad from './Squad.js';
 import Map from './map/Map.js';
@@ -19,6 +20,8 @@ map.addDoor(3, 3, 4, 3).close();
 map.addDoor(3, 3, 3, 2);
 map.addDoor(3, 2, 2, 2);
 map.addDoor(3, 2, 4, 2);
+
+map.getRoom(3, 2).addItem(new Note('Have a nice day :)'));
 
 let terminalView = new TerminalView(document);
 let screenView = new ScreenView(document);

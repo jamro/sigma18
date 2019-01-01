@@ -6,6 +6,7 @@ export default class Room {
     this._position = new Position(x, y);
     this._isVisited = false;
     this._onChangeList = [];
+    this._itemList = [];
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
@@ -34,6 +35,16 @@ export default class Room {
 
   onChange(callback) {
     this._onChangeList.push(callback);
+  }
+
+  addItem(item) {
+    this._itemList.push(item);
+  }
+
+  flushItems() {
+    let result = this._itemList;
+    this._itemList = [];
+    return result;
   }
 
 }

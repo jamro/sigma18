@@ -2,6 +2,7 @@ export default class Squad {
 
   constructor(map) {
     this._map = map;
+    this._inventory = [];
   }
 
   validateMove(direction) {
@@ -40,14 +41,22 @@ export default class Squad {
     let pos = this._map.getSquadPosition();
     setTimeout(() => {
       let pos = this._map.getSquadPosition();
-      this._map.setSquadPosition(pos.x + dx, pos.y + dy);
-      this._map.getRoom(pos.x + dx, pos.y + dy).visit();
-      done();
+      let newX = pos.x + dx;
+      let newY = pos.y + dy;
+      this._map.setSquadPosition(newX, newY);
+      this._map.getRoom(newX, newY).visit();
+      let items = this._map.getRoom(newX, newY).flushItems();
+      this._inventory = this._inventory.concat(items);
+      done(items);
     }, 500);
   }
 
   getPosition() {
     return this._map.getSquadPosition();
+  }
+
+  getInventory() {
+    return this._inventory;
   }
 
 }
