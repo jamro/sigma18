@@ -8,16 +8,19 @@ export default class Map {
     this._squadPosition = null;
     this._doorList = [];
     this._grid = [];
+    this._onChangeList = [];
     for(let x = 0; x < width; x++) {
       this._grid[x] = [];
       for(let y = 0; y < height; y++) {
         this._grid[x][y] = new Room(x, y);
+        this._grid[x][y].onChange(() => this._notifyChange());
       }
     }
   }
 
   setSquadPosition(x, y) {
     this._squadPosition = new Position(x, y);
+    this._notifyChange();
   }
 
   getSquadPosition() {
@@ -64,6 +67,14 @@ export default class Map {
 
   getDoorList() {
     return this._doorList;
+  }
+
+  onChange(callback) {
+    this._onChangeList.push(callback);
+  }
+
+  _notifyChange() {
+    this._onChangeList.forEach((c) => c());
   }
 
 }

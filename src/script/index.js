@@ -36,6 +36,4 @@ terminalView.println("Type <strong>help</strong> and press ENTER to see availabl
 
 let mapRenderer = new MapRenderer(map, screenView);
 
-setInterval(() => {
-  mapRenderer.render();
-}, 250);
+mapRenderer.render();

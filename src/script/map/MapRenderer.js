@@ -3,6 +3,11 @@ export default class MapRenderer {
   constructor(map, screenView) {
     this._map = map;
     this._screenView = screenView;
+
+    this._map.onChange(() => {
+      this.render();
+    });
+    this.render();
   }
 
   render() {
@@ -15,9 +20,9 @@ export default class MapRenderer {
 
     this._screenView.clear();
 
-    let segmentSize = Math.round(Math.min(w, h)/13);
-    let startX = w/2 - (segmentSize*13)/2;
-    let startY = h/2 - (segmentSize*13)/2;
+    let segmentSize = Math.round(Math.min(w, h)/12);
+    let startX = w/2 - (segmentSize*12)/2;
+    let startY = h/2 - (segmentSize*12)/2;
 
     // render grid
     ctx.strokeStyle = color;
