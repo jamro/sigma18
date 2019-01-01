@@ -7,6 +7,7 @@ export default class Room {
     this._isVisited = false;
     this._onChangeList = [];
     this._itemList = [];
+    this._description = "";
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
@@ -45,6 +46,14 @@ export default class Room {
     let result = this._itemList;
     this._itemList = [];
     return result;
+  }
+
+  getDescription() {
+    return this._description;
+  }
+
+  describe(txt) {
+    this._description = txt;
   }
 
 }

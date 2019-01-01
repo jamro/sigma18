@@ -17,13 +17,16 @@ map.setSquadPosition(3, 3);
 map.getRoom(3, 3).visit();
 
 map.addDoor(3, 3, 3, 4).close();
-map.addDoor(3, 3, 4, 3).close();
+map.addDoor(3, 3, 4, 3);
 map.addDoor(3, 3, 3, 2);
-map.addDoor(3, 2, 2, 2);
+map.addDoor(3, 2, 2, 2).close();
 map.addDoor(3, 2, 4, 2);
 
 map.getRoom(3, 3).addItem(new Note('Have a nice day :)'));
 map.getRoom(3, 2).addItem(new Disk(new DoorCommand(map)));
+
+
+map.getRoom(3, 3).describe('It is a dock station. There is a rescue capsule behind southern door. We could use it to escape from the space station.');
 
 let terminalView = new TerminalView(document);
 let screenView = new ScreenView(document);

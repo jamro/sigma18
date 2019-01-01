@@ -10,9 +10,14 @@ class Door {
     this._rotation = null;
     this._isClosed = false;
     this._onChangeList = [];
+    this._room1 = null;
+    this._room2 = null;
   }
 
-  calculatePosition(room1, room2) {
+  assignRooms(room1, room2) {
+    this._room1 = room1;
+    this._room2 = room2;
+
     let pos1 = room1.getPosition();
     let pos2 = room2.getPosition();
     this._position = new Position((pos1.x + pos2.x)/2, (pos1.y + pos2.y)/2);
@@ -50,6 +55,10 @@ class Door {
 
   onChange(callback) {
     this._onChangeList.push(callback);
+  }
+
+  isVisited() {
+    return this._room1.isVisited() ||this._room2.isVisited();
   }
 
 }

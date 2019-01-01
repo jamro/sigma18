@@ -34,7 +34,7 @@ export default class ComCommand extends Command {
     this.printChat(`Commander, what's going on?`, 'hacker');
     setTimeout(() => {
       let pos = this._squad.getPosition();
-      let msg = `Our current position is ${pos.toString()}. <br/>\n<br/>\nPossible ways out:<br/>`;
+      let msg = `Our current position is ${pos.toString()}. ${this._map.getRoom(pos.x, pos.y).getDescription()}<br/>\n<br/>\nPossible ways out:<br/>`;
       let doors = this._map.getRoom(pos.x, pos.y).getDoors();
 
       for(let direction in doors) {
@@ -75,11 +75,11 @@ export default class ComCommand extends Command {
         this.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
 
         this._squad.requestMove(direction, (items) => {
-          let pos = this._squad.getPosition().toString();
-          let msg = `Location ${pos} secured. `;
+          let pos = this._squad.getPosition();
+          let msg = `Location ${pos.toString()} secured. ${this._map.getRoom(pos.x, pos.y).getDescription()}`;
 
           if(items.length > 0) {
-            msg += "We have found:<br/>";
+            msg += "<br/><br/>We have found:<br/>";
             items.forEach((i) => msg += ` * ${i}<br/>`);
           }
           this.printChat(msg, 'commander');

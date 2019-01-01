@@ -60,7 +60,7 @@ export default class Map {
       room2.addDoor(door, 'n');
     }
 
-    door.calculatePosition(room1, room2);
+    door.assignRooms(room1, room2);
 
     this._doorList.push(door);
     this._doorMap[door.getId()] = door;

@@ -41,6 +41,9 @@ export default class MapRenderer {
     let doorList = this._map.getDoorList();
 
     for(let door of doorList) {
+      if(!door.isVisited()) {
+        continue;
+      }
       pos = door.getPosition();
       if(door.isClosed()) {
         ctx.strokeStyle = color;
