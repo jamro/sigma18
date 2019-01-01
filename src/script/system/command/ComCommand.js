@@ -53,7 +53,8 @@ export default class ComCommand extends Command {
 
       for(let direction in doors) {
         if(doors[direction]) {
-          msg += ` * Door on the ${this._directionMap[direction]}<br/>`;
+          let state = doors[direction].isClosed() ? 'Locked' : 'Open';
+          msg += ` * ${state} door on the ${this._directionMap[direction]} (ID: ${doors[direction].getId()})<br/>`;
         }
       }
       this.printChat(msg, 'commander');
@@ -66,8 +67,12 @@ export default class ComCommand extends Command {
     let dx = 0;
     let dy = 0;
     direction = direction.toLowerCase();
+    if(!this._directionMap[direction]) {
+      this.println(`Error: unknown direction ${direction}`);
+      return;
+    }
     this.disableInput();
-    this.printChat(`Commander, check doors on the ${this._directionMap[direction]}.`, 'hacker');
+    this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
     setTimeout(() => {
       let invalidReason = this._squad.validateMove(direction);
       if(invalidReason) {

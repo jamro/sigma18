@@ -24,8 +24,9 @@ export default class MapRenderer {
     let startX = w/2 - (segmentSize*12)/2;
     let startY = h/2 - (segmentSize*12)/2;
 
-    // render grid
+    // render rooms
     ctx.strokeStyle = color;
+    ctx.lineWidth = 3;
     ctx.beginPath();
     for(let x=0; x <10; x++) {
       for(let y=0; y <10; y++) {
@@ -38,18 +39,46 @@ export default class MapRenderer {
 
     // render doors
     let doorList = this._map.getDoorList();
-    ctx.fillStyle = bg;
-    ctx.beginPath();
+
     for(let door of doorList) {
       pos = door.getPosition();
-      ctx.rect(
-        startX + 2.25*segmentSize + pos.x*segmentSize,
-        startY + 2.25*segmentSize + pos.y*segmentSize,
-        segmentSize/2,
-        segmentSize/2
-      );
+      if(door.isClosed()) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        if(door.getRotation() == 90) {
+          ctx.moveTo(
+            startX + 2.50*segmentSize + pos.x*segmentSize,
+            startY + 2.25*segmentSize + pos.y*segmentSize
+          );
+          ctx.lineTo(
+            startX + 2.50*segmentSize + pos.x*segmentSize,
+            startY + 2.75*segmentSize + pos.y*segmentSize
+          );
+        } else {
+          ctx.moveTo(
+            startX + 2.25*segmentSize + pos.x*segmentSize,
+            startY + 2.50*segmentSize + pos.y*segmentSize
+          );
+          ctx.lineTo(
+            startX + 2.75*segmentSize + pos.x*segmentSize,
+            startY + 2.50*segmentSize + pos.y*segmentSize
+          );
+        }
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = bg;
+        ctx.beginPath();
+        ctx.rect(
+          startX + 2.25*segmentSize + pos.x*segmentSize,
+          startY + 2.25*segmentSize + pos.y*segmentSize,
+          segmentSize/2,
+          segmentSize/2
+        );
+        ctx.fill();
+      }
     }
-    ctx.fill();
+
 
     // render squad position
     pos = this._map.getSquadPosition();

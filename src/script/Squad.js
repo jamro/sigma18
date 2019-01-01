@@ -9,7 +9,10 @@ export default class Squad {
     let room = this._map.getRoom(pos.x, pos.y);
     let doors = room.getDoors();
     if(!doors[direction]) {
-      return 'No doors on that direction.';
+      return 'No doors on that side.';
+    }
+    if(doors[direction].isClosed()) {
+      return 'The door is locked.';
     }
     return '';
   }
