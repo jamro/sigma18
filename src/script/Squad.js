@@ -46,7 +46,7 @@ export default class Squad {
       this._map.setSquadPosition(newX, newY);
       this._map.getRoom(newX, newY).visit();
       let items = this._map.getRoom(newX, newY).flushItems();
-      this._inventory = this._inventory.concat(items);
+      this._inventory = this._inventory.concat(items.filter((i) => i.getType() != 'disk'));
       done(items);
     }, 500);
   }

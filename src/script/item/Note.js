@@ -7,6 +7,10 @@ export default class Note extends Item {
     this._msg = msg;
   }
 
+  getType() {
+    return 'note';
+  }
+
   toString() {
     return `Note (&quot;${this._msg}&quot;)`;
   }

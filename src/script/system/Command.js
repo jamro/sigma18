@@ -29,6 +29,24 @@ export default class Command {
     }, 30);
   }
 
+  showProgress(done) {
+    let el = this._terminal._view.printel();
+    let p = 0;
+    let loop = setInterval(() => {
+      let fillCount = Math.round((p/100)*40);
+      let fill = Array(fillCount).join('=');
+      let empty = Array(40 - fillCount).join('&nbsp;');
+
+      el.innerHTML = `[${fill}${empty}]  ` + p + '%';
+      p++;
+      if(p >= 100) {
+        clearInterval(loop);
+        el.innerHTML = '[======================================] 100%';
+        done();
+      }
+    }, 30);
+  }
+
   typeText(cmd, done) {
     let loop = setInterval(() => {
       this.println(cmd.shift());

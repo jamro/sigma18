@@ -5,6 +5,7 @@ import HelpCommand from './system/command/HelpCommand.js';
 import ComCommand from './system/command/ComCommand.js';
 import DoorCommand from './system/command/DoorCommand.js';
 import Note from './item/Note.js';
+import Disk from './item/Disk.js';
 
 import Squad from './Squad.js';
 import Map from './map/Map.js';
@@ -21,7 +22,8 @@ map.addDoor(3, 3, 3, 2);
 map.addDoor(3, 2, 2, 2);
 map.addDoor(3, 2, 4, 2);
 
-map.getRoom(3, 2).addItem(new Note('Have a nice day :)'));
+map.getRoom(3, 3).addItem(new Note('Have a nice day :)'));
+map.getRoom(3, 2).addItem(new Disk(new DoorCommand(map)));
 
 let terminalView = new TerminalView(document);
 let screenView = new ScreenView(document);
@@ -32,8 +34,7 @@ terminalView.enableAutoFocus();
 screenView.rescale();
 
 terminal.installCommand(new HelpCommand());
-terminal.installCommand(new ComCommand(squad, map));
-terminal.installCommand(new DoorCommand(map));
+terminal.installCommand(new ComCommand(squad, map, terminal));
 
 terminalView.println("Welcome at Space Station Sigma-18");
 terminalView.println("Version of terminal: 1.0.0");

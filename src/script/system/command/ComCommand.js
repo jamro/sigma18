@@ -2,8 +2,9 @@ import Command from '../Command.js';
 
 export default class ComCommand extends Command {
 
-  constructor(squad, map) {
+  constructor(squad, map, terminal) {
     super();
+    this._terminal = terminal;
     this._squad = squad;
     this._map = map;
     this._directionMap = {
@@ -80,10 +81,31 @@ export default class ComCommand extends Command {
           if(items.length > 0) {
             msg += "We have found:<br/>";
             items.forEach((i) => msg += ` * ${i}<br/>`);
-
           }
           this.printChat(msg, 'commander');
-          this.enableInput();
+
+          let disks = items.filter((i) => i.getType() == 'disk');
+          let appNames = disks.map((d) => d.getCommand().getName());
+          if(disks.length > 0) {
+            setTimeout(() => {
+              this.println('');
+              this.println(`Transferring disk data: <strong>${appNames.join(',')}</strong> app.`);
+              this.showProgress(() => {
+                this.println('App downloaded');
+                this.println('');
+                this.println(`Installing <strong>${appNames.join(',')}</strong> app.`);
+                this.showProgress(() => {
+                  disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
+                  this.println('Done.');
+                  this.println('');
+                  appNames.forEach((a) => this.println(`Run <strong>${appNames.join(',')}  help</strong> for more info.`));
+                  this.enableInput();
+                });
+              });
+            }, 1000);
+          } else {
+            this.enableInput();
+          }
         });
       }
     }, 500);
