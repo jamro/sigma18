@@ -22,21 +22,6 @@ export default class ComCommand extends Command {
     return "Communication with squad of marines in the field";
   }
 
-  exec(command) {
-    let subcommand = command.length >= 2 ? command[1] : "";
-
-    switch(subcommand.toLowerCase()) {
-      case 'help':
-        return this.execHelp();
-      case 'go':
-        return this.execGo(command);
-      case 'status':
-        return this.execStatus();
-      default:
-        this.println('Command not found! Run <strong>com help</strong> for more info.');
-    }
-  }
-
   printChat(msg, from) {
     from = from ? from : 'hacker';
     let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
@@ -53,7 +38,7 @@ export default class ComCommand extends Command {
 
       for(let direction in doors) {
         if(doors[direction]) {
-          let state = doors[direction].isClosed() ? 'Locked' : 'Open';
+          let state = doors[direction].isClosed() ? 'Locked' : 'Opened';
           msg += ` * ${state} door on the ${this._directionMap[direction]} (ID: ${doors[direction].getId()})<br/>`;
         }
       }

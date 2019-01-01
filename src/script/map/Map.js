@@ -7,6 +7,7 @@ export default class Map {
   constructor(width, height) {
     this._squadPosition = null;
     this._doorList = [];
+    this._doorMap = {};
     this._grid = [];
     this._onChangeList = [];
     for(let x = 0; x < width; x++) {
@@ -62,11 +63,18 @@ export default class Map {
     door.calculatePosition(room1, room2);
 
     this._doorList.push(door);
+    this._doorMap[door.getId()] = door;
+    door.onChange(() => this._notifyChange());
     return door;
   }
 
   getDoorList() {
     return this._doorList;
+  }
+
+  getDoorById(id) {
+    id = id.toUpperCase().replace("O", "0");
+    return this._doorMap[id];
   }
 
   onChange(callback) {
@@ -76,5 +84,7 @@ export default class Map {
   _notifyChange() {
     this._onChangeList.forEach((c) => c());
   }
+
+
 
 }

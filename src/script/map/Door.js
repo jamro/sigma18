@@ -3,12 +3,13 @@ import Position from './Position.js';
 class Door {
 
   constructor() {
-    this._id = 'd-' + Math.floor(Math.random()*16).toString(16) + Door._nextId.toString(16) + Math.floor(Math.random()*16).toString(16);
+    this._id = 'd' + Math.floor(Math.random()*16).toString(16) + Door._nextId.toString(16);
     this._id = this._id.toUpperCase();
     Door._nextId++;
     this._position = null;
     this._rotation = null;
     this._isClosed = false;
+    this._onChangeList = [];
   }
 
   calculatePosition(room1, room2) {
@@ -31,10 +32,12 @@ class Door {
 
   close() {
     this._isClosed = true;
+    this._onChangeList.forEach((c) => c());
   }
 
   open() {
     this._isClosed = false;
+    this._onChangeList.forEach((c) => c());
   }
 
   isClosed() {
@@ -45,8 +48,12 @@ class Door {
     return this._id;
   }
 
+  onChange(callback) {
+    this._onChangeList.push(callback);
+  }
+
 }
 
-Door._nextId = 26;
+Door._nextId = 0;
 
 export default Door;

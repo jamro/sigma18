@@ -7,6 +7,7 @@ export default class TerminalView extends View {
     super(document);
 
     this._onSubmitCallbackList = [];
+    this._refId = 0;
 
     this._view = this.createElement("DIV", {
       cssClass: "terminal-root"
@@ -61,6 +62,12 @@ export default class TerminalView extends View {
 
   println(txt) {
     this.print(txt + "<br/>\n");
+  }
+
+  printel() {
+    let id = "ref-terminal-line-" + this._refId++;
+    this.print(`<span id=\"${id}\"></span><br/>\n`);
+    return document.getElementById(id);
   }
 
   onSubmit(callback) {
