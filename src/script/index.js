@@ -4,6 +4,7 @@ import ScreenView from './system/ScreenView.js';
 import HelpCommand from './system/command/HelpCommand.js';
 import ComCommand from './system/command/ComCommand.js';
 import DoorCommand from './system/command/DoorCommand.js';
+import DockCommand from './system/command/DockCommand.js';
 import Note from './item/Note.js';
 import Disk from './item/Disk.js';
 
@@ -17,16 +18,20 @@ map.setSquadPosition(3, 3);
 map.getRoom(3, 3).visit();
 
 map.addDoor(3, 3, 3, 4).close();
-map.addDoor(3, 3, 4, 3);
+let capsuleDoor = map.addDoor(3, 3, 4, 3);
 map.addDoor(3, 3, 3, 2);
 map.addDoor(3, 2, 2, 2).close();
 map.addDoor(3, 2, 4, 2);
 
-map.getRoom(3, 3).addItem(new Note('Have a nice day :)'));
+map.getRoom(4, 2).addItem(new Note('Rescue Capsule Auth: U317AB'));
 map.getRoom(3, 2).addItem(new Disk(new DoorCommand(map)));
-
+map.getRoom(2, 2).addItem(new Disk(new DockCommand(map, capsuleDoor)));
+map.getRoom(4, 3).setType('capsule');
 
 map.getRoom(3, 3).describe('It is a dock station. There is a rescue capsule behind southern door. We could use it to escape from the space station.');
+// @TODO: update location of rescue capsule
+// @TODO: update id of dock station
+map.getRoom(4, 3).describe('We are at dock station DS002. It is a rescue capsule! We could use it to escape from here, but we need your help to launch it.');
 
 let terminalView = new TerminalView(document);
 let screenView = new ScreenView(document);

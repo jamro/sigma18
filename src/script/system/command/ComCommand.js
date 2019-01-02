@@ -23,12 +23,6 @@ export default class ComCommand extends Command {
     return "Communication with squad of marines in the field";
   }
 
-  printChat(msg, from) {
-    from = from ? from : 'hacker';
-    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
-    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
-  }
-
   execStatus() {
     this.disableInput();
     this.printChat(`Commander, what's going on?`, 'hacker');
@@ -89,16 +83,16 @@ export default class ComCommand extends Command {
           if(disks.length > 0) {
             setTimeout(() => {
               this.println('');
-              this.println(`Transferring disk data: <strong>${appNames.join(',')}</strong> app.`);
+              this.println(`Transferring disk data: <strong>${appNames.join(', ')}</strong> app.`);
               this.showProgress(() => {
                 this.println('App downloaded');
                 this.println('');
-                this.println(`Installing <strong>${appNames.join(',')}</strong> app.`);
+                this.println(`Installing <strong>${appNames.join(', ')}</strong> app.`);
                 this.showProgress(() => {
                   disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
                   this.println('Done.');
                   this.println('');
-                  appNames.forEach((a) => this.println(`Run <strong>${appNames.join(',')}  help</strong> for more info.`));
+                  appNames.forEach((a) => this.println(`Run <strong>${a}  help</strong> for more info.`));
                   this.enableInput();
                 });
               });

@@ -8,9 +8,18 @@ export default class Room {
     this._onChangeList = [];
     this._itemList = [];
     this._description = "";
+    this._type = "standard";
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
+  }
+
+  setType(t) {
+    this._type = t;
+  }
+
+  getType() {
+    return this._type;
   }
 
   addDoor(door, direction) {

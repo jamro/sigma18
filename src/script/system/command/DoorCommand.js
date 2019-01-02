@@ -30,18 +30,6 @@ export default class DoorCommand extends Command {
     return door;
   }
 
-  connect(id, done) {
-    this.typeText([
-      `Connecting to the gateway 10.43.23.4...`,
-      `Connection established`,
-      `Service Discovery in progress...`,
-      `Door Service found: 10.43.23.34`,
-      ``,
-      `Door look up: ${id}...`
-    ], done);
-  }
-
-
   execOpen(command) {
     this.doorSwitch(command, false);
   }
@@ -53,7 +41,7 @@ export default class DoorCommand extends Command {
 
   doorSwitch(command, doClose) {
     this.disableInput();
-    this.connect(this.getDoorId(command), () => {
+    this.connect('Door', '10.43.23.37', [`Door look up: ${this.getDoorId(command)}...`], () => {
       let door = this.findDoor(command);
       if(door) {
         if(door.isClosed() == doClose) {
@@ -80,6 +68,8 @@ export default class DoorCommand extends Command {
             }, 500);
           });
         });
+      } else {
+        this.enableInput();
       }
     });
   }

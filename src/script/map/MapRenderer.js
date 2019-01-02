@@ -26,16 +26,27 @@ export default class MapRenderer {
 
     // render rooms
     ctx.strokeStyle = color;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
+
     for(let x=0; x <10; x++) {
       for(let y=0; y <10; y++) {
         if(this._map.hasRoom(x, y) && this._map.getRoom(x, y).isVisited()) {
+          ctx.lineWidth = 3;
+          ctx.beginPath();
           ctx.rect(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize, segmentSize, segmentSize);
+          ctx.stroke();
+          if(this._map.getRoom(x, y).getType() == 'capsule') {
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
+            ctx.lineTo(startX + 3*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
+            ctx.moveTo(startX + 3*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
+            ctx.lineTo(startX + 2*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
+            ctx.stroke();
+          }
         }
       }
     }
-    ctx.stroke();
+
 
     // render doors
     let doorList = this._map.getDoorList();

@@ -29,6 +29,18 @@ export default class Command {
     }, 30);
   }
 
+  connect(serviceName, serviceIp, msg, done) {
+    let log = [
+      `Connecting to the gateway 10.43.23.4...`,
+      `Connection established`,
+      `Service Discovery in progress...`,
+      `${serviceName} Service found: ${serviceIp}`,
+      ``,
+    ];
+    log = log.concat(msg);
+    this.typeText(log, done);
+  }
+
   showProgress(done) {
     let el = this._terminal._view.printel();
     let p = 0;
@@ -38,7 +50,7 @@ export default class Command {
       let empty = Array(40 - fillCount).join('&nbsp;');
 
       el.innerHTML = `[${fill}${empty}]  ` + p + '%';
-      p++;
+      p+=2;
       if(p >= 100) {
         clearInterval(loop);
         el.innerHTML = '[======================================] 100%';
@@ -73,6 +85,12 @@ export default class Command {
 
   println(msg) {
     this._terminal._view.println(msg);
+  }
+
+  printChat(msg, from) {
+    from = from ? from : 'hacker';
+    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
+    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 
   disableInput() {
