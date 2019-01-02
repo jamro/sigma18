@@ -8,6 +8,10 @@ export default class TerminalView extends View {
 
     this._onSubmitCallbackList = [];
     this._refId = 0;
+    let data = localStorage.getItem('history') || '[]';
+    this._historyFull = JSON.parse(data);
+    this._history = [''].concat(this._historyFull);
+    this._historyIndex = 0;
 
     this._view = this.createElement("DIV", {
       cssClass: "terminal-root"
@@ -27,18 +31,46 @@ export default class TerminalView extends View {
       parent: this._view.input
     });
 
+
+    let updateFromHistory = () => {
+      this._view.input.textField.element.value = this._history[this._historyIndex];
+      setTimeout(() => { this._view.input.textField.element.selectionStart = this._view.input.textField.element.selectionEnd = 10000; }, 0);
+    };
+
     this._view.input.textField.element.addEventListener("keydown", (event) => {
-      if(event.keyCode == 13) {
-        this.submit();
+      switch(event.keyCode) {
+        case 13:
+          this._history[this._historyIndex] = this._view.input.textField.element.value;
+          this.submit();
+          break;
+        case 38: // key up
+          this._historyIndex = Math.min(this._history.length-1, this._historyIndex+1);
+          updateFromHistory()
+          break;
+        case 40: //key down
+          this._historyIndex = Math.max(0, this._historyIndex-1);
+          updateFromHistory();
+          break;
+        default:
+          this._history[this._historyIndex] = this._view.input.textField.element.value;
+          break;
       }
     });
   }
+
 
   submit() {
     let command = this._view.input.textField.element.value;
     if(command == '') {
       return;
     }
+    this._historyFull.unshift(command);
+    while(this._historyFull.length > 100) {
+      this._historyFull.pop();
+    }
+    this._history = [''].concat(this._historyFull);
+    this._historyIndex = 0;
+    localStorage.setItem('history', JSON.stringify(this._historyFull));
     this._view.input.textField.element.value = '';
     this._onSubmitCallbackList.forEach((callback) => callback(command));
   }
