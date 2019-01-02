@@ -21,6 +21,7 @@ export default class Terminal {
       }
     }
     this._view.println(`Error: Command <strong>${command[0]}</strong> not found!`);
+    this._view.playErr();
   }
 
   installCommand(commandProcessor) {

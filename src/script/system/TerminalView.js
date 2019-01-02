@@ -6,6 +6,12 @@ export default class TerminalView extends View {
   constructor(document) {
     super(document);
 
+    this._okSound = new Audio('audio/ok.mp3');
+    this._errSound = new Audio('audio/err.mp3');
+    this._comSound = new Audio('audio/com.mp3');
+    this._beepSound = new Audio('audio/beep.mp3');
+    this._beepSound.loop = true;
+
     this._onSubmitCallbackList = [];
     this._refId = 0;
     let data = localStorage.getItem('history') || '[]';
@@ -114,5 +120,28 @@ export default class TerminalView extends View {
     this._view.input.textField.element.disabled = false;
     this._view.input.textField.element.focus();
   }
+
+  playOk() {
+    this._okSound.play();
+  }
+
+  playErr() {
+    this._errSound.play();
+  }
+
+  playCom() {
+    this._comSound.playbackRate = 0.9 + 1.1*Math.random();
+    this._comSound.play();
+  }
+
+  startBeepLoop() {
+    this._beepSound.play();
+  }
+
+  stopBeepLoop() {
+    this._beepSound.pause();
+    this._beepSound.currentTime = 0;
+  }
+
 
 }

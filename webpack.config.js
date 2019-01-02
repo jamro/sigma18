@@ -10,7 +10,7 @@ let config = {
   },
   output: {
     path: path.resolve(__dirname, 'dist/js'),
-    filename: 'sigma18.min.js'
+    filename: 'sigma18.js'
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -47,6 +47,10 @@ let config = {
         from: path.resolve(__dirname + '/resources/img/**/*.*'),
         context: path.resolve(__dirname + '/resources/img'),
         to: path.resolve(__dirname + '/dist/img')
+      }, {
+        from: path.resolve(__dirname + '/resources/audio/**/*.*'),
+        context: path.resolve(__dirname + '/resources/audio'),
+        to: path.resolve(__dirname + '/dist/audio')
       }
     ])
   ]

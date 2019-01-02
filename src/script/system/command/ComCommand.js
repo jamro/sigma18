@@ -25,6 +25,7 @@ export default class ComCommand extends Command {
 
   execStatus() {
     this.disableInput();
+    this.playChatSound();
     this.printChat(`Commander, what's going on?`, 'hacker');
     setTimeout(() => {
       let pos = this._squad.getPosition();
@@ -55,10 +56,12 @@ export default class ComCommand extends Command {
     let dy = 0;
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
+      this.playDoneSound(false);
       this.println(`Error: unknown direction ${direction}`);
       return;
     }
     this.disableInput();
+    this.playChatSound();
     this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
     setTimeout(() => {
       let invalidReason = this._squad.validateMove(direction);
@@ -70,6 +73,7 @@ export default class ComCommand extends Command {
 
         this._squad.requestMove(direction, (items) => {
           let pos = this._squad.getPosition();
+          this.playChatSound();
           let msg = `Location ${pos.toString()} secured. ${this._map.getRoom(pos.x, pos.y).getDescription()}`;
 
           if(items.length > 0) {
@@ -82,19 +86,25 @@ export default class ComCommand extends Command {
           let appNames = disks.map((d) => d.getCommand().getName());
           if(disks.length > 0) {
             setTimeout(() => {
+              this.playDoneSound(true);
               this.println('');
               this.println(`Transferring disk data: <strong>${appNames.join(', ')}</strong> app.`);
               this.showProgress(() => {
                 this.println('App downloaded');
                 this.println('');
-                this.println(`Installing <strong>${appNames.join(', ')}</strong> app.`);
-                this.showProgress(() => {
-                  disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
-                  this.println('Done.');
-                  this.println('');
-                  appNames.forEach((a) => this.println(`Run <strong>${a}  help</strong> for more info.`));
-                  this.enableInput();
-                });
+
+                setTimeout(() => {
+                  this.println(`Installing <strong>${appNames.join(', ')}</strong> app.`);
+                  this.showProgress(() => {
+                    disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
+                    this.println('Done.');
+                    this.println('');
+                    appNames.forEach((a) => this.println(`Run <strong>${a}  help</strong> for more info.`));
+                    this.playDoneSound(true);
+                    this.enableInput();
+                  });
+                }, 500);
+
               });
             }, 1000);
           } else {
@@ -120,5 +130,6 @@ export default class ComCommand extends Command {
     this.println("* <strong>s</strong> - South");
     this.println("* <strong>w</strong> - West");
     this.println("For example: <strong>com go n</strong>");
+    this.playDoneSound(true);
   }
 }

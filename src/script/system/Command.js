@@ -17,6 +17,7 @@ export default class Command {
   }
 
   passCrack(time, done) {
+    this.startBeepLoop(); 
     let el = this._terminal._view.printel();
     let loop = setInterval(() => {
       el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
@@ -24,6 +25,7 @@ export default class Command {
       if(time <= 0) {
         clearInterval(loop);
         el.innerHTML = 'Password: ********';
+        this.stopBeepLoop();
         done();
       }
     }, 30);
@@ -42,6 +44,7 @@ export default class Command {
   }
 
   showProgress(done) {
+    this.startBeepLoop();
     let el = this._terminal._view.printel();
     let p = 0;
     let loop = setInterval(() => {
@@ -54,6 +57,7 @@ export default class Command {
       if(p >= 100) {
         clearInterval(loop);
         el.innerHTML = '[======================================] 100%';
+        this.stopBeepLoop();
         done();
       }
     }, 30);
@@ -99,6 +103,26 @@ export default class Command {
 
   enableInput() {
     this._terminal._view.enable();
+  }
+
+  playDoneSound(success) {
+    if(success) {
+      this._terminal._view.playOk();
+    } else {
+      this._terminal._view.playErr();
+    }
+  }
+
+  playChatSound() {
+    this._terminal._view.playCom();
+  }
+
+  startBeepLoop() {
+    this._terminal._view.startBeepLoop();
+  }
+
+  stopBeepLoop() {
+    this._terminal._view.stopBeepLoop();
   }
 
 }

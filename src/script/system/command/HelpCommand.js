@@ -21,5 +21,6 @@ export default class HelpCommand extends Command {
       }
     }
     this.println("Run <strong>[command] help</strong> for more info");
+    this.playDoneSound(true);
   }
 }

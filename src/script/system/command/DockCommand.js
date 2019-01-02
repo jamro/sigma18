@@ -22,6 +22,7 @@ export default class DockCommand extends Command {
                         "DS002      | [D:5]    | Ready   | Rescue Capsule\n" +
                         "DS003      | [E:4]    | Damaged | OSS Sierra-23</pre>");
       this.enableInput();
+      this.playDoneSound(true);
     });
   }
 
@@ -31,20 +32,23 @@ export default class DockCommand extends Command {
     this.disableInput();
     this.connect('Dock', '10.43.23.91', [], () => {
 
+      if(id == 'DS001' || id == 'DS003') {
+        this.println(`Error: Cannot start launching sequence at ${id}.`);
+        this.enableInput();
+        this.playDoneSound(false);
+        return;
+      }
       // @TODO: update door id
       if(!this._capsuleDoor.isClosed()) {
         this.println(`Error: Close the door of the station before starting launch sequence.`);
         this.enableInput();
-        return;
-      }
-      if(id == 'DS001' || id == 'DS003') {
-        this.println(`Error: Cannot start launching sequence at ${id}.`);
-        this.enableInput();
+        this.playDoneSound(false);
         return;
       }
       if(pass != 'U317AB') {
         this.println(`Error: Authorization failed. Incorrect pass code.`);
         this.enableInput();
+        this.playDoneSound(false);
         return;
       }
       let pos = this._map.getSquadPosition();
@@ -52,6 +56,7 @@ export default class DockCommand extends Command {
       if(pos.x != 4 || pos.y != 3) {
         this.println(`Error: Cannot launch empty capsule without passengers.`);
         this.enableInput();
+        this.playDoneSound(false);
         return;
       }
 
@@ -77,10 +82,13 @@ export default class DockCommand extends Command {
               ], () => {
 
                 setTimeout(() => {
+                  this.playChatSound();
                   this.printChat('<strong>GOOD JOB SOLIDER!</strong><br/>\n We are saved! Going back home!', 'commander');
                   setTimeout(() => {
+                    this.playChatSound();
                     this.printChat('Roger that! Good luck commander!', 'hacker');
                     setTimeout(() => {
+                      this.playDoneSound(true);
                       this.println('<div class="finito">THE END</div>');
                     }, 3000);
                   }, 1000);
@@ -164,6 +172,7 @@ export default class DockCommand extends Command {
       ];
       this.typeText(msg.concat(unit), () => {
         this.enableInput();
+        this.playDoneSound(true);
       });
     });
   }
@@ -182,6 +191,7 @@ export default class DockCommand extends Command {
     this.println("Launch space ship docked at [stationId].");
     this.println("Password ([pass] argument) is required to run this operation.");
     this.println("For example: <strong>dock launch DS001 MySecretPassword</strong>");
+    this.playDoneSound(true);
   }
 
 }
