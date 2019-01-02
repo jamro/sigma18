@@ -27,9 +27,20 @@ export default class Terminal {
   installCommand(commandProcessor) {
     commandProcessor.setTerminal(this);
     this._commandProcessorList.push(commandProcessor);
+    this._commandProcessorList.sort((a, b) => {
+      if(a.getName() == 'help') return -1;
+      if(b.getName() == 'help') return 1;
+      if(a.getName() > b.getName()) return 1;
+      if(a.getName() < b.getName()) return -1;
+      return 0;
+    });
   }
 
   getCommandList() {
     return this._commandProcessorList;
+  }
+
+  enableSound(state) {
+    this._view.enableSound(state);
   }
 }

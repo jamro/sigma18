@@ -12,6 +12,10 @@ export default class DockCommand extends Command {
     return 'dock';
   }
 
+  getHelp() {
+    return 'Operate docking stations and rescue capsules';
+  }
+
   execList() {
     this.disableInput();
     this.connect('Dock', '10.43.23.91', ['Query station list...'], () => {
@@ -80,7 +84,7 @@ export default class DockCommand extends Command {
                 `Closing docking gates`,
                 `Launching sequence completed`
               ], () => {
-
+                this.playDoneSound(true);
                 setTimeout(() => {
                   this.playChatSound();
                   this.printChat('<strong>GOOD JOB SOLIDER!</strong><br/>\n We are saved! Going back home!', 'commander');

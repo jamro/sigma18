@@ -3,6 +3,7 @@ import Terminal from './system/Terminal.js';
 import ScreenView from './system/ScreenView.js';
 import HelpCommand from './system/command/HelpCommand.js';
 import ComCommand from './system/command/ComCommand.js';
+import SfxCommand from './system/command/SfxCommand.js';
 
 import Squad from './Squad.js';
 import MapBuilder from './map/MapBuilder.js';
@@ -22,6 +23,7 @@ screenView.rescale();
 
 let squad = new Squad(map);
 terminal.installCommand(new HelpCommand());
+terminal.installCommand(new SfxCommand(terminal));
 terminal.installCommand(new ComCommand(squad, map, terminal));
 
 terminalView.println("Welcome at Space Station Sigma-18");

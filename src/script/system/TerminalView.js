@@ -5,12 +5,16 @@ export default class TerminalView extends View {
 
   constructor(document) {
     super(document);
-
-    this._okSound = new Audio('audio/ok.mp3');
-    this._errSound = new Audio('audio/err.mp3');
-    this._comSound = new Audio('audio/com.mp3');
-    this._beepSound = new Audio('audio/beep.mp3');
-    this._beepSound.loop = true;
+    this._mute = false;
+    try {
+      this._okSound = new Audio('audio/ok.mp3');
+      this._errSound = new Audio('audio/err.mp3');
+      this._comSound = new Audio('audio/com.mp3');
+      this._beepSound = new Audio('audio/beep.mp3');
+      this._beepSound.loop = true;
+    } catch(err) {
+      console.log(err);
+    }
 
     this._onSubmitCallbackList = [];
     this._refId = 0;
@@ -122,25 +126,53 @@ export default class TerminalView extends View {
   }
 
   playOk() {
-    this._okSound.play();
+    if(this._mute) return;
+    try {
+      this._okSound.play();
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   playErr() {
-    this._errSound.play();
+    if(this._mute) return;
+    try {
+      this._errSound.play();
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   playCom() {
-    this._comSound.playbackRate = 0.9 + 1.1*Math.random();
-    this._comSound.play();
+    if(this._mute) return;
+    try {
+      this._comSound.playbackRate = 0.9 + 1.1*Math.random();
+      this._comSound.play();
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   startBeepLoop() {
-    this._beepSound.play();
+    if(this._mute) return;
+    try {
+      this._beepSound.play();
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   stopBeepLoop() {
-    this._beepSound.pause();
-    this._beepSound.currentTime = 0;
+    try {
+      this._beepSound.pause();
+      this._beepSound.currentTime = 0;
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  enableSound(state) {
+    this._mute = !state;
   }
 
 

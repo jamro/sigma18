@@ -17,7 +17,7 @@ export default class Command {
   }
 
   passCrack(time, done) {
-    this.startBeepLoop(); 
+    this.startBeepLoop();
     let el = this._terminal._view.printel();
     let loop = setInterval(() => {
       el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
@@ -80,6 +80,7 @@ export default class Command {
       this[method](command);
     } else {
       this.println(`Command not found! Run <strong>${command[0]} help</strong> for more info.`);
+      this.playDoneSound(false);
     }
   }
 

@@ -13,7 +13,8 @@ export default class HelpCommand extends Command {
   exec(command) {
     this.println("Available commands:");
     let commandList = this._terminal.getCommandList();
-    for(let command of commandList) {
+    for(let i=0; i < commandList.length; i++) {
+      let command = commandList[i];
       let help = command.getHelp();
       let name = command.getName();
       if(help && name) {
