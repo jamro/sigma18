@@ -2,7 +2,7 @@ import Position from './Position.js';
 import Room from './Room.js';
 import Door from './Door.js';
 
-export default class Map {
+export default class WorldMap {
 
   constructor(width, height) {
     this._squadPosition = null;

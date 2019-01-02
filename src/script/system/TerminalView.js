@@ -45,7 +45,7 @@ export default class TerminalView extends View {
           break;
         case 38: // key up
           this._historyIndex = Math.min(this._history.length-1, this._historyIndex+1);
-          updateFromHistory()
+          updateFromHistory();
           break;
         case 40: //key down
           this._historyIndex = Math.max(0, this._historyIndex-1);
