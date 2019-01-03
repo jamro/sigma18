@@ -25,7 +25,7 @@ export default class MapBuilder {
   }
 
   _layoutEnemies() {
-    this._map.getRoom(3, 7).setEnemy(2);
+    this._map.getRoom(2, 0).setEnemy(2);
   }
 
   _layoutRooms() {

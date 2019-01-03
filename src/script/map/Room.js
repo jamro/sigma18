@@ -4,7 +4,7 @@ export default class Room {
 
   constructor(x, y) {
     this._position = new Position(x, y);
-    this._isVisited = true;
+    this._isVisited = false;
     this._onChangeList = [];
     this._itemList = [];
     this._description = "";
