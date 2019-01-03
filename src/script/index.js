@@ -29,7 +29,7 @@ terminal.installCommand(new ComCommand(squad, map, terminal));
 terminalView.println("Welcome at Space Station Sigma-18");
 terminalView.println("Version of terminal: 1.0.0");
 terminalView.println("\n\n");
-terminalView.println("Type <strong>help</strong> and press ENTER to see available commands.");
+terminalView.println("Type s|help|s and press ENTER to see available commands.");
 
 let mapRenderer = new MapRenderer(map, screenView);
 

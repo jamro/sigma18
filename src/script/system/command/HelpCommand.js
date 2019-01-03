@@ -18,10 +18,10 @@ export default class HelpCommand extends Command {
       let help = command.getHelp();
       let name = command.getName();
       if(help && name) {
-        this.println(` * <strong>${name}</strong> - ${help}`);
+        this.println(` * s|${name}|s - ${help}`);
       }
     }
-    this.println("Run <strong>[command] help</strong> for more info");
+    this.println("Run s|[command] help|s for more info");
     this.playDoneSound(true);
   }
 }

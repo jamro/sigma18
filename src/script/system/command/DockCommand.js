@@ -87,7 +87,7 @@ export default class DockCommand extends Command {
                 this.playDoneSound(true);
                 setTimeout(() => {
                   this.playChatSound();
-                  this.printChat('<strong>GOOD JOB SOLIDER!</strong><br/>\n We are saved! Going back home!', 'commander');
+                  this.printChat('s|GOOD JOB SOLIDER!|s<br/>\n We are saved! Going back home!', 'commander');
                   setTimeout(() => {
                     this.playChatSound();
                     this.printChat('Roger that! Good luck commander!', 'hacker');
@@ -112,8 +112,8 @@ export default class DockCommand extends Command {
     this.connect('Dock', '10.43.23.91', [`Station record found`], () => {
       let gates, port, net, pressure, health;
       let unit = [];
-      let ok = '<strong>ok</strong>';
-      let damaged = '<strong class="red">damaged</strong>';
+      let ok = 's|ok|s';
+      let damaged = 'r|damaged|r';
       switch(id) {
         case 'DS001':
         case 'DS002':
@@ -124,10 +124,10 @@ export default class DockCommand extends Command {
           health = ok;
           break;
         case 'DS003':
-          gates = '<strong class="red">open</strong>';
+          gates = 'r|open|r';
           port = damaged;
-          net = '<strong class="red">disconnected</strong>';
-          pressure = '<strong class="red">depressurized</strong>';
+          net = 'r|disconnected|r';
+          pressure = 'r|depressurized|r';
           health = damaged;
           break;
         default:
@@ -137,28 +137,28 @@ export default class DockCommand extends Command {
       }
       switch(id) {
         case 'DS001':
-          unit = ['* <strong>none</strong>'];
+          unit = ['* s|none|s'];
           break;
         case 'DS002':
           unit = [
-            '* Name: <strong>Rescue Capsule</strong>',
-            '* Fuel: <strong>94%</strong>'
+            '* Name: s|Rescue Capsule|s',
+            '* Fuel: s|94%|s'
           ];
           break;
         case 'DS003':
           unit = [
-            '* Name: <strong>OSS Sierra-23</strong>',
-            '* Fuel: <strong>8%</strong>'
+            '* Name: s|OSS Sierra-23|s',
+            '* Fuel: s|8%|s'
           ];
           break;
       }
       if(id == 'DS002' || id == 'DS003') {
         unit = unit.concat([
-          `* Cargo: <strong>none</strong>`,
+          `* Cargo: s|none|s`,
           `* Engine: ${health}`,
           `* Shields: ${health}`,
           `* Steering System: ${health}`,
-          `* Radar: <strong>ok</strong>`,
+          `* Radar: s|ok|s`,
           `* Communication Systems: ${health}`
         ]);
       }
@@ -167,10 +167,10 @@ export default class DockCommand extends Command {
         `Health check of ${id}...`,
         ``,
         `Dock station:`,
-        `* Docking gates: <strong>${gates}</strong>`,
-        `* Docking port: <strong>${port}</strong>`,
-        `* Network: <strong>${port}</strong>`,
-        `* Air pressure: <strong>${pressure}</strong>`,
+        `* Docking gates: s|${gates}|s`,
+        `* Docking port: s|${port}|s`,
+        `* Network: s|${net}|s`,
+        `* Air pressure: s|${pressure}|s`,
         ``,
         `Docked Unit:`
       ];
@@ -185,16 +185,16 @@ export default class DockCommand extends Command {
     this.println("Use this command to operate docking stations and rescue capsules");
     this.println("Available commands are:");
     this.println('');
-    this.println("<strong>dock list</strong>");
+    this.println("s|dock list|s");
     this.println("Lists status of all docking stations");
     this.println('');
-    this.println("<strong>dock status [stationId]</strong>");
+    this.println("s|dock status [stationId]|s");
     this.println("Health report of the station and docked space ship");
     this.println('');
-    this.println("<strong>dock launch [stationId] [pass]</strong>");
+    this.println("s|dock launch [stationId] [pass]|s");
     this.println("Launch space ship docked at [stationId].");
     this.println("Password ([pass] argument) is required to run this operation.");
-    this.println("For example: <strong>dock launch DS001 MySecretPassword</strong>");
+    this.println("For example: s|dock launch DS001 MySecretPassword|s");
     this.playDoneSound(true);
   }
 

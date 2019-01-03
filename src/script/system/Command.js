@@ -79,7 +79,7 @@ export default class Command {
     if(name && this[method]) {
       this[method](command);
     } else {
-      this.println(`Command not found! Run <strong>${command[0]} help</strong> for more info.`);
+      this.println(`Command not found! Run s|${command[0]} help|sfor more info.`);
       this.playDoneSound(false);
     }
   }

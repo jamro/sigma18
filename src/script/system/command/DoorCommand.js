@@ -83,11 +83,11 @@ export default class DoorCommand extends Command {
     this.println("Use this command to open and close doors of the space station");
     this.println("Available commands are:");
     this.println('');
-    this.println("<strong>door open [id]</strong>");
-    this.println("Open the door. For example <strong>door open D-1234</strong>");
+    this.println("s|door open [id]|s");
+    this.println("Open the door. For example s|door open D-1234|s");
     this.println('');
-    this.println("<strong>door close [id]</strong>");
-    this.println("Close the door. For example <strong>door close D-1234</strong>");
+    this.println("s|door close [id]|s");
+    this.println("Close the door. For example s|door close D-1234|s");
     this.playDoneSound(true);
   }
 }

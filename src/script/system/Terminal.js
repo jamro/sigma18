@@ -9,7 +9,7 @@ export default class Terminal {
   }
 
   commandReceived(command) {
-    this._view.print(`<div class="terminal-command"><strong>&gt;</strong> ${command}</div>`);
+    this._view.print(`<div class="terminal-command">s|&gt;|s ${command}</div>`);
     //clean command up
     command = command.split(" ");
     command = command.map((cmd) => cmd.trim());
@@ -20,7 +20,7 @@ export default class Terminal {
         return;
       }
     }
-    this._view.println(`Error: Command <strong>${command[0]}</strong> not found!`);
+    this._view.println(`Error: Command s|${command[0]}|s not found!`);
     this._view.playErr();
   }
 

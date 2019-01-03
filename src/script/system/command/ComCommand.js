@@ -88,18 +88,18 @@ export default class ComCommand extends Command {
             setTimeout(() => {
               this.playDoneSound(true);
               this.println('');
-              this.println(`Transferring disk data: <strong>${appNames.join(', ')}</strong> app.`);
+              this.println(`Transferring disk data: s|${appNames.join(', ')}|s app.`);
               this.showProgress(() => {
                 this.println('App downloaded');
                 this.println('');
 
                 setTimeout(() => {
-                  this.println(`Installing <strong>${appNames.join(', ')}</strong> app.`);
+                  this.println(`Installing s|${appNames.join(', ')}|s app.`);
                   this.showProgress(() => {
                     disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
                     this.println('Done.');
                     this.println('');
-                    appNames.forEach((a) => this.println(`Run <strong>${a}  help</strong> for more info.`));
+                    appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
                     this.playDoneSound(true);
                     this.enableInput();
                   });
@@ -119,17 +119,17 @@ export default class ComCommand extends Command {
     this.println("Use this command to communicate with squad of marines in the field");
     this.println("Available commands are:");
     this.println('');
-    this.println("<strong>com status</strong>");
+    this.println("s|com status|s");
     this.println("Ask marines to send status report from the field.");
     this.println('');
-    this.println("<strong>com go [direction]</strong>");
+    this.println("s|com go [direction]|s");
     this.println("Ask marines to explore next location in defined direction.");
     this.println("Possible directions are:");
-    this.println("* <strong>n</strong> - North");
-    this.println("* <strong>e</strong> - East");
-    this.println("* <strong>s</strong> - South");
-    this.println("* <strong>w</strong> - West");
-    this.println("For example: <strong>com go n</strong>");
+    this.println("* s|n|s - North");
+    this.println("* s|e|s - East");
+    this.println("* s|s|s - South");
+    this.println("* s|w|s - West");
+    this.println("For example: s|com go n|s");
     this.playDoneSound(true);
   }
 }

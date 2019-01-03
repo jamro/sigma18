@@ -18,10 +18,10 @@ export default class SfxCommand extends Command {
   execHelp() {
     this.println("Available commands are:");
     this.println('');
-    this.println("<strong>sfx on</strong>");
+    this.println("s|sfx on|s");
     this.println("Turn the sound on");
     this.println('');
-    this.println("<strong>sfx off</strong>");
+    this.println("s|sfx off|s");
     this.println("Turn the sound off");
     this.playDoneSound(true);
   }
