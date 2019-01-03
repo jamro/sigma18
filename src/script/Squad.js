@@ -4,6 +4,9 @@ export default class Squad {
     this._map = map;
     this._terminalView = terminalView;
     this._inventory = [];
+    this._duringBattle = false;
+    this._battleStartTime = 0;
+    this._battleLoop = null;
     this._directionMap = {
       n: 'north',
       s: 'south',
@@ -12,22 +15,91 @@ export default class Squad {
     };
   }
 
-  validateMove(direction) {
-    let pos = this._map.getSquadPosition();
-    let room = this._map.getRoom(pos.x, pos.y);
-    let doors = room.getDoors();
-    if(!doors[direction]) {
-      return 'No doors on that side.';
+  stopBattle() {
+    if(this._battleLoop) {
+      clearInterval(this._battleLoop);
     }
-    if(doors[direction].isClosed()) {
-      return 'The door is locked.';
-    }
-    return '';
+    setTimeout(()=> {
+      this._duringBattle = false;
+      this._terminalView.playChat();
+      let pos = this._map.getSquadPosition();
+      this._terminalView.printChat(
+        `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`,
+        'commander'
+      );
+    }, 200);
+  }
+
+  startBattle(room, door, done) {
+    this._duringBattle = true;
+    this._battleStartTime = (new Date()).getTime();
+    let enemy = room.getEnemy();
+    let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
+    this._terminalView.playChat();
+    this._terminalView.printChat(
+      `Enemy units encountered (${enemies}).<br/> We need going back to previous position!`,
+      'commander'
+    );
+    setTimeout(() => {
+      this._terminalView.printChat(
+        `We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...`,
+        'commander'
+      );
+      return done();
+    }, 200);
+    this._battleLoop = setInterval(() => {
+      let dt = (new Date()).getTime() - this._battleStartTime;
+      let items = [];
+      if(dt < 7000) {
+        items = [
+          'We are under fire!',
+          'SIG-18s are approaching!',
+          'They are attacking!'
+        ];
+      } else {
+        let doorId = door.getId();
+        items = [
+          `We cannot push them back s|close the door (${doorId})|s to secure our position!`,
+          `They are too strong, s|close the door (${doorId})|s to isolate them`,
+          `Need help! s|Close the door (${doorId})|s to stop them!`,
+          `s|Close door (${doorId})|s! It will give us some time!`,
+          `Heavy fire! s|Close that door (${doorId})|s! We cannot push them back!`
+        ];
+      }
+      this._terminalView.playChat();
+      this._terminalView.printChat(
+        items[Math.floor(Math.random()*items.length)],
+        'commander'
+      );
+
+    }, 5000);
+    door.onChange(() => {
+      if(door.isClosed()) {
+        this.stopBattle();
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
   requestMove(direction, done) {
     setTimeout(() => {
-      let invalidReason = this.validateMove(direction);
+      if(this._duringBattle) {
+        this._terminalView.printChat(`r|We are under fire!|r Cannot move anywhere!`, 'commander');
+        return done();
+      }
+      let invalidReason = '';
+
+      let pos = this._map.getSquadPosition();
+      let room = this._map.getRoom(pos.x, pos.y);
+      let door = room.getDoors()[direction];
+      if(!door) {
+        invalidReason = 'No doors on that side.';
+      } else if(door.isClosed()) {
+        invalidReason = 'The door is locked.';
+      }
+
       if(invalidReason) {
         this._terminalView.printChat(`Cannot move to the ${this._directionMap[direction]}! ${invalidReason}`, 'commander');
         return done();
@@ -49,13 +121,20 @@ export default class Squad {
           dx = 1;
           break;
       }
-      let pos = this._map.getSquadPosition();
+      pos = this._map.getSquadPosition();
+      let newX = pos.x + dx;
+      let newY = pos.y + dy;
       setTimeout(() => {
-        let pos = this._map.getSquadPosition();
-        let newX = pos.x + dx;
-        let newY = pos.y + dy;
-        this._map.setSquadPosition(newX, newY);
         this._map.getRoom(newX, newY).visit();
+
+        let battleRoom = this._map.getRoom(newX, newY);
+        if(battleRoom.getEnemy() > 0) {
+          this.startBattle(battleRoom, door, done);
+          return;
+        }
+
+        this._map.setSquadPosition(newX, newY);
+
         let items = this._map.getRoom(newX, newY).flushItems();
         this._inventory = this._inventory.concat(items.filter((i) => i.getType() != 'disk'));
 
@@ -76,7 +155,8 @@ export default class Squad {
   requestStatus(done) {
     setTimeout(() => {
       let pos = this.getPosition();
-      let msg = `Our current position is ${pos.toString()}. ${this._map.getRoom(pos.x, pos.y).getDescription()}<br/>\n<br/>\nPossible ways out:<br/>`;
+      let fire = this._duringBattle ? 'r|We are under attack!|r ' : '';
+      let msg = `Our current position is ${pos.toString()}. ${fire}${this._map.getRoom(pos.x, pos.y).getDescription()}<br/>\n<br/>\nPossible ways out:<br/>`;
       let doors = this._map.getRoom(pos.x, pos.y).getDoors();
 
       for(let direction in doors) {

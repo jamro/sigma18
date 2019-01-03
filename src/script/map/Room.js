@@ -9,9 +9,18 @@ export default class Room {
     this._itemList = [];
     this._description = "";
     this._type = "standard";
+    this._enemy = 0;
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
+  }
+
+  setEnemy(v) {
+    this._enemy = v;
+  }
+
+  getEnemy() {
+    return this._enemy;
   }
 
   setType(t) {

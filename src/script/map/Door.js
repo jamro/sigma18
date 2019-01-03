@@ -37,12 +37,12 @@ class Door {
 
   close() {
     this._isClosed = true;
-    this._onChangeList.forEach((c) => c());
+    this._onChangeList = this._onChangeList.filter((c) => !c());
   }
 
   open() {
     this._isClosed = false;
-    this._onChangeList.forEach((c) => c());
+    this._onChangeList = this._onChangeList.filter((c) => !c());
   }
 
   isClosed() {
@@ -53,7 +53,7 @@ class Door {
     return this._id;
   }
 
-  onChange(callback) {
+  onChange(callback) { // return true to remove callback after execution
     this._onChangeList.push(callback);
   }
 

@@ -45,6 +45,7 @@ export default class ComCommand extends Command {
     this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
 
     this._squad.requestMove(direction, (items) => {
+      items = items || [];
       let disks = items.filter((i) => i.getType() == 'disk');
       let appNames = disks.map((d) => d.getCommand().getName());
       if(disks.length > 0) {

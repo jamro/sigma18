@@ -14,6 +14,7 @@ export default class MapRenderer {
     let ctx = this._screenView.getContext();
     let w = this._screenView.getWidth();
     let h = this._screenView.getHeight();
+    let red = this._screenView.getDangerColor();
     let color = this._screenView.getPrimaryColor();
     let bg = this._screenView.getBackgroundColor();
     let pos;
@@ -25,25 +26,39 @@ export default class MapRenderer {
     let startY = h/2 - (segmentSize*12)/2;
 
     // render rooms
-    ctx.strokeStyle = color;
-
     for(let x=0; x <10; x++) {
       for(let y=0; y <10; y++) {
-        if(this._map.hasRoom(x, y) && this._map.getRoom(x, y).isVisited()) {
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          ctx.rect(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize, segmentSize, segmentSize);
-          ctx.stroke();
-          if(this._map.getRoom(x, y).getType() == 'capsule') {
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
-            ctx.lineTo(startX + 3*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
-            ctx.moveTo(startX + 3*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
-            ctx.lineTo(startX + 2*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
-            ctx.stroke();
-          }
+        if(!this._map.hasRoom(x, y) || !this._map.getRoom(x, y).isVisited()) {
+          continue;
         }
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.rect(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize, segmentSize, segmentSize);
+        ctx.stroke();
+        if(this._map.getRoom(x, y).getType() == 'capsule') {
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.strokeStyle = color;
+          ctx.moveTo(startX + 2*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
+          ctx.lineTo(startX + 3*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
+          ctx.moveTo(startX + 3*segmentSize + x*segmentSize, startY + 2*segmentSize + y*segmentSize);
+          ctx.lineTo(startX + 2*segmentSize + x*segmentSize, startY + 3*segmentSize + y*segmentSize);
+          ctx.stroke();
+        }
+        if(this._map.getRoom(x, y).getEnemy() > 0) {
+          ctx.strokeStyle = null;
+          ctx.fillStyle = red;
+          ctx.beginPath();
+          ctx.rect(
+            startX + 2.375*segmentSize + x*segmentSize,
+            startY + 2.375*segmentSize + y*segmentSize,
+            segmentSize/4,
+            segmentSize/4
+          );
+          ctx.fill();
+        }
+
       }
     }
 

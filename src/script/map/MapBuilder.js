@@ -29,6 +29,7 @@ export default class MapBuilder {
     // @TODO: update id of dock station
     this._describe(4, 3, 'We are at dock station DS002. It is a rescue capsule! We could use it to escape from here, but we need your help to launch it.');
 
+    this._map.getRoom(3, 1).setEnemy(2);
     this._map.getRoom(4, 3).setType('capsule');
   }
 
@@ -39,6 +40,7 @@ export default class MapBuilder {
     this._map.addDoor(3, 3, 3, 2);
     this._map.addDoor(3, 2, 2, 2).close();
     this._map.addDoor(3, 2, 4, 2);
+    this._map.addDoor(3, 2, 3, 1); // to enemies
   }
 
   _placeItems() {

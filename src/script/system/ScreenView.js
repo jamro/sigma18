@@ -29,6 +29,10 @@ export default class ScreenView extends View {
     return '#112211';
   }
 
+  getDangerColor() {
+    return '#ff0000';
+  }
+
   getContext() {
     return this._context;
   }
