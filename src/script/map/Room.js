@@ -4,12 +4,13 @@ export default class Room {
 
   constructor(x, y) {
     this._position = new Position(x, y);
-    this._isVisited = false;
+    this._isVisited = true;
     this._onChangeList = [];
     this._itemList = [];
     this._description = "";
-    this._type = "standard";
+    this._type = "room";
     this._enemy = 0;
+    this._doorCount = 0;
     this._doorMap = {
       n: null, e: null, s: null, w: null
     };
@@ -28,11 +29,15 @@ export default class Room {
   }
 
   getType() {
+    if(this._doorCount == 0) {
+      return 'empty';
+    }
     return this._type;
   }
 
   addDoor(door, direction) {
     this._doorMap[direction] = door;
+    this._doorCount++;
   }
 
   getDoors() {

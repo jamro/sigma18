@@ -22,9 +22,9 @@ export default class DockCommand extends Command {
       // @TODO update location of dock stations
       this.println("<pre>Station ID | Location | Status  | Docked Unit\n" +
                         "-----------|----------|---------|-----------------\n" +
-                        "DS001      | [C:4]    | Empty   | - \n" +
-                        "DS002      | [D:5]    | Ready   | Rescue Capsule\n" +
-                        "DS003      | [E:4]    | Damaged | OSS Sierra-23</pre>");
+                        "DS001      | [C:9]    | Empty   | - \n" +
+                        "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
+                        "DS003      | [E:9]    | Damaged | OSS Sierra-23</pre>");
       this.enableInput();
       this.playDoneSound(true);
     });
@@ -57,7 +57,7 @@ export default class DockCommand extends Command {
       }
       let pos = this._map.getSquadPosition();
       // @TODO: update capsule position
-      if(pos.x != 4 || pos.y != 3) {
+      if(pos.x != 3 || pos.y != 9) {
         this.println(`Error: Cannot launch empty capsule without passengers.`);
         this.enableInput();
         this.playDoneSound(false);
@@ -80,7 +80,7 @@ export default class DockCommand extends Command {
           ], () => {
             setTimeout(()=> {
               this.typeText([
-                `Unit launched`,
+                `Done... Unit launched successfully`,
                 `Closing docking gates`,
                 `Launching sequence completed`
               ], () => {
@@ -98,7 +98,7 @@ export default class DockCommand extends Command {
                   }, 1000);
                 }, 1000);
               });
-            });
+            }, 2000);
           });
         });
       });

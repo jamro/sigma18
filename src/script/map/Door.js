@@ -38,11 +38,13 @@ class Door {
   close() {
     this._isClosed = true;
     this._onChangeList = this._onChangeList.filter((c) => !c());
+    return this;
   }
 
   open() {
     this._isClosed = false;
     this._onChangeList = this._onChangeList.filter((c) => !c());
+    return this;
   }
 
   isClosed() {
