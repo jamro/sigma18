@@ -27,33 +27,13 @@ export default class ComCommand extends Command {
     this.disableInput();
     this.playChatSound();
     this.printChat(`Commander, what's going on?`, 'hacker');
-    setTimeout(() => {
-      let pos = this._squad.getPosition();
-      let msg = `Our current position is ${pos.toString()}. ${this._map.getRoom(pos.x, pos.y).getDescription()}<br/>\n<br/>\nPossible ways out:<br/>`;
-      let doors = this._map.getRoom(pos.x, pos.y).getDoors();
-
-      for(let direction in doors) {
-        if(doors[direction]) {
-          let state = doors[direction].isClosed() ? 'Locked' : 'Opened';
-          msg += ` * ${state} door on the ${this._directionMap[direction]} (ID: ${doors[direction].getId()})<br/>`;
-        }
-      }
-      msg += "<br/>\nInventory:<br/>\n";
-      if(this._squad.getInventory().length == 0) {
-        msg += ' * nothing<br/>\n';
-      }
-      this._squad.getInventory().forEach((i) => {
-        msg += ` * ${i}<br/>\n`;
-      });
-      this.printChat(msg, 'commander');
+    this._squad.requestStatus(() => {
       this.enableInput();
-    }, 500);
+    });
   }
 
   execGo(command) {
     let direction = command.length >= 3 ? command[2] : '';
-    let dx = 0;
-    let dy = 0;
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
       this.playDoneSound(false);
@@ -63,56 +43,36 @@ export default class ComCommand extends Command {
     this.disableInput();
     this.playChatSound();
     this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
-    setTimeout(() => {
-      let invalidReason = this._squad.validateMove(direction);
-      if(invalidReason) {
-        this.printChat(`Cannot move to the ${this._directionMap[direction]}! ${invalidReason}`, 'commander');
-        this.enableInput();
-      } else {
-        this.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
 
-        this._squad.requestMove(direction, (items) => {
-          let pos = this._squad.getPosition();
-          this.playChatSound();
-          let msg = `Location ${pos.toString()} secured. ${this._map.getRoom(pos.x, pos.y).getDescription()}`;
+    this._squad.requestMove(direction, (items) => {
+      let disks = items.filter((i) => i.getType() == 'disk');
+      let appNames = disks.map((d) => d.getCommand().getName());
+      if(disks.length > 0) {
+        setTimeout(() => {
+          this.playDoneSound(true);
+          this.println('');
+          this.println(`Transferring disk data: s|${appNames.join(', ')}|s app.`);
+          this.showProgress(() => {
+            this.println('App downloaded');
+            this.println('');
 
-          if(items.length > 0) {
-            msg += "<br/><br/>We have found:<br/>";
-            items.forEach((i) => msg += ` * ${i}<br/>`);
-          }
-          this.printChat(msg, 'commander');
-
-          let disks = items.filter((i) => i.getType() == 'disk');
-          let appNames = disks.map((d) => d.getCommand().getName());
-          if(disks.length > 0) {
             setTimeout(() => {
-              this.playDoneSound(true);
-              this.println('');
-              this.println(`Transferring disk data: s|${appNames.join(', ')}|s app.`);
+              this.println(`Installing s|${appNames.join(', ')}|s app.`);
               this.showProgress(() => {
-                this.println('App downloaded');
+                disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
+                this.println('Done.');
                 this.println('');
-
-                setTimeout(() => {
-                  this.println(`Installing s|${appNames.join(', ')}|s app.`);
-                  this.showProgress(() => {
-                    disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
-                    this.println('Done.');
-                    this.println('');
-                    appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
-                    this.playDoneSound(true);
-                    this.enableInput();
-                  });
-                }, 500);
-
+                appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
+                this.playDoneSound(true);
+                this.enableInput();
               });
-            }, 1000);
-          } else {
-            this.enableInput();
-          }
-        });
+            }, 500);
+          });
+        }, 1000);
+      } else {
+        this.enableInput();
       }
-    }, 500);
+    });
   }
 
   execHelp() {

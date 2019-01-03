@@ -21,7 +21,7 @@ document.querySelector('#screen-b').appendChild(screenView.getDOM());
 terminalView.enableAutoFocus();
 screenView.rescale();
 
-let squad = new Squad(map);
+let squad = new Squad(map, terminalView);
 terminal.installCommand(new HelpCommand());
 terminal.installCommand(new SfxCommand(terminal));
 terminal.installCommand(new ComCommand(squad, map, terminal));

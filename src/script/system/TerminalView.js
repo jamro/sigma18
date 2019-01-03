@@ -117,6 +117,12 @@ export default class TerminalView extends View {
     return document.getElementById(id);
   }
 
+  printChat(msg, from) {
+    from = from ? from : 'hacker';
+    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
+    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
+  }
+
   onSubmit(callback) {
     this._onSubmitCallbackList.push(callback);
   }
@@ -148,7 +154,7 @@ export default class TerminalView extends View {
     }
   }
 
-  playCom() {
+  playChat() {
     if(this._mute) return;
     try {
       this._comSound.playbackRate = 0.9 + 1.1*Math.random();

@@ -93,9 +93,7 @@ export default class Command {
   }
 
   printChat(msg, from) {
-    from = from ? from : 'hacker';
-    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
-    this.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
+    this._terminal._view.printChat(msg, from);
   }
 
   disableInput() {
@@ -115,7 +113,7 @@ export default class Command {
   }
 
   playChatSound() {
-    this._terminal._view.playCom();
+    this._terminal._view.playChat();
   }
 
   startBeepLoop() {
