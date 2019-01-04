@@ -189,10 +189,10 @@ export default class DockCommand extends Command {
     this.println("Lists status of all docking stations");
     this.println('');
     this.println("s|dock status [stationId]|s");
-    this.println("Health report of the station and docked space ship");
+    this.println("Health report of the station and docked spaceship");
     this.println('');
     this.println("s|dock launch [stationId] [pass]|s");
-    this.println("Launch space ship docked at [stationId].");
+    this.println("Launch spaceship docked at [stationId].");
     this.println("Password ([pass] argument) is required to run this operation.");
     this.println("For example: s|dock launch DS001 MySecretPassword|s");
     this.playDoneSound(true);
