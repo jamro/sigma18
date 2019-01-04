@@ -53,25 +53,23 @@ export default class DoorCommand extends Command {
           this.enableInput();
           return;
         }
-        this.typeText([
+        this._terminal.sequence(
           "Door found",
           "",
-          "Authorization is required."
-        ], () => {
-          this.passCrack(60, () => {
-            this.println(doClose ? `Closing...` : `Opening...`);
-            setTimeout(() => {
-              if(doClose) {
-                door.close();
-              } else {
-                door.open();
-              }
-              this.println(`Done. Door ${door.getId()} ${doClose ? 'closed' : 'opened'}.`);
-              this.playDoneSound(true);
-              this.enableInput();
-            }, 500);
-          });
-        });
+          "Authorization is required.",
+          {c: 'pass', d: 60},
+          doClose ? `Closing...` : `Opening...`,
+          {c: () => {
+            if(doClose) {
+              door.close();
+            } else {
+              door.open();
+            }
+          }, t: 500},
+          `Done. Door ${door.getId()} ${doClose ? 'closed' : 'opened'}.`,
+          {c: 'sound', d: 'ok', t: 0},
+          {c: 'on'}
+        );
       } else {
         this.playDoneSound(false);
         this.enableInput();

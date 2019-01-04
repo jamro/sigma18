@@ -64,45 +64,28 @@ export default class DockCommand extends Command {
         return;
       }
 
-      this.typeText([
+      this._terminal.sequence(
         `Authorization... ok`,
         `Starting launching sequence at ${id}`,
-        `Health check:`
-      ], () => {
-        this.showProgress(() => {
-          this.typeText([
-            `All systems up and running`,
-            `Opening docking gates...`,
-            `Staring the engine...`,
-            `Enabling shields...`,
-            `Disconnecting from docking port...`,
-            ``
-          ], () => {
-            setTimeout(()=> {
-              this.typeText([
-                `Done... Unit launched successfully`,
-                `Closing docking gates`,
-                `Launching sequence completed`
-              ], () => {
-                this.playDoneSound(true);
-                setTimeout(() => {
-                  this.playChatSound();
-                  this.printChat('s|GOOD JOB SOLIDER!|s<br/>\n We are saved! Going back home!', 'commander');
-                  setTimeout(() => {
-                    this.playChatSound();
-                    this.printChat('Roger that! Good luck commander!', 'hacker');
-                    setTimeout(() => {
-                      this.playDoneSound(true);
-                      this.println('<div class="finito">THE END</div>');
-                    }, 3000);
-                  }, 1000);
-                }, 1000);
-              });
-            }, 2000);
-          });
-        });
-      });
-
+        `Health check:`,
+        {c: 'load'},
+        `All systems up and running`,
+        `Opening docking gates...`,
+        `Staring the engine...`,
+        `Enabling shields...`,
+        `Disconnecting from docking port...`,
+        {c: 'ln', d: ``, t: 2000},
+        `Done... Unit launched successfully`,
+        `Closing docking gates`,
+        `Launching sequence completed`,
+        {c: 'sound', d: 'ok', t: 0},
+        {c: 'chat', d: 's|GOOD JOB SOLIDER!|s<br/>\n We are saved! Going back home!', f: 'commander', t: 1000},
+        {c: 'sound', d: 'com', t: 0},
+        {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker', t: 1000},
+        {c: 'sound', d: 'com', t: 0},
+        {c: 'ln', d: '<div class="finito">THE END</div>', t: 3000},
+        {c: 'sound', d: 'ok', t: 0}
+      );
     });
   }
 
@@ -167,17 +150,18 @@ export default class DockCommand extends Command {
         `Health check of ${id}...`,
         ``,
         `Dock station:`,
-        `* Docking gates: s|${gates}|s`,
-        `* Docking port: s|${port}|s`,
-        `* Network: s|${net}|s`,
-        `* Air pressure: s|${pressure}|s`,
+        `* Docking gates: ${gates}`,
+        `* Docking port: ${port}`,
+        `* Network: ${net}`,
+        `* Air pressure: ${pressure}`,
         ``,
         `Docked Unit:`
       ];
-      this.typeText(msg.concat(unit), () => {
-        this.enableInput();
-        this.playDoneSound(true);
-      });
+      msg = msg.concat(unit, [
+        {c: 'sound', d: 'ok', t: 0},
+        {c: 'on'}
+      ]);
+      this._terminal.sequence(msg);
     });
   }
 

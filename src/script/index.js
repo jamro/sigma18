@@ -30,3 +30,20 @@ terminal.getView().println("\n\n");
 terminal.getView().println("Type s|help|s and press ENTER to see available commands.");
 
 sideSreen.showMap(map);
+
+/*
+terminal.sequence([
+  () => { terminal.println("A")},
+  () => { terminal.println("B")},
+  {c: 'pass', d: 100, t: 300},
+  () => { terminal.println("C")},
+  () => { terminal.println("D")},
+  {c: 'load', t: 300},
+  () => { terminal.println("E")},
+  {c: () => { terminal.println("LONG 1")}},
+  "JULIA",
+  {c: 'ln', d: "Hello", t: 400},
+  {c: 'sound', d: "com", t: 1},
+  {c: 'chat', d: "Hello", f: 'jmr', t: 100},
+]);
+*/

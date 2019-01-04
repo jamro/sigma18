@@ -44,32 +44,35 @@ export default class ComCommand extends Command {
     this.playChatSound();
     this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
 
+    this._terminal.sequence(
+
+    );
     this._squad.requestMove(direction, (items) => {
       items = items || [];
       let disks = items.filter((i) => i.getType() == 'disk');
       let appNames = disks.map((d) => d.getCommand().getName());
       if(disks.length > 0) {
-        setTimeout(() => {
-          this.playDoneSound(true);
-          this.println('');
-          this.println(`Transferring disk data: s|${appNames.join(', ')}|s app.`);
-          this.showProgress(() => {
-            this.println('App downloaded');
-            this.println('');
 
-            setTimeout(() => {
-              this.println(`Installing s|${appNames.join(', ')}|s app.`);
-              this.showProgress(() => {
-                disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
-                this.println('Done.');
-                this.println('');
-                appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
-                this.playDoneSound(true);
-                this.enableInput();
-              });
-            }, 500);
-          });
-        }, 1000);
+        this._terminal.sequence(
+          {c: 'sound', d: 'ok', t: 1000},
+          "",
+          `Transferring disk data: s|${appNames.join(', ')}|s app.`,
+          {c: 'load'},
+          'App downloaded',
+          '',
+          {c: 'ln', d: `Installing s|${appNames.join(', ')}|s app.`, t: 500},
+          {c: 'load'},
+          {c: () => {
+            disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
+          }},
+          'Done.',
+          '',
+          {c: () => {
+            appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
+          }},
+          {c: 'sound', d: 'ok'},
+          {c: 'on'}
+        );
       } else {
         this.enableInput();
       }

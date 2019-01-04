@@ -17,18 +17,7 @@ export default class Command {
   }
 
   passCrack(time, done) {
-    this.startBeepLoop();
-    let el = this._terminal.getView().printel();
-    let loop = setInterval(() => {
-      el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
-      time--;
-      if(time <= 0) {
-        clearInterval(loop);
-        el.innerHTML = 'Password: ********';
-        this.stopBeepLoop();
-        done();
-      }
-    }, 30);
+    this._terminal.passCrack(time, done);
   }
 
   connect(serviceName, serviceIp, msg, done) {
@@ -40,37 +29,13 @@ export default class Command {
       ``,
     ];
     log = log.concat(msg);
-    this.typeText(log, done);
+    this._terminal.sequence(log.concat(
+      {c: done}
+    ));
   }
 
   showProgress(done) {
-    this.startBeepLoop();
-    let el = this._terminal.getView().printel();
-    let p = 0;
-    let loop = setInterval(() => {
-      let fillCount = Math.round((p/100)*40);
-      let fill = Array(fillCount).join('=');
-      let empty = Array(40 - fillCount).join('&nbsp;');
-
-      el.innerHTML = `[${fill}${empty}]  ` + p + '%';
-      p+=2;
-      if(p >= 100) {
-        clearInterval(loop);
-        el.innerHTML = '[======================================] 100%';
-        this.stopBeepLoop();
-        done();
-      }
-    }, 30);
-  }
-
-  typeText(cmd, done) {
-    let loop = setInterval(() => {
-      this.println(cmd.shift());
-      if(cmd.length == 0) {
-        clearInterval(loop);
-        done();
-      }
-    }, 100);
+    this._terminal.showProgress(done);
   }
 
   exec(command) {
