@@ -21,7 +21,7 @@ sideSreen.getView().attachToDOM(document.querySelector('#screen-b'));
 
 let squad = new Squad(map, terminal, sideSreen);
 terminal.installCommand(new HelpCommand());
-terminal.installCommand(new SfxCommand(terminal));
+terminal.installCommand(new SfxCommand(terminal, sideSreen));
 terminal.installCommand(new ComCommand(squad, map, terminal));
 
 terminal.getView().println("Welcome at Space Station Sigma-18");

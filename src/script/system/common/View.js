@@ -2,6 +2,7 @@ export default class View {
 
   constructor(document) {
     this._document = document;
+    this._mute = false;
   }
 
   createElement(name, options) {
@@ -27,5 +28,9 @@ export default class View {
 
   attachToDOM(parent) {
     parent.appendChild(this.getDOM());
+  }
+
+  enableSound(state) {
+    this._mute = !state;
   }
 }

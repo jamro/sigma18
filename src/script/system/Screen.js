@@ -29,4 +29,8 @@ export default class Screen {
     this._renderer.render();
   }
 
+  enableSound(state) {
+    this._view.enableSound(state);
+  }
+
 }

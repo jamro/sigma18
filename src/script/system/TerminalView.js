@@ -5,8 +5,7 @@ export default class TerminalView extends View {
 
   constructor(document) {
     super(document);
-    this._mute = false;
-    this._sounds = [];
+    this._sounds = {};
     try {
       this._sounds.ok = new Audio('audio/ok.mp3');
       this._sounds.err = new Audio('audio/err.mp3');
@@ -156,7 +155,8 @@ export default class TerminalView extends View {
   }
 
   enableSound(state) {
-    this._mute = !state;
+    super.enableSound(state);
+    this.stopSound();
   }
 
   attachToDOM(parent) {

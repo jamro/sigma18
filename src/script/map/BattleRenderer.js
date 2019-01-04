@@ -60,8 +60,9 @@ export default class BattleRenderer extends ScreenRenderer {
   }
 
   detach() {
-    super.detach();
     clearInterval(this._loop);
+    this.getScreenView().stopGun();
+    super.detach();
   }
 
 
@@ -148,10 +149,14 @@ export default class BattleRenderer extends ScreenRenderer {
     if(this._shootCounter == 0 && this._backupTime >= 0) {
       this._shootCounter = (Math.random() > 0.5) ? 30 + 30*Math.random() : -15 - 15*Math.random();
       this._shootCounter = Math.round(this._shootCounter);
+      this.getScreenView().playGun();
     }
 
     let droid, marine;
-    if(this._shootCounter > 8) {
+    let threshold = 8;
+    if(this._shootCounter == threshold) {
+      this.getScreenView().stopGun();
+    } else if(this._shootCounter > threshold) {
       droid = this._droids[Math.floor(this._droids.length*Math.random())];
       let x = 0.3+0.4*Math.random();
       let y = 1-wallSize;
@@ -168,7 +173,9 @@ export default class BattleRenderer extends ScreenRenderer {
       this._marines[3].x = 0.24;
       this._marines[4].y = 1.09;
 
-    } else if (this._shootCounter < -8) {
+    } else if (this._shootCounter == -threshold) {
+      this.getScreenView().stopGun();
+    } else if (this._shootCounter < -threshold) {
       droid = this._droids[Math.floor(this._droids.length*Math.random())];
       marine = this._marines[Math.floor(Math.random()*2)];
       let x1 = marine.x;
