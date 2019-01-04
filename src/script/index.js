@@ -8,7 +8,6 @@ import SfxCommand from './system/command/SfxCommand.js';
 
 import Squad from './Squad.js';
 import MapBuilder from './map/MapBuilder.js';
-import MapRenderer from './map/MapRenderer.js';
 
 let builder = new MapBuilder();
 builder.build();
@@ -20,7 +19,7 @@ let terminal = new Terminal(new TerminalView(document));
 terminal.getView().attachToDOM(document.querySelector('#screen-a'));
 sideSreen.getView().attachToDOM(document.querySelector('#screen-b'));
 
-let squad = new Squad(map, terminal);
+let squad = new Squad(map, terminal, sideSreen);
 terminal.installCommand(new HelpCommand());
 terminal.installCommand(new SfxCommand(terminal));
 terminal.installCommand(new ComCommand(squad, map, terminal));
@@ -30,4 +29,4 @@ terminal.getView().println("Version of terminal: 1.0.0");
 terminal.getView().println("\n\n");
 terminal.getView().println("Type s|help|s and press ENTER to see available commands.");
 
-sideSreen.setRenderer(new MapRenderer(map));
+sideSreen.showMap(map);

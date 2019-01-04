@@ -1,7 +1,8 @@
 export default class Squad {
 
-  constructor(map, terminal) {
+  constructor(map, terminal, screen) {
     this._map = map;
+    this._screen = screen;
     this._terminal = terminal;
     this._inventory = [];
     this._duringBattle = false;
@@ -27,6 +28,7 @@ export default class Squad {
         `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`,
         'commander'
       );
+      this._screen.showMap(this._map);
     }, 200);
   }
 
@@ -40,13 +42,14 @@ export default class Squad {
       `Enemy units encountered (${enemies}).<br/> We need going back to previous position!`,
       'commander'
     );
+    this._screen.showBattle(room);
     setTimeout(() => {
       this._terminal.printChat(
         `We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...`,
         'commander'
       );
       return done();
-    }, 200);
+    }, 2000);
     this._battleLoop = setInterval(() => {
       let dt = (new Date()).getTime() - this._battleStartTime;
       let items = [];
