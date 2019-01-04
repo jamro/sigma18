@@ -21,7 +21,7 @@ export default class Terminal {
       }
     }
     this._view.println(`Error: Command s|${command[0]}|s not found!`);
-    this._view.playErr();
+    this._view.playSound('err');
   }
 
   installCommand(commandProcessor) {
@@ -42,5 +42,46 @@ export default class Terminal {
 
   enableSound(state) {
     this._view.enableSound(state);
+  }
+
+  getView() {
+    return this._view;
+  }
+
+
+  playOk() {
+    this._view.playSound('ok');
+  }
+
+  playErr() {
+    this._view.playSound('err');
+  }
+
+  playChat() {
+    this._view.playSound('com');
+  }
+
+  startBeepLoop() {
+    this._view.playSound('beep');
+  }
+
+  stopBeepLoop() {
+    this._view.stopSound('beep');
+  }
+
+  println(txt) {
+    this._view.print(txt + "<br/>\n");
+  }
+
+  printel() {
+    let id = "ref-terminal-line-" + this._refId++;
+    this._view.print(`<span id=\"${id}\"></span><br/>\n`);
+    return document.getElementById(id);
+  }
+
+  printChat(msg, from) {
+    from = from ? from : 'hacker';
+    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
+    this._view.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 }

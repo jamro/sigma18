@@ -6,12 +6,13 @@ export default class TerminalView extends View {
   constructor(document) {
     super(document);
     this._mute = false;
+    this._sounds = [];
     try {
-      this._okSound = new Audio('audio/ok.mp3');
-      this._errSound = new Audio('audio/err.mp3');
-      this._comSound = new Audio('audio/com.mp3');
-      this._beepSound = new Audio('audio/beep.mp3');
-      this._beepSound.loop = true;
+      this._sounds.ok = new Audio('audio/ok.mp3');
+      this._sounds.err = new Audio('audio/err.mp3');
+      this._sounds.com = new Audio('audio/com.mp3');
+      this._sounds.beep = new Audio('audio/beep.mp3');
+      this._sounds.beep.loop = true;
     } catch(err) {
       console.log(err);
     }
@@ -136,47 +137,19 @@ export default class TerminalView extends View {
     this._view.input.textField.element.focus();
   }
 
-  playOk() {
+  playSound(id) {
     if(this._mute) return;
     try {
-      this._okSound.play();
+      this._sounds[id].play();
     } catch(err) {
       console.log(err);
     }
   }
 
-  playErr() {
-    if(this._mute) return;
+  stopSound(id) {
     try {
-      this._errSound.play();
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  playChat() {
-    if(this._mute) return;
-    try {
-      this._comSound.playbackRate = 0.9 + 1.1*Math.random();
-      this._comSound.play();
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  startBeepLoop() {
-    if(this._mute) return;
-    try {
-      this._beepSound.play();
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  stopBeepLoop() {
-    try {
-      this._beepSound.pause();
-      this._beepSound.currentTime = 0;
+      this._sounds[id].pause();
+      this._sounds[id].currentTime = 0;
     } catch(err) {
       console.log(err);
     }
@@ -186,5 +159,8 @@ export default class TerminalView extends View {
     this._mute = !state;
   }
 
-
+  attachToDOM(parent) {
+    super.attachToDOM(parent);
+    this.enableAutoFocus();
+  }
 }

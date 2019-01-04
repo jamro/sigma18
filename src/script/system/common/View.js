@@ -24,4 +24,8 @@ export default class View {
   getDOM() {
     return this._view.element;
   }
+
+  attachToDOM(parent) {
+    parent.appendChild(this.getDOM());
+  }
 }

@@ -1,8 +1,8 @@
 export default class Squad {
 
-  constructor(map, terminalView) {
+  constructor(map, terminal) {
     this._map = map;
-    this._terminalView = terminalView;
+    this._terminal = terminal;
     this._inventory = [];
     this._duringBattle = false;
     this._battleStartTime = 0;
@@ -21,9 +21,9 @@ export default class Squad {
     }
     setTimeout(()=> {
       this._duringBattle = false;
-      this._terminalView.playChat();
+      this._terminal.playChat();
       let pos = this._map.getSquadPosition();
-      this._terminalView.printChat(
+      this._terminal.printChat(
         `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`,
         'commander'
       );
@@ -35,13 +35,13 @@ export default class Squad {
     this._battleStartTime = (new Date()).getTime();
     let enemy = room.getEnemy();
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
-    this._terminalView.playChat();
-    this._terminalView.printChat(
+    this._terminal.playChat();
+    this._terminal.printChat(
       `Enemy units encountered (${enemies}).<br/> We need going back to previous position!`,
       'commander'
     );
     setTimeout(() => {
-      this._terminalView.printChat(
+      this._terminal.printChat(
         `We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...`,
         'commander'
       );
@@ -59,15 +59,15 @@ export default class Squad {
       } else {
         let doorId = door.getId();
         items = [
-          `We cannot push them back s|close the door (${doorId})|s to secure our position!`,
-          `They are too strong, s|close the door (${doorId})|s to isolate them`,
-          `Need help! s|Close the door (${doorId})|s to stop them!`,
-          `s|Close door (${doorId})|s! It will give us some time!`,
-          `Heavy fire! s|Close that door (${doorId})|s! We cannot push them back!`
+          `We cannot push them back, they bring backups! s|close the door (${doorId})|s to secure our position!`,
+          `There is too many of them! s|Close the door (${doorId})|s to isolate them`,
+          `They are getting backups! s|Close the door (${doorId})|s to stop them!`,
+          `There is more of them! s|Close door (${doorId})|s!`,
+          `Heavy fire! Backups have arrived! s|Close that door (${doorId})|s! We cannot push them back!`
         ];
       }
-      this._terminalView.playChat();
-      this._terminalView.printChat(
+      this._terminal.playChat();
+      this._terminal.printChat(
         items[Math.floor(Math.random()*items.length)],
         'commander'
       );
@@ -86,7 +86,7 @@ export default class Squad {
   requestMove(direction, done) {
     setTimeout(() => {
       if(this._duringBattle) {
-        this._terminalView.printChat(`r|We are under fire!|r Cannot move anywhere!`, 'commander');
+        this._terminal.printChat(`r|We are under fire!|r Cannot move anywhere!`, 'commander');
         return done();
       }
       let invalidReason = '';
@@ -101,10 +101,10 @@ export default class Squad {
       }
 
       if(invalidReason) {
-        this._terminalView.printChat(`Cannot move to the ${this._directionMap[direction]}! ${invalidReason}`, 'commander');
+        this._terminal.printChat(`Cannot move to the ${this._directionMap[direction]}! ${invalidReason}`, 'commander');
         return done();
       }
-      this._terminalView.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
+      this._terminal.printChat(`Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, 'commander');
       let dx = 0;
       let dy = 0;
       switch(direction) {
@@ -139,14 +139,14 @@ export default class Squad {
         this._inventory = this._inventory.concat(items.filter((i) => i.getType() != 'disk'));
 
         pos = this._map.getSquadPosition();
-        this._terminalView.playChat();
+        this._terminal.playChat();
         let msg = `Location ${pos.toString()} secured. ${this._map.getRoom(pos.x, pos.y).getDescription()}`;
 
         if(items.length > 0) {
           msg += "<br/><br/>We have found:<br/>";
           items.forEach((i) => msg += ` * ${i}<br/>`);
         }
-        this._terminalView.printChat(msg, 'commander');
+        this._terminal.printChat(msg, 'commander');
         done(items);
       }, 500);
     }, 500);
@@ -172,7 +172,7 @@ export default class Squad {
       this._inventory.forEach((i) => {
         msg += ` * ${i}<br/>\n`;
       });
-      this._terminalView.printChat(msg, 'commander');
+      this._terminal.printChat(msg, 'commander');
       done();
     }, 500);
   }

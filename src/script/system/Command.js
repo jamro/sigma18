@@ -18,7 +18,7 @@ export default class Command {
 
   passCrack(time, done) {
     this.startBeepLoop();
-    let el = this._terminal._view.printel();
+    let el = this._terminal.getView().printel();
     let loop = setInterval(() => {
       el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
       time--;
@@ -45,7 +45,7 @@ export default class Command {
 
   showProgress(done) {
     this.startBeepLoop();
-    let el = this._terminal._view.printel();
+    let el = this._terminal.getView().printel();
     let p = 0;
     let loop = setInterval(() => {
       let fillCount = Math.round((p/100)*40);
@@ -85,43 +85,43 @@ export default class Command {
   }
 
   print(msg) {
-    this._terminal._view.print(msg);
+    this._terminal.getView().print(msg);
   }
 
   println(msg) {
-    this._terminal._view.println(msg);
+    this._terminal.getView().println(msg);
   }
 
   printChat(msg, from) {
-    this._terminal._view.printChat(msg, from);
+    this._terminal.getView().printChat(msg, from);
   }
 
   disableInput() {
-    this._terminal._view.disable();
+    this._terminal.getView().disable();
   }
 
   enableInput() {
-    this._terminal._view.enable();
+    this._terminal.getView().enable();
   }
 
   playDoneSound(success) {
     if(success) {
-      this._terminal._view.playOk();
+      this._terminal.playOk();
     } else {
-      this._terminal._view.playErr();
+      this._terminal.playErr();
     }
   }
 
   playChatSound() {
-    this._terminal._view.playChat();
+    this._terminal.playChat();
   }
 
   startBeepLoop() {
-    this._terminal._view.startBeepLoop();
+    this._terminal.startBeepLoop();
   }
 
   stopBeepLoop() {
-    this._terminal._view.stopBeepLoop();
+    this._terminal.stopBeepLoop();
   }
 
 }

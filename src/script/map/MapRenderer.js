@@ -1,8 +1,10 @@
-export default class MapRenderer {
+import ScreenRenderer from '../system/ScreenRenderer.js';
 
-  constructor(map, screenView) {
+export default class MapRenderer extends ScreenRenderer {
+
+  constructor(map) {
+    super();
     this._map = map;
-    this._screenView = screenView;
 
     this._map.onChange(() => {
       this.render();
@@ -11,15 +13,18 @@ export default class MapRenderer {
   }
 
   render() {
-    let ctx = this._screenView.getContext();
-    let w = this._screenView.getWidth();
-    let h = this._screenView.getHeight();
-    let red = this._screenView.getDangerColor();
-    let color = this._screenView.getPrimaryColor();
-    let bg = this._screenView.getBackgroundColor();
+    if(!this.getScreenView()) {
+      return;
+    }
+    let ctx = this.getScreenView().getContext();
+    let w = this.getScreenView().getWidth();
+    let h = this.getScreenView().getHeight();
+    let red = this.getScreenView().getDangerColor();
+    let color = this.getScreenView().getPrimaryColor();
+    let bg = this.getScreenView().getBackgroundColor();
     let pos;
 
-    this._screenView.clear();
+    this.getScreenView().clear();
 
     let segmentSize = Math.round(Math.min(w, h)/12);
     let startX = w/2 - (segmentSize*12)/2;

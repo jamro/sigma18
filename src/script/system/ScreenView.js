@@ -10,15 +10,14 @@ export default class ScreenView extends View {
       cssClass: "screen-root"
     });
 
-
-
     this._context = this._view.element.getContext("2d");
     this.clear();
   }
 
   rescale() {
-    this._view.element.width = this._view.element.parentElement.clientWidth;
-    this._view.element.height = this._view.element.parentElement.clientHeight;
+    let el = this._view.element;
+    el.width = el.parentElement.clientWidth;
+    el.height = el.parentElement.clientHeight;
   }
 
   getPrimaryColor() {
@@ -52,6 +51,11 @@ export default class ScreenView extends View {
     ctx.rect(0, 0, this.getWidth(), this.getHeight());
     ctx.fillStyle = this.getBackgroundColor();
     ctx.fill();
+  }
+
+  attachToDOM(parent) {
+    super.attachToDOM(parent);
+    this.rescale();
   }
 
 }
