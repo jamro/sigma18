@@ -84,10 +84,10 @@ export default class TerminalView extends View {
 
   print(txt) {
     txt = txt
-      .replace('s|', '<strong>')
-      .replace('|s', '</strong>')
-      .replace('r|', '<span class="red">')
-      .replace('|r', '</span>');
+      .replace(/s{/g, '<strong>')
+      .replace(/}s/g, '</strong>')
+      .replace(/r{/g, '<span class="red">')
+      .replace(/}r/g, '</span>');
     let lengthLimit = 20000;
     let inputElement = this._view.output.element;
     let content = inputElement.innerHTML;

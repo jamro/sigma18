@@ -20,10 +20,10 @@ export default class SfxCommand extends Command {
     this._terminal.sequence(
       "Available commands are:",
       '',
-      "s|sfx on|s",
+      "s{sfx on}s",
       "Turn the sound on",
       '',
-      "s|sfx off|s",
+      "s{sfx off}s",
       "Turn the sound off",
       {c: 'sound', d: 'ok', t:0}
     );

@@ -82,11 +82,11 @@ export default class DoorCommand extends Command {
       "Use this command to open and close doors of the space station",
       "Available commands are:",
       '',
-      "s|door open [id]|s",
-      "Open the door. For example s|door open D-1234|s",
+      "s{door open [id]}s",
+      "Open the door. For example s{door open D-1234}s",
       '',
-      "s|door close [id]|s",
-      "Close the door. For example s|door close D-1234|s",
+      "s{door close [id]}s",
+      "Close the door. For example s{door close D-1234}s",
       {c: 'sound', d: 'ok', t:0}
     );
 

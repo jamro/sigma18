@@ -1,11 +1,15 @@
 import Position from './Position.js';
 import Room from './Room.js';
 import Door from './Door.js';
+import Virus from './Virus.js';
+import Battle from './Battle.js';
 
 export default class WorldMap {
 
   constructor(width, height) {
     this._squadPosition = null;
+    this._virus = new Virus();
+    this._battle = null;
     this._doorList = [];
     this._doorMap = {};
     this._grid = [];
@@ -17,6 +21,26 @@ export default class WorldMap {
         this._grid[x][y].onChange(() => this._notifyChange());
       }
     }
+  }
+
+  getBattle() {
+    return this._battle;
+  }
+
+  startBattle(room, onWin) {
+    this._battle = new Battle(room, this._virus, onWin);
+    this._battle.start();
+  }
+
+  stopBattle() {
+    if(this._battle) {
+      this._battle.stop();
+      this._battle = null;
+    }
+  }
+
+  getVirus() {
+    return this._virus;
   }
 
   setSquadPosition(x, y) {

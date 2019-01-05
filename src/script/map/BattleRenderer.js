@@ -1,12 +1,5 @@
 import ScreenRenderer from '../system/ScreenRenderer.js';
 
-class Unit {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
 class Shot {
   constructor(x1, y1, x2, y2) {
     this.frame = 0;
@@ -27,31 +20,12 @@ class Shot {
 
 export default class BattleRenderer extends ScreenRenderer {
 
-  constructor(room) {
+  constructor(battle) {
     super();
-    this._room = room;
-    this._enemyCount = room.getEnemy();
-    this._droids = [];
-    this._marines = [];
+    this._battle = battle;
     this._loop = null;
     this._shotList = [];
-    this._shootCounter = 0;
-    this._backupTime = -80;
-
-    for(let i=0; i < this._enemyCount; i++) {
-      this.addDroid();
-    }
-
-    this._marines.push(new Unit(0.39, 1.04));
-    this._marines.push(new Unit(0.6, 1.05));
-
-    this._marines.push(new Unit(0.33, 1.11));
-    this._marines.push(new Unit(0.24, 1.05));
-    this._marines.push(new Unit(0.69, 1.09));
-  }
-
-  addDroid() {
-    this._droids.push(new Unit(0.1 + 0.8*Math.random(), 0.1 + 0.7*Math.random()));
+    this._shooting = false;
   }
 
   attach(screenView) {
@@ -65,12 +39,10 @@ export default class BattleRenderer extends ScreenRenderer {
     super.detach();
   }
 
-
   render() {
     if(!this.getScreenView()) {
       return;
     }
-    this._backupTime++;
     let ctx = this.getScreenView().getContext();
     let w = this.getScreenView().getWidth();
     let h = this.getScreenView().getHeight();
@@ -143,73 +115,53 @@ export default class BattleRenderer extends ScreenRenderer {
 
     renderWalls();
 
-    this._droids.forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
-    this._marines.forEach((m) => renderUnit(m.x, m.y, 0.05, 0.05, color));
-
-    if(this._shootCounter == 0 && this._backupTime >= 0) {
-      this._shootCounter = (Math.random() > 0.5) ? 30 + 30*Math.random() : -15 - 15*Math.random();
-      this._shootCounter = Math.round(this._shootCounter);
-      this.getScreenView().playGun();
-    }
+    this._battle.getDroids().forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
+    this._battle.getMarines().forEach((m) => renderUnit(m.x, m.y, 0.05, 0.05, color));
 
     let droid, marine;
     let threshold = 8;
-    if(this._shootCounter == threshold) {
-      this.getScreenView().stopGun();
-    } else if(this._shootCounter > threshold) {
-      droid = this._droids[Math.floor(this._droids.length*Math.random())];
-      let x = 0.3+0.4*Math.random();
-      let y = 1-wallSize;
-      if(x > 0.4 && x < 0.6) {
-        y += wallSize*Math.random();
+    let droids;
+    if(this._battle.isDroidsTurn()) {
+      if(!this._shooting) {
+        this.getScreenView().playGun();
+        this._shooting = true;
       }
-      this._shotList.push(new Shot(droid.x, droid.y, x, y));
+      droids = this._battle.getDroids();
+      if(droids.length > 0) {
+        droid = droids[Math.floor(droids.length*Math.random())];
+        let x = 0.3+0.4*Math.random();
+        let y = 1-wallSize;
+        if(x > 0.4 && x < 0.6) {
+          y += wallSize*Math.random();
+        }
+        this._shotList.push(new Shot(droid.x, droid.y, x, y));
+      }
 
-      this._marines[0].x = 0.39;
-      this._marines[0].y = 1.04;
-      this._marines[1].x = 0.6;
-      this._marines[1].y = 1.05;
-      this._marines[2].y = 1.11;
-      this._marines[3].x = 0.24;
-      this._marines[4].y = 1.09;
+    } else if (this._battle.isMarinesTurn()) {
+      if(!this._shooting) {
+        this.getScreenView().playGun();
+        this._shooting = true;
+      }
+      droids = this._battle.getDroids();
+      if(droids.length > 0) {
+        droid = droids[Math.floor(droids.length*Math.random())];
+        let marines = this._battle.getMarines();
+        marine = marines[Math.floor(Math.random()*2)];
+        let x1 = marine.x;
+        let y1 = marine.y;
+        let x2 = droid.x + (-3+6*Math.random())*wallSize;
+        let y2 = droid.y + (-3+6*Math.random())*wallSize;
 
-    } else if (this._shootCounter == -threshold) {
+        x2 = Math.max(wallSize, Math.min(1-wallSize, x2));
+        y2 = Math.max(wallSize, Math.min(1-wallSize, y2));
+        this._shotList.push(new Shot(x1, y1, x2, y2));
+      }
+    } else {
       this.getScreenView().stopGun();
-    } else if (this._shootCounter < -threshold) {
-      droid = this._droids[Math.floor(this._droids.length*Math.random())];
-      marine = this._marines[Math.floor(Math.random()*2)];
-      let x1 = marine.x;
-      let y1 = marine.y;
-      let x2 = droid.x + (-3+6*Math.random())*wallSize;
-      let y2 = droid.y + (-3+6*Math.random())*wallSize;
-
-      x2 = Math.max(wallSize, Math.min(1-wallSize, x2));
-      y2 = Math.max(wallSize, Math.min(1-wallSize, y2));
-      this._shotList.push(new Shot(x1, y1, x2, y2));
-
-      this._marines[0].x = 0.45;
-      this._marines[0].y = 0.98;
-      this._marines[1].x = 0.55;
-      this._marines[1].y = 0.98;
-      this._marines[2].y = 1.08;
-      this._marines[3].x = 0.26;
-      this._marines[4].y = 1.04;
+      this._shooting = false;
     }
-
-    if(this._shootCounter > 0) {
-      this._shootCounter --;
-    } else if (this._shootCounter < 0) {
-      this._shootCounter++;
-    }
-
     this._shotList.forEach((s) => renderShot(s));
     this._shotList = this._shotList.filter((s) => !s.isCompleted());
-
-    if(this._backupTime > 100 && this._droids.length < 100) {
-      this._backupTime = 0;
-      this.addDroid();
-    }
-
   }
 
 }

@@ -21,8 +21,8 @@ export default class Screen {
     this._setRenderer(new MapRenderer(map));
   }
 
-  showBattle(room) {
-    this._setRenderer(new BattleRenderer(room));
+  showBattle(battle) {
+    this._setRenderer(new BattleRenderer(battle));
   }
 
   _setRenderer(r) {

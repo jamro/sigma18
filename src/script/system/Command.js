@@ -36,7 +36,7 @@ export default class Command {
     if(name && this[method]) {
       this[method](command);
     } else {
-      this._terminal.println(`Command not found! Run s|${command[0]} help|sfor more info.`);
+      this._terminal.println(`Command not found! Run s{${command[0]} help}s for more info.`);
       this._terminal.getSoundPlayer().play('err');
     }
   }

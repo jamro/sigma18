@@ -14,7 +14,7 @@ export default class Terminal {
   }
 
   commandReceived(command) {
-    this._view.print(`<div class="terminal-command">s|&gt;|s ${command}</div>`);
+    this._view.print(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
     //clean command up
     command = command.split(" ");
     command = command.map((cmd) => cmd.trim());
@@ -25,7 +25,7 @@ export default class Terminal {
         return;
       }
     }
-    this.println(`Error: Command s|${command[0]}|s not found!`);
+    this.println(`Error: Command s{${command[0]}}s not found!`);
     this.getSoundPlayer().play('err');
   }
 
@@ -65,15 +65,15 @@ export default class Terminal {
     this._view.print(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 
-  passCrack(time, done) {
+  passCrack(time, label, done) {
     this.getSoundPlayer().play('beep');
     let el = this._view.printel();
     let loop = setInterval(() => {
-      el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
+      el.innerHTML = label + ': ' + Math.round(Math.random()*1000000000).toString(16);
       time--;
       if(time <= 0) {
         clearInterval(loop);
-        el.innerHTML = 'Password: ********';
+        el.innerHTML = label + ': ********';
         this.getSoundPlayer().stop('beep');
         done();
       }
@@ -108,7 +108,7 @@ export default class Terminal {
     - {c: 'ln', d: 'text', t: delay}
     - {c: 'chat', d: 'text', f: 'from', t: delay}
     - {c: 'sound', d: 'soundId', t: delay}
-    - {c: 'pass', d: duration(def=100), t: delay}
+    - {c: 'pass', d: duration(def=100), l:label(def=Password) t: delay}
     - {c: 'load', t: delay}
     - {c: 'on', t: delay}
     - {c: 'off', t: delay}
@@ -143,7 +143,7 @@ export default class Terminal {
             cmd.c = () => { this.getSoundPlayer().play(cmd.d); };
             break;
           case 'pass':
-            cmd.c = (done) => { this.passCrack(cmd.d, done); };
+            cmd.c = (done) => { this.passCrack(cmd.d, cmd.l || 'Password', done); };
             break;
           case 'load':
             cmd.c = (done) => { this.showProgress(done); };

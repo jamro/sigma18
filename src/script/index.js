@@ -12,7 +12,6 @@ import MapBuilder from './map/MapBuilder.js';
 
 
 let player = new SoundPlayer();
-
 let builder = new MapBuilder();
 builder.build();
 let map = builder.getMap();
@@ -31,6 +30,6 @@ terminal.installCommand(new ComCommand(squad, map, terminal));
 terminal.println("Welcome at Space Station Sigma-18");
 terminal.println("Version of terminal: 1.0.0");
 terminal.println("\n\n");
-terminal.println("Type s|help|s and press ENTER to see available commands.");
+terminal.println("Type s{help}s and press ENTER to see available commands.");
 
 sideSreen.showMap(map);
