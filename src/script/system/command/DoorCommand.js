@@ -23,10 +23,10 @@ export default class DoorCommand extends Command {
     let id = this.getDoorId(command);
     let door = this._map.getDoorById(id);
     if(id == "") {
-      this.println(`Error: door ID is missing!`);
+      this._terminal.println(`Error: door ID is missing!`);
       this.playDoneSound(false);
     } else if(!door) {
-      this.println(`Error: Door (ID: ${id}) not found!`);
+      this._terminal.println(`Error: Door (ID: ${id}) not found!`);
       this.playDoneSound(false);
     }
     return door;
@@ -47,8 +47,8 @@ export default class DoorCommand extends Command {
       let door = this.findDoor(command);
       if(door) {
         if(door.isClosed() == doClose) {
-          this.println(`Door found`);
-          this.println(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
+          this._terminal.println(`Door found`);
+          this._terminal.println(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
           this.playDoneSound(false);
           this.enableInput();
           return;
@@ -78,14 +78,17 @@ export default class DoorCommand extends Command {
   }
 
   execHelp() {
-    this.println("Use this command to open and close doors of the space station");
-    this.println("Available commands are:");
-    this.println('');
-    this.println("s|door open [id]|s");
-    this.println("Open the door. For example s|door open D-1234|s");
-    this.println('');
-    this.println("s|door close [id]|s");
-    this.println("Close the door. For example s|door close D-1234|s");
-    this.playDoneSound(true);
+    this._terminal.sequence(
+      "Use this command to open and close doors of the space station",
+      "Available commands are:",
+      '',
+      "s|door open [id]|s",
+      "Open the door. For example s|door open D-1234|s",
+      '',
+      "s|door close [id]|s",
+      "Close the door. For example s|door close D-1234|s",
+      {c: 'sound', d: 'ok', t:0}
+    );
+
   }
 }

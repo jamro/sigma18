@@ -16,10 +16,6 @@ export default class Command {
     return (command[0].toLowerCase() == this.getName().toLowerCase());
   }
 
-  passCrack(time, done) {
-    this._terminal.passCrack(time, done);
-  }
-
   connect(serviceName, serviceIp, msg, done) {
     let log = [
       `Connecting to the gateway 10.43.23.4...`,
@@ -34,31 +30,15 @@ export default class Command {
     ));
   }
 
-  showProgress(done) {
-    this._terminal.showProgress(done);
-  }
-
   exec(command) {
     let name = command.length >= 2 ? command[1] : "";
     let method = 'exec' + name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     if(name && this[method]) {
       this[method](command);
     } else {
-      this.println(`Command not found! Run s|${command[0]} help|sfor more info.`);
+      this._terminal.println(`Command not found! Run s|${command[0]} help|sfor more info.`);
       this.playDoneSound(false);
     }
-  }
-
-  print(msg) {
-    this._terminal.getView().print(msg);
-  }
-
-  println(msg) {
-    this._terminal.getView().println(msg);
-  }
-
-  printChat(msg, from) {
-    this._terminal.getView().printChat(msg, from);
   }
 
   disableInput() {
@@ -71,22 +51,10 @@ export default class Command {
 
   playDoneSound(success) {
     if(success) {
-      this._terminal.playOk();
+      this.getView().playSound('ok');
     } else {
-      this._terminal.playErr();
+      this.getView().playSound('err');
     }
-  }
-
-  playChatSound() {
-    this._terminal.playChat();
-  }
-
-  startBeepLoop() {
-    this._terminal.startBeepLoop();
-  }
-
-  stopBeepLoop() {
-    this._terminal.stopBeepLoop();
   }
 
 }

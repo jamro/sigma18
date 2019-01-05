@@ -73,6 +73,13 @@ export default class ScreenView extends View {
     }
   }
 
+  enableSound(state) {
+    super.enableSound(state);
+    if(!state) {
+      this.stopGun();
+    }
+  }
+
   stopGun() {
     try {
       this._gunLoop.pause();

@@ -20,7 +20,7 @@ export default class DockCommand extends Command {
     this.disableInput();
     this.connect('Dock', '10.43.23.91', ['Query station list...'], () => {
       // @TODO update location of dock stations
-      this.println("<pre>Station ID | Location | Status  | Docked Unit\n" +
+      this._terminal.println("<pre>Station ID | Location | Status  | Docked Unit\n" +
                         "-----------|----------|---------|-----------------\n" +
                         "DS001      | [C:9]    | Empty   | - \n" +
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
@@ -37,20 +37,20 @@ export default class DockCommand extends Command {
     this.connect('Dock', '10.43.23.91', [], () => {
 
       if(id == 'DS001' || id == 'DS003') {
-        this.println(`Error: Cannot start launching sequence at ${id}.`);
+        this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
         this.enableInput();
         this.playDoneSound(false);
         return;
       }
       // @TODO: update door id
       if(!this._capsuleDoor.isClosed()) {
-        this.println(`Error: Close the door of the station before starting launch sequence.`);
+        this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
         this.enableInput();
         this.playDoneSound(false);
         return;
       }
       if(pass != 'U317AB') {
-        this.println(`Error: Authorization failed. Incorrect pass code.`);
+        this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
         this.enableInput();
         this.playDoneSound(false);
         return;
@@ -58,7 +58,7 @@ export default class DockCommand extends Command {
       let pos = this._map.getSquadPosition();
       // @TODO: update capsule position
       if(pos.x != 3 || pos.y != 9) {
-        this.println(`Error: Cannot launch empty capsule without passengers.`);
+        this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
         this.enableInput();
         this.playDoneSound(false);
         return;
@@ -114,7 +114,7 @@ export default class DockCommand extends Command {
           health = damaged;
           break;
         default:
-          this.println(`Error: Dock station ${id} not found`);
+          this._terminal.println(`Error: Dock station ${id} not found`);
           this.enableInput();
           return;
       }
@@ -166,20 +166,22 @@ export default class DockCommand extends Command {
   }
 
   execHelp() {
-    this.println("Use this command to operate docking stations and rescue capsules");
-    this.println("Available commands are:");
-    this.println('');
-    this.println("s|dock list|s");
-    this.println("Lists status of all docking stations");
-    this.println('');
-    this.println("s|dock status [stationId]|s");
-    this.println("Health report of the station and docked spaceship");
-    this.println('');
-    this.println("s|dock launch [stationId] [pass]|s");
-    this.println("Launch spaceship docked at [stationId].");
-    this.println("Password ([pass] argument) is required to run this operation.");
-    this.println("For example: s|dock launch DS001 MySecretPassword|s");
-    this.playDoneSound(true);
+    this._terminal.sequence(
+      "Use this command to operate docking stations and rescue capsules",
+      "Available commands are:",
+      '',
+      "s|dock list|s",
+      "Lists status of all docking stations",
+      '',
+      "s|dock status [stationId]|s",
+      "Health report of the station and docked spaceship",
+      '',
+      "s|dock launch [stationId] [pass]|s",
+      "Launch spaceship docked at [stationId].",
+      "Password ([pass] argument) is required to run this operation.",
+      "For example: s|dock launch DS001 MySecretPassword|s",
+      {c: 'sound', d: 'ok', t:0}
+    );
   }
 
 }

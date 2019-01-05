@@ -40,33 +40,8 @@ export default class Terminal {
     return this._commandProcessorList;
   }
 
-  enableSound(state) {
-    this._view.enableSound(state);
-  }
-
   getView() {
     return this._view;
-  }
-
-
-  playOk() {
-    this._view.playSound('ok');
-  }
-
-  playErr() {
-    this._view.playSound('err');
-  }
-
-  playChat() {
-    this._view.playSound('com');
-  }
-
-  startBeepLoop() {
-    this._view.playSound('beep');
-  }
-
-  stopBeepLoop() {
-    this._view.stopSound('beep');
   }
 
   println(txt) {
@@ -86,7 +61,7 @@ export default class Terminal {
   }
 
   passCrack(time, done) {
-    this.startBeepLoop();
+    this._view.playSound('beep');
     let el = this._view.printel();
     let loop = setInterval(() => {
       el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
@@ -94,14 +69,14 @@ export default class Terminal {
       if(time <= 0) {
         clearInterval(loop);
         el.innerHTML = 'Password: ********';
-        this.stopBeepLoop();
+        this._view.stopSound('beep');
         done();
       }
     }, 30);
   }
 
   showProgress(done) {
-    this.startBeepLoop();
+    this._view.playSound('beep');
     let el = this._view.printel();
     let p = 0;
     let loop = setInterval(() => {
@@ -114,7 +89,7 @@ export default class Terminal {
       if(p >= 100) {
         clearInterval(loop);
         el.innerHTML = '[======================================] 100%';
-        this.stopBeepLoop();
+        this._view.stopSound('beep');
         done();
       }
     }, 30);

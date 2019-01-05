@@ -25,8 +25,8 @@ export default class ComCommand extends Command {
 
   execStatus() {
     this.disableInput();
-    this.playChatSound();
-    this.printChat(`Commander, what's going on?`, 'hacker');
+    this._terminal.getView().playSound('com');
+    this._terminal.printChat(`Commander, what's going on?`, 'hacker');
     this._squad.requestStatus(() => {
       this.enableInput();
     });
@@ -37,12 +37,12 @@ export default class ComCommand extends Command {
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
       this.playDoneSound(false);
-      this.println(`Error: unknown direction ${direction}`);
+      this._terminal.println(`Error: unknown direction ${direction}`);
       return;
     }
     this.disableInput();
-    this.playChatSound();
-    this.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
+    this._terminal.getView().playSound('com');
+    this._terminal.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
 
     this._terminal.sequence(
 
@@ -68,7 +68,7 @@ export default class ComCommand extends Command {
           'Done.',
           '',
           {c: () => {
-            appNames.forEach((a) => this.println(`Run s|${a}  help|s for more info.`));
+            appNames.forEach((a) => this._terminal.println(`Run s|${a}  help|s for more info.`));
           }},
           {c: 'sound', d: 'ok'},
           {c: 'on'}
@@ -80,20 +80,22 @@ export default class ComCommand extends Command {
   }
 
   execHelp() {
-    this.println("Use this command to communicate with squad of marines in the field");
-    this.println("Available commands are:");
-    this.println('');
-    this.println("s|com status|s");
-    this.println("Ask marines to send status report from the field.");
-    this.println('');
-    this.println("s|com go [direction]|s");
-    this.println("Ask marines to explore next location in defined direction.");
-    this.println("Possible directions are:");
-    this.println("* s|n|s - North");
-    this.println("* s|e|s - East");
-    this.println("* s|s|s - South");
-    this.println("* s|w|s - West");
-    this.println("For example: s|com go n|s");
-    this.playDoneSound(true);
+    this._terminal.sequence(
+      "Use this command to communicate with squad of marines in the field",
+      "Available commands are:",
+      '',
+      "s|com status|s",
+      "Ask marines to send status report from the field.",
+      '',
+      "s|com go [direction]|s",
+      "Ask marines to explore next location in defined direction.",
+      "Possible directions are:",
+      "* s|n|s - North",
+      "* s|e|s - East",
+      "* s|s|s - South",
+      "* s|w|s - West",
+      "For example: s|com go n|s",
+      {c: 'sound', d: 'ok', t:0}
+    );
   }
 }

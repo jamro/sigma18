@@ -22,7 +22,7 @@ export default class Squad {
     }
     setTimeout(()=> {
       this._duringBattle = false;
-      this._terminal.playChat();
+      this._terminal.getView().playSound('com');
       let pos = this._map.getSquadPosition();
       this._terminal.printChat(
         `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`,
@@ -37,7 +37,7 @@ export default class Squad {
     this._battleStartTime = (new Date()).getTime();
     let enemy = room.getEnemy();
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
-    this._terminal.playChat();
+    this._terminal.getView().playSound('com');
     this._terminal.printChat(
       `Enemy units encountered (${enemies}).<br/> We need going back to previous position!`,
       'commander'
@@ -69,7 +69,7 @@ export default class Squad {
           `Heavy fire! Backups have arrived! s|Close that door (${doorId})|s! We cannot push them back!`
         ];
       }
-      this._terminal.playChat();
+      this._terminal.getView().playSound('com');
       this._terminal.printChat(
         items[Math.floor(Math.random()*items.length)],
         'commander'

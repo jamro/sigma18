@@ -24,26 +24,9 @@ terminal.installCommand(new HelpCommand());
 terminal.installCommand(new SfxCommand(terminal, sideSreen));
 terminal.installCommand(new ComCommand(squad, map, terminal));
 
-terminal.getView().println("Welcome at Space Station Sigma-18");
-terminal.getView().println("Version of terminal: 1.0.0");
-terminal.getView().println("\n\n");
-terminal.getView().println("Type s|help|s and press ENTER to see available commands.");
+terminal.println("Welcome at Space Station Sigma-18");
+terminal.println("Version of terminal: 1.0.0");
+terminal.println("\n\n");
+terminal.println("Type s|help|s and press ENTER to see available commands.");
 
 sideSreen.showMap(map);
-
-/*
-terminal.sequence([
-  () => { terminal.println("A")},
-  () => { terminal.println("B")},
-  {c: 'pass', d: 100, t: 300},
-  () => { terminal.println("C")},
-  () => { terminal.println("D")},
-  {c: 'load', t: 300},
-  () => { terminal.println("E")},
-  {c: () => { terminal.println("LONG 1")}},
-  "JULIA",
-  {c: 'ln', d: "Hello", t: 400},
-  {c: 'sound', d: "com", t: 1},
-  {c: 'chat', d: "Hello", f: 'jmr', t: 100},
-]);
-*/
