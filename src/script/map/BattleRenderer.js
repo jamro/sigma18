@@ -20,8 +20,8 @@ class Shot {
 
 export default class BattleRenderer extends ScreenRenderer {
 
-  constructor(battle) {
-    super();
+  constructor(soundPlayer, battle) {
+    super(soundPlayer);
     this._battle = battle;
     this._loop = null;
     this._shotList = [];
@@ -35,7 +35,7 @@ export default class BattleRenderer extends ScreenRenderer {
 
   detach() {
     clearInterval(this._loop);
-    this.getScreenView().stopGun();
+    this.getSoundPlayer().stop('gun');
     super.detach();
   }
 
@@ -123,7 +123,7 @@ export default class BattleRenderer extends ScreenRenderer {
     let droids;
     if(this._battle.isDroidsTurn()) {
       if(!this._shooting) {
-        this.getScreenView().playGun();
+        this.getSoundPlayer().play('gun');
         this._shooting = true;
       }
       droids = this._battle.getDroids();
@@ -139,7 +139,7 @@ export default class BattleRenderer extends ScreenRenderer {
 
     } else if (this._battle.isMarinesTurn()) {
       if(!this._shooting) {
-        this.getScreenView().playGun();
+        this.getSoundPlayer().play('gun');
         this._shooting = true;
       }
       droids = this._battle.getDroids();
@@ -157,7 +157,7 @@ export default class BattleRenderer extends ScreenRenderer {
         this._shotList.push(new Shot(x1, y1, x2, y2));
       }
     } else {
-      this.getScreenView().stopGun();
+      this.getSoundPlayer().stop('gun');
       this._shooting = false;
     }
     this._shotList.forEach((s) => renderShot(s));

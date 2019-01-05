@@ -6,9 +6,6 @@ export default class ScreenView extends View {
   constructor(document) {
     super(document);
 
-    this._gunLoop = new Audio('audio/gun.mp3');
-    this._gunLoop.loop = true;
-
     this._view = this.createElement("CANVAS", {
       cssClass: "screen-root"
     });
@@ -59,33 +56,6 @@ export default class ScreenView extends View {
   attachToDOM(parent) {
     super.attachToDOM(parent);
     this.rescale();
-  }
-
-  playGun() {
-    if(this._mute) {
-      return;
-    }
-    try {
-      this._gunLoop.currentTime = this._gunLoop.duration*Math.random();
-      this._gunLoop.play();
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  enableSound(state) {
-    super.enableSound(state);
-    if(!state) {
-      this.stopGun();
-    }
-  }
-
-  stopGun() {
-    try {
-      this._gunLoop.pause();
-    } catch(err) {
-      console.log(err);
-    }
   }
 
 }

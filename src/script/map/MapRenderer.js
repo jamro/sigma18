@@ -2,8 +2,8 @@ import ScreenRenderer from '../system/ScreenRenderer.js';
 
 export default class MapRenderer extends ScreenRenderer {
 
-  constructor(map) {
-    super();
+  constructor(soundPlayer, map) {
+    super(soundPlayer);
     this._map = map;
 
     this._map.onChange(() => {

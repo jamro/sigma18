@@ -18,11 +18,11 @@ export default class Screen {
   }
 
   showMap(map) {
-    this._setRenderer(new MapRenderer(map));
+    this._setRenderer(new MapRenderer(this._soundPlayer, map));
   }
 
   showBattle(battle) {
-    this._setRenderer(new BattleRenderer(battle));
+    this._setRenderer(new BattleRenderer(this._soundPlayer, battle));
   }
 
   _setRenderer(r) {

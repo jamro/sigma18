@@ -2,10 +2,9 @@ import Command from '../Command.js';
 
 export default class SfxCommand extends Command {
 
-  constructor(terminal, sideScreen) {
+  constructor(terminal) {
     super();
     this._terminal = terminal;
-    this._screen = sideScreen;
   }
 
   getName() {
@@ -30,15 +29,13 @@ export default class SfxCommand extends Command {
   }
 
   execOn() {
-    this._terminal.getView().enableSound(true);
-    this._screen.getView().enableSound(true);
+    this._terminal.getSoundPlayer().mute(false);
     this._terminal.println("Sound enabled");
     this._terminal.getSoundPlayer().play('ok');
   }
 
   execOff() {
-    this._terminal.getView().enableSound(false);
-    this._screen.getView().enableSound(false);
+    this._terminal.getSoundPlayer().mute(true);
     this._terminal.println("Sound disabled");
     this._terminal.getSoundPlayer().play('ok');
   }
