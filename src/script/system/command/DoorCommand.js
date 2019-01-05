@@ -24,10 +24,10 @@ export default class DoorCommand extends Command {
     let door = this._map.getDoorById(id);
     if(id == "") {
       this._terminal.println(`Error: door ID is missing!`);
-      this.playDoneSound(false);
+      this._terminal.getSoundPlayer().play('err');
     } else if(!door) {
       this._terminal.println(`Error: Door (ID: ${id}) not found!`);
-      this.playDoneSound(false);
+      this._terminal.getSoundPlayer().play('err');
     }
     return door;
   }
@@ -49,7 +49,7 @@ export default class DoorCommand extends Command {
         if(door.isClosed() == doClose) {
           this._terminal.println(`Door found`);
           this._terminal.println(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
-          this.playDoneSound(false);
+          this._terminal.getSoundPlayer().play('err');
           this.enableInput();
           return;
         }
@@ -71,7 +71,7 @@ export default class DoorCommand extends Command {
           {c: 'on'}
         );
       } else {
-        this.playDoneSound(false);
+        this._terminal.getSoundPlayer().play('err');
         this.enableInput();
       }
     });

@@ -37,7 +37,7 @@ export default class Command {
       this[method](command);
     } else {
       this._terminal.println(`Command not found! Run s|${command[0]} help|sfor more info.`);
-      this.playDoneSound(false);
+      this._terminal.getSoundPlayer().play('err');
     }
   }
 
@@ -47,14 +47,6 @@ export default class Command {
 
   enableInput() {
     this._terminal.getView().enable();
-  }
-
-  playDoneSound(success) {
-    if(success) {
-      this.getView().playSound('ok');
-    } else {
-      this.getView().playSound('err');
-    }
   }
 
 }

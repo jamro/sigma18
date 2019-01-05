@@ -3,9 +3,14 @@ import BattleRenderer from '../map/BattleRenderer.js';
 
 export default class Screen {
 
-  constructor(view) {
+  constructor(view, soundPlayer) {
     this._view = view;
+    this._soundPlayer = soundPlayer;
     this._renderer = null;
+  }
+
+  getSoundPlayer() {
+    return this._soundPlayer;
   }
 
   getView() {

@@ -26,7 +26,7 @@ export default class DockCommand extends Command {
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
                         "DS003      | [E:9]    | Damaged | OSS Sierra-23</pre>");
       this.enableInput();
-      this.playDoneSound(true);
+      this._terminal.getSoundPlayer().play('ok');
     });
   }
 
@@ -39,20 +39,20 @@ export default class DockCommand extends Command {
       if(id == 'DS001' || id == 'DS003') {
         this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
         this.enableInput();
-        this.playDoneSound(false);
+        this._terminal.getSoundPlayer().play('err');
         return;
       }
       // @TODO: update door id
       if(!this._capsuleDoor.isClosed()) {
         this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
         this.enableInput();
-        this.playDoneSound(false);
+        this._terminal.getSoundPlayer().play('err');
         return;
       }
       if(pass != 'U317AB') {
         this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
         this.enableInput();
-        this.playDoneSound(false);
+        this._terminal.getSoundPlayer().play('err');
         return;
       }
       let pos = this._map.getSquadPosition();
@@ -60,7 +60,7 @@ export default class DockCommand extends Command {
       if(pos.x != 3 || pos.y != 9) {
         this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
         this.enableInput();
-        this.playDoneSound(false);
+        this._terminal.getSoundPlayer().play('err');
         return;
       }
 
@@ -80,9 +80,9 @@ export default class DockCommand extends Command {
         `Launching sequence completed`,
         {c: 'sound', d: 'ok', t: 0},
         {c: 'chat', d: 's|GOOD JOB SOLIDER!|s<br/>\n We are saved! Going back home!', f: 'commander', t: 1000},
-        {c: 'sound', d: 'com', t: 0},
+        {c: 'sound', d: 'chat', t: 0},
         {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker', t: 1000},
-        {c: 'sound', d: 'com', t: 0},
+        {c: 'sound', d: 'chat', t: 0},
         {c: 'ln', d: '<div class="finito">THE END</div>', t: 3000},
         {c: 'sound', d: 'ok', t: 0}
       );

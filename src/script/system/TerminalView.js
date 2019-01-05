@@ -5,16 +5,6 @@ export default class TerminalView extends View {
 
   constructor(document) {
     super(document);
-    this._sounds = {};
-    try {
-      this._sounds.ok = new Audio('audio/ok.mp3');
-      this._sounds.err = new Audio('audio/err.mp3');
-      this._sounds.com = new Audio('audio/com.mp3');
-      this._sounds.beep = new Audio('audio/beep.mp3');
-      this._sounds.beep.loop = true;
-    } catch(err) {
-      console.log(err);
-    }
 
     this._onSubmitCallbackList = [];
     this._refId = 0;
@@ -124,24 +114,6 @@ export default class TerminalView extends View {
   enable() {
     this._view.input.textField.element.disabled = false;
     this._view.input.textField.element.focus();
-  }
-
-  playSound(id) {
-    if(this._mute) return;
-    try {
-      this._sounds[id].play();
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  stopSound(id) {
-    try {
-      this._sounds[id].pause();
-      this._sounds[id].currentTime = 0;
-    } catch(err) {
-      console.log(err);
-    }
   }
 
   attachToDOM(parent) {

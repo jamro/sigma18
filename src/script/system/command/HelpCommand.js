@@ -22,6 +22,6 @@ export default class HelpCommand extends Command {
       }
     }
     this._terminal.println("Run s|[command] help|s for more info");
-    this.playDoneSound(true);
+    this._terminal.getSoundPlayer().play('ok');
   }
 }

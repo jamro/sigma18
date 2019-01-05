@@ -2,10 +2,15 @@
 
 export default class Terminal {
 
-  constructor(view) {
+  constructor(view, soundPlayer) {
     this._view = view;
+    this._soundPlayer = soundPlayer;
     this._commandProcessorList = [];
     view.onSubmit((cmd) => this.commandReceived(cmd));
+  }
+
+  getSoundPlayer() {
+    return this._soundPlayer;
   }
 
   commandReceived(command) {
@@ -20,8 +25,8 @@ export default class Terminal {
         return;
       }
     }
-    this._view.println(`Error: Command s|${command[0]}|s not found!`);
-    this._view.playSound('err');
+    this.println(`Error: Command s|${command[0]}|s not found!`);
+    this.getSoundPlayer().play('err');
   }
 
   installCommand(commandProcessor) {
@@ -61,7 +66,7 @@ export default class Terminal {
   }
 
   passCrack(time, done) {
-    this._view.playSound('beep');
+    this.getSoundPlayer().play('beep');
     let el = this._view.printel();
     let loop = setInterval(() => {
       el.innerHTML = 'Password: ' + Math.round(Math.random()*1000000000).toString(16);
@@ -69,14 +74,14 @@ export default class Terminal {
       if(time <= 0) {
         clearInterval(loop);
         el.innerHTML = 'Password: ********';
-        this._view.stopSound('beep');
+        this.getSoundPlayer().stop('beep');
         done();
       }
     }, 30);
   }
 
   showProgress(done) {
-    this._view.playSound('beep');
+    this.getSoundPlayer().play('beep');
     let el = this._view.printel();
     let p = 0;
     let loop = setInterval(() => {
@@ -89,7 +94,7 @@ export default class Terminal {
       if(p >= 100) {
         clearInterval(loop);
         el.innerHTML = '[======================================] 100%';
-        this._view.stopSound('beep');
+        this.getSoundPlayer().stop('beep');
         done();
       }
     }, 30);
@@ -135,7 +140,7 @@ export default class Terminal {
             cmd.c = () => { this.printChat(cmd.d, cmd.f); };
             break;
           case 'sound':
-            cmd.c = () => { this._view.playSound(cmd.d); };
+            cmd.c = () => { this.getSoundPlayer().play(cmd.d); };
             break;
           case 'pass':
             cmd.c = (done) => { this.passCrack(cmd.d, done); };

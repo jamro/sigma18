@@ -1,6 +1,7 @@
 export default class Squad {
 
-  constructor(map, terminal, screen) {
+  constructor(map, terminal, screen, soundPlayer) {
+    this._soundPlayer = soundPlayer;
     this._map = map;
     this._screen = screen;
     this._terminal = terminal;
@@ -22,7 +23,7 @@ export default class Squad {
     }
     setTimeout(()=> {
       this._duringBattle = false;
-      this._terminal.getView().playSound('com');
+      this._soundPlayer.play('chat');
       let pos = this._map.getSquadPosition();
       this._terminal.printChat(
         `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`,
@@ -37,7 +38,7 @@ export default class Squad {
     this._battleStartTime = (new Date()).getTime();
     let enemy = room.getEnemy();
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
-    this._terminal.getView().playSound('com');
+    this._soundPlayer.play('chat');
     this._terminal.printChat(
       `Enemy units encountered (${enemies}).<br/> We need going back to previous position!`,
       'commander'
@@ -69,7 +70,7 @@ export default class Squad {
           `Heavy fire! Backups have arrived! s|Close that door (${doorId})|s! We cannot push them back!`
         ];
       }
-      this._terminal.getView().playSound('com');
+      this._soundPlayer.play('chat');
       this._terminal.printChat(
         items[Math.floor(Math.random()*items.length)],
         'commander'
@@ -158,7 +159,7 @@ export default class Squad {
     this._terminal.sequence(
       {c: 'chat', d: `Exploring location on the ${this._directionMap[direction]}... Move! Move! Move!`, f: 'commander', t: 500},
       {c: moveToNewLocation, t: 500},
-      {c: 'sound', d: 'com', t: 0},
+      {c: 'sound', d: 'chat', t: 0},
       {c: processItems, t: 0}
     );
   }

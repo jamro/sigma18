@@ -25,7 +25,7 @@ export default class ComCommand extends Command {
 
   execStatus() {
     this.disableInput();
-    this._terminal.getView().playSound('com');
+    this._terminal.getSoundPlayer().play('chat');
     this._terminal.printChat(`Commander, what's going on?`, 'hacker');
     this._squad.requestStatus(() => {
       this.enableInput();
@@ -36,12 +36,12 @@ export default class ComCommand extends Command {
     let direction = command.length >= 3 ? command[2] : '';
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
-      this.playDoneSound(false);
+      this._terminal.getSoundPlayer().play('err');
       this._terminal.println(`Error: unknown direction ${direction}`);
       return;
     }
     this.disableInput();
-    this._terminal.getView().playSound('com');
+    this._terminal.getSoundPlayer().play('chat');
     this._terminal.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
 
     this._terminal.sequence(

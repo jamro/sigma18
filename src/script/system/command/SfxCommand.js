@@ -33,14 +33,14 @@ export default class SfxCommand extends Command {
     this._terminal.getView().enableSound(true);
     this._screen.getView().enableSound(true);
     this._terminal.println("Sound enabled");
-    this.playDoneSound(true);
+    this._terminal.getSoundPlayer().play('ok');
   }
 
   execOff() {
     this._terminal.getView().enableSound(false);
     this._screen.getView().enableSound(false);
     this._terminal.println("Sound disabled");
-    this.playDoneSound(true);
+    this._terminal.getSoundPlayer().play('ok');
   }
 
 
