@@ -1,6 +1,7 @@
 import DoorCommand from '../system/command/DoorCommand.js';
 import DockCommand from '../system/command/DockCommand.js';
 import VirusCommand from '../system/command/VirusCommand.js';
+import CrewCommand from '../system/command/CrewCommand.js';
 import StaticItem from '../item/StaticItem.js';
 import Note from '../item/Note.js';
 import Disk from '../item/Disk.js';
@@ -125,6 +126,7 @@ export default class MapBuilder {
     this._map.getRoom(3, 8).addItem(new Disk(new DoorCommand(this._map)));
     this._map.getRoom(3, 8).addItem(new Disk(new DockCommand(this._map, this._capsuleDoor)));
     this._map.getRoom(3, 8).addItem(new Disk(new VirusCommand(this._map.getVirus())));
+    this._map.getRoom(3, 8).addItem(new Disk(new CrewCommand()));
 
   }
 

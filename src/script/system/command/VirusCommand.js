@@ -108,6 +108,7 @@ export default class VirusCommand extends Command {
       table += '|' + ip + '|' + status + "|";
       table += (i % 2 != 0) ? "\n" : "  ";
     }
+    table += "</pre>";
 
     if(data.hosts.length == 0) {
       table = "s{No infected hosts found!}s";
