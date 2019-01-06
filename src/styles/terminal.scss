@@ -81,13 +81,30 @@ $terminal-font-size: 1.5em;
     }
 
   }
-
   .terminal-input {
     width: 100%;
     height: $terminal-input-height;
     position: relative;
     bottom: $terminal-input-height;
     padding: 3px;
+    line-height: $terminal-input-height;
+
+    table {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+
+      .terminal-prompt {
+        font-weight: bold;
+        width: auto;
+        font-style:italic;
+      }
+
+      .terminal-textfield-container {
+        width: 100%;
+      }
+    }
+
   }
 
   input {

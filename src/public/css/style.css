@@ -5,7 +5,7 @@ body {
   padding: 0px;
 }
 
-#overlay {
+#overlay-off {
   position: absolute;
   left: 0px;
   top: 0px;

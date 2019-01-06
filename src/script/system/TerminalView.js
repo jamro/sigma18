@@ -5,7 +5,7 @@ export default class TerminalView extends View {
 
   constructor(document) {
     super(document);
-
+    this._defaultPromptText = 'hacker@sigma18.iss.gov&nbsp;~$';
     this._onSubmitCallbackList = [];
     this._refId = 0;
     let data = localStorage.getItem('history') || '[]';
@@ -27,10 +27,28 @@ export default class TerminalView extends View {
       parent: this._view
     });
 
-    this._view.input.textField = this.createElement("INPUT", {
+    this._view.input.table = this.createElement("TABLE", {
       parent: this._view.input
     });
 
+    this._view.input.table.tr = this.createElement("TR", {
+      parent: this._view.input.table
+    });
+    this._view.input.table.tr.prompt = this.createElement("TD", {
+      cssClass: "terminal-prompt",
+      parent: this._view.input.table.tr
+    });
+
+    this._view.input.table.tr.content = this.createElement("TD", {
+      cssClass: "terminal-textfield-container",
+      parent: this._view.input.table.tr
+    });
+
+    this._view.input.textField = this.createElement("INPUT", {
+      parent: this._view.input.table.tr.content
+    });
+
+    this.setPromptText(this._defaultPromptText);
 
     let updateFromHistory = () => {
       this._view.input.textField.element.value = this._history[this._historyIndex];
@@ -56,6 +74,10 @@ export default class TerminalView extends View {
           break;
       }
     });
+  }
+
+  setPromptText(txt) {
+    this._view.input.table.tr.prompt.element.innerHTML = txt;
   }
 
 
@@ -109,10 +131,12 @@ export default class TerminalView extends View {
 
   disable() {
     this._view.input.textField.element.disabled = true;
+    this.setPromptText('...');
   }
 
   enable() {
     this._view.input.textField.element.disabled = false;
+    this.setPromptText(this._defaultPromptText);
     this._view.input.textField.element.focus();
   }
 
