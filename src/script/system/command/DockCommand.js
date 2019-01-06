@@ -24,7 +24,7 @@ export default class DockCommand extends Command {
                         "-----------|----------|---------|-----------------\n" +
                         "DS001      | [C:9]    | Empty   | - \n" +
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
-                        "DS003      | [E:9]    | Damaged | OSS Sierra-23</pre>");
+                        "DS003      | [E:9]    | Damaged | ISS Sierra-23</pre>");
       this.enableInput();
       this._terminal.getSoundPlayer().play('ok');
     });

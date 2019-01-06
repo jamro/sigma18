@@ -12,6 +12,7 @@ export default class TerminalView extends View {
     this._historyFull = JSON.parse(data);
     this._history = [''].concat(this._historyFull);
     this._historyIndex = 0;
+    this._keyHandler = this.handleKeyDown;
 
     this._view = this.createElement("DIV", {
       cssClass: "terminal-root"
@@ -48,36 +49,42 @@ export default class TerminalView extends View {
       parent: this._view.input.table.tr.content
     });
 
-    this.setPromptText(this._defaultPromptText);
+    this.setPromptText();
 
     let updateFromHistory = () => {
       this._view.input.textField.element.value = this._history[this._historyIndex];
       setTimeout(() => { this._view.input.textField.element.selectionStart = this._view.input.textField.element.selectionEnd = 10000; }, 0);
     };
 
-    this._view.input.textField.element.addEventListener("keydown", (event) => {
-      switch(event.keyCode) {
-        case 13:
-          this._history[this._historyIndex] = this._view.input.textField.element.value;
-          this.submit();
-          break;
-        case 38: // key up
-          this._historyIndex = Math.min(this._history.length-1, this._historyIndex+1);
-          updateFromHistory();
-          break;
-        case 40: //key down
-          this._historyIndex = Math.max(0, this._historyIndex-1);
-          updateFromHistory();
-          break;
-        default:
-          this._history[this._historyIndex] = this._view.input.textField.element.value;
-          break;
-      }
-    });
+    this._view.input.textField.element.addEventListener("keydown", (e) => this._keyHandler(e));
+  }
+
+  setKeyHandler(callback) {
+    this._keyHandler = callback ? callback : this.handleKeyDown;
+  }
+
+  handleKeyDown(event) {
+    switch(event.keyCode) {
+      case 13:
+        this._history[this._historyIndex] = this._view.input.textField.element.value;
+        this.submit();
+        break;
+      case 38: // key up
+        this._historyIndex = Math.min(this._history.length-1, this._historyIndex+1);
+        updateFromHistory();
+        break;
+      case 40: //key down
+        this._historyIndex = Math.max(0, this._historyIndex-1);
+        updateFromHistory();
+        break;
+      default:
+        this._history[this._historyIndex] = this._view.input.textField.element.value;
+        break;
+    }
   }
 
   setPromptText(txt) {
-    this._view.input.table.tr.prompt.element.innerHTML = txt;
+    this._view.input.table.tr.prompt.element.innerHTML = (txt !== undefined) ? txt.replace(/ /g, '&nbsp;') : 'hacker@sigma18.iss.gov&nbsp;~$';
   }
 
 
@@ -96,6 +103,8 @@ export default class TerminalView extends View {
     this._view.input.textField.element.value = '';
     this._onSubmitCallbackList.forEach((callback) => callback(command));
   }
+
+
 
   enableAutoFocus() {
     this._view.input.textField.element.addEventListener("focusout", () => {
@@ -129,6 +138,10 @@ export default class TerminalView extends View {
     this._onSubmitCallbackList.push(callback);
   }
 
+  isEnabled() {
+    return !this._view.input.textField.element.disabled;
+  }
+
   disable() {
     this._view.input.textField.element.disabled = true;
     this.setPromptText('...');
@@ -136,7 +149,7 @@ export default class TerminalView extends View {
 
   enable() {
     this._view.input.textField.element.disabled = false;
-    this.setPromptText(this._defaultPromptText);
+    this.setPromptText();
     this._view.input.textField.element.focus();
   }
 

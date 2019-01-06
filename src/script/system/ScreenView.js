@@ -18,6 +18,7 @@ export default class ScreenView extends View {
     let el = this._view.element;
     el.width = el.parentElement.clientWidth;
     el.height = el.parentElement.clientHeight;
+    this.clear();
   }
 
   getPrimaryColor() {

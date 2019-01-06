@@ -6,6 +6,7 @@ export default class Terminal {
     this._view = view;
     this._soundPlayer = soundPlayer;
     this._commandProcessorList = [];
+    this._exclusiveHandler = null;
     view.onSubmit((cmd) => this.commandReceived(cmd));
   }
 
@@ -14,6 +15,10 @@ export default class Terminal {
   }
 
   commandReceived(command) {
+    if(this._exclusiveHandler) {
+      this._exclusiveHandler(command);
+      return;
+    }
     this._view.print(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
     //clean command up
     command = command.split(" ");
@@ -27,6 +32,25 @@ export default class Terminal {
     }
     this.println(`Error: Command s{${command[0]}}s not found!`);
     this.getSoundPlayer().play('err');
+  }
+
+  forwardCommands(callback) {
+    this._exclusiveHandler = callback;
+  }
+
+  pause(done) {
+    let initState = this._view.isEnabled();
+    this._view.enable();
+    this._view.setKeyHandler(() => {
+      this._view.setPromptText();
+      this._view.setKeyHandler();
+      if(!initState) {
+        this._view.disable();
+      }
+      done();
+    });
+    this._view.setPromptText("Press any to continue");
+
   }
 
   installCommand(commandProcessor) {
@@ -112,6 +136,7 @@ export default class Terminal {
     - {c: 'load', t: delay}
     - {c: 'on', t: delay}
     - {c: 'off', t: delay}
+    - {c: 'pause', t: delay}
     - text
   */
   sequence(...args) {
@@ -153,6 +178,9 @@ export default class Terminal {
             break;
           case 'off':
             cmd.c = () => { this._view.disable(); };
+            break;
+          case 'pause':
+            cmd.c = (done) => { this.pause(done); };
             break;
           default:
             throw new Error(`Unknown command ${cmd.c}`);
