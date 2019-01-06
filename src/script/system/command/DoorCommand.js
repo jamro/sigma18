@@ -53,9 +53,8 @@ export default class DoorCommand extends Command {
           this.enableInput();
           return;
         }
-        this._terminal.sequence(
-          "Door found",
-          "",
+        let lock = door.getLock();
+        let openSequence = [
           "Authorization is required.",
           {c: 'pass', d: 60},
           doClose ? `Closing...` : `Opening...`,
@@ -69,7 +68,44 @@ export default class DoorCommand extends Command {
           `Done. Door ${door.getId()} ${doClose ? 'closed' : 'opened'}.`,
           {c: 'sound', d: 'ok', t: 0},
           {c: 'on'}
-        );
+        ];
+        if(lock) {
+          this._terminal.sequence([
+            "Door found",
+            "",
+            {c:'sound', d: 'err'},
+            `Your account (s{${lock.user}}s) has been locked.`,
+            "There were 3 unsuccessful attempts of login.",
+            "Answer security question to unlock:",
+            `s{${lock.question}}s`,
+            {c: (done) => {
+              this._terminal.prompt("Answer:", (txt) => {
+                this._terminal.println(txt);
+                if(lock.check(txt)) {
+                  door.unlock();
+                  this._terminal.sequence([
+                    {c:'sound', d: 'ok'},
+                    "Answer correct. Account unlocked.",
+                    "",
+                  ].concat(openSequence));
+                  done();
+                } else {
+                  this._terminal.sequence(
+                    "Error: Incorrect Answer! The account remains locked",
+                    {c:'sound', d: 'err'},
+                    {c:'on'}
+                  );
+                  done();
+                }
+              });
+            }}
+          ]);
+        } else {
+          this._terminal.sequence([
+            "Door found",
+            ""
+          ].concat(openSequence));
+        }
       } else {
         this._terminal.getSoundPlayer().play('err');
         this.enableInput();

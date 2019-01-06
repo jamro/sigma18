@@ -55,11 +55,11 @@ export default class CrewCommand extends Command {
     this.disableInput();
     this.connect('CrewDB', '10.43.23.121', [
       'Search Criteria: username=' + name,
-      '1 record found',
+      record ? '1 record found' : '',
       {c:'ln', d:"", t: 500}
     ], () => {
       if(!record) {
-        this._terminal.println(`Error: no crew record matching the criteria`);
+        this._terminal.println(`Error: no record matching the criteria`);
         this._terminal.getSoundPlayer().play('err');
         this.enableInput();
         return;

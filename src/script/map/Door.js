@@ -1,5 +1,17 @@
 import Position from './Position.js';
 
+class SecurityQuestion {
+  constructor(user, question, answer) {
+    this.user = user;
+    this.question = question;
+    this.answer = answer;
+  }
+
+  check(answer) {
+    return answer.match(this.answer) ? true : false;
+  }
+}
+
 class Door {
 
   constructor() {
@@ -12,6 +24,7 @@ class Door {
     this._onChangeList = [];
     this._room1 = null;
     this._room2 = null;
+    this._securityQuestion = null;
   }
 
   assignRooms(room1, room2) {
@@ -61,6 +74,18 @@ class Door {
 
   isVisited() {
     return this._room1.isVisited() ||this._room2.isVisited();
+  }
+
+  lock(user, question, answer) {
+    this._securityQuestion = new SecurityQuestion(user, question, answer);
+  }
+
+  unlock() {
+    this._securityQuestion = null;
+  }
+
+  getLock() {
+    return this._securityQuestion;
   }
 
 }

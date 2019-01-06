@@ -76,7 +76,7 @@ export default class MapBuilder {
   }
 
   _layoutDoors() {
-    this._capsuleDoor = this._map.addDoor(3, 8, 3, 9).close(); // dock -> rescue
+    this._capsuleDoor = this._map.addDoor(3, 8, 3, 9).close().lock('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // dock -> rescue
     this._map.addDoor(4, 8, 3, 8); // sierra -> dock
     this._map.addDoor(2, 8, 3, 8).close(); // empty -> dock
     this._map.addDoor(3, 8, 3, 7); // dock -> corridor
