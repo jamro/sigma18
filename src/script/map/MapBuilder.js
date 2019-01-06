@@ -120,7 +120,7 @@ export default class MapBuilder {
 
   _placeItems() {
 
-    this._map.getRoom(3, 8).addItem(new Note('Rescue Capsule Auth: U317AB'));
+    this._map.getRoom(3, 8).addItem(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map.getRoom(3, 8).addItem(new StaticItem(`Active SIG-18 communication module (${this._map.getVirus().getUnitZero()})`));
     this._map.getRoom(3, 8).addItem(new Disk(new DoorCommand(this._map)));
     this._map.getRoom(3, 8).addItem(new Disk(new DockCommand(this._map, this._capsuleDoor)));

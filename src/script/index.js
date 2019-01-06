@@ -28,8 +28,6 @@ terminal.installCommand(new SfxCommand(terminal, sideSreen));
 terminal.installCommand(new ComCommand(squad, map, terminal));
 
 terminal.getView().disable();
-
-
 terminal.sequence(
   "",
   "-----------------------------",

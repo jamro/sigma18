@@ -51,34 +51,33 @@ export default class TerminalView extends View {
 
     this.setPromptText();
 
-    let updateFromHistory = () => {
-      this._view.input.textField.element.value = this._history[this._historyIndex];
-      setTimeout(() => { this._view.input.textField.element.selectionStart = this._view.input.textField.element.selectionEnd = 10000; }, 0);
-    };
-
-    this._view.input.textField.element.addEventListener("keydown", (e) => this._keyHandler(e));
+    this._view.input.textField.element.addEventListener("keydown", (e) => this._keyHandler(e, this._view.input.textField.element.value));
   }
 
   setKeyHandler(callback) {
     this._keyHandler = callback ? callback : this.handleKeyDown;
   }
 
-  handleKeyDown(event) {
+  handleKeyDown(event, txt) {
+    let updateFromHistory = () => {
+      this._view.input.textField.element.value = this._history[this._historyIndex];
+      setTimeout(() => { this._view.input.textField.element.selectionStart = this._view.input.textField.element.selectionEnd = 10000; }, 0);
+    };
     switch(event.keyCode) {
       case 13:
-        this._history[this._historyIndex] = this._view.input.textField.element.value;
+        this._history[this._historyIndex] = txt;
         this.submit();
         break;
       case 38: // key up
         this._historyIndex = Math.min(this._history.length-1, this._historyIndex+1);
         updateFromHistory();
         break;
-      case 40: //key down
+      case 40: // key down
         this._historyIndex = Math.max(0, this._historyIndex-1);
         updateFromHistory();
         break;
       default:
-        this._history[this._historyIndex] = this._view.input.textField.element.value;
+        this._history[this._historyIndex] = txt;
         break;
     }
   }
@@ -100,10 +99,13 @@ export default class TerminalView extends View {
     this._history = [''].concat(this._historyFull);
     this._historyIndex = 0;
     localStorage.setItem('history', JSON.stringify(this._historyFull));
-    this._view.input.textField.element.value = '';
+    this.clearInput();
     this._onSubmitCallbackList.forEach((callback) => callback(command));
   }
 
+  clearInput() {
+    this._view.input.textField.element.value = '';
+  }
 
 
   enableAutoFocus() {

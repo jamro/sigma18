@@ -6,7 +6,6 @@ export default class Terminal {
     this._view = view;
     this._soundPlayer = soundPlayer;
     this._commandProcessorList = [];
-    this._exclusiveHandler = null;
     view.onSubmit((cmd) => this.commandReceived(cmd));
   }
 
@@ -15,10 +14,6 @@ export default class Terminal {
   }
 
   commandReceived(command) {
-    if(this._exclusiveHandler) {
-      this._exclusiveHandler(command);
-      return;
-    }
     this._view.print(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
     //clean command up
     command = command.split(" ");
@@ -34,23 +29,37 @@ export default class Terminal {
     this.getSoundPlayer().play('err');
   }
 
-  forwardCommands(callback) {
-    this._exclusiveHandler = callback;
-  }
-
   pause(done) {
     let initState = this._view.isEnabled();
     this._view.enable();
     this._view.setKeyHandler(() => {
       this._view.setPromptText();
       this._view.setKeyHandler();
+      this._view.clearInput();
       if(!initState) {
         this._view.disable();
       }
       done();
     });
     this._view.setPromptText("Press any to continue");
+  }
 
+  prompt(label, done) {
+    let initState = this._view.isEnabled();
+    this._view.enable();
+    this._view.setKeyHandler((event, txt) => {
+      if(event.keyCode != 13) {
+        return;
+      }
+      this._view.setPromptText();
+      this._view.setKeyHandler();
+      this._view.clearInput();
+      if(!initState) {
+        this._view.disable();
+      }
+      done(txt);
+    });
+    this._view.setPromptText(label);
   }
 
   installCommand(commandProcessor) {

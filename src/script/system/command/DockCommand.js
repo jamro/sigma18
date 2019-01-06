@@ -35,57 +35,60 @@ export default class DockCommand extends Command {
     let pass = command.length >= 4 ? command[3].toUpperCase() : '';
     this.disableInput();
     this.connect('Dock', '10.43.23.91', [], () => {
+      this._terminal.println("Authorization is required!");
+      this._terminal.prompt('Auth Code:', (pass) => {
+        if(pass.toUpperCase() != 'U317AB') {
+          this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
+          this.enableInput();
+          this._terminal.getSoundPlayer().play('err');
+          return;
+        }
 
-      if(id == 'DS001' || id == 'DS003') {
-        this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
-        this.enableInput();
-        this._terminal.getSoundPlayer().play('err');
-        return;
-      }
-      // @TODO: update door id
-      if(!this._capsuleDoor.isClosed()) {
-        this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
-        this.enableInput();
-        this._terminal.getSoundPlayer().play('err');
-        return;
-      }
-      if(pass != 'U317AB') {
-        this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
-        this.enableInput();
-        this._terminal.getSoundPlayer().play('err');
-        return;
-      }
-      let pos = this._map.getSquadPosition();
-      // @TODO: update capsule position
-      if(pos.x != 3 || pos.y != 9) {
-        this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
-        this.enableInput();
-        this._terminal.getSoundPlayer().play('err');
-        return;
-      }
+        if(id != 'DS002') {
+          this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
+          this.enableInput();
+          this._terminal.getSoundPlayer().play('err');
+          return;
+        }
+        // @TODO: update door id
+        if(!this._capsuleDoor.isClosed()) {
+          this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
+          this.enableInput();
+          this._terminal.getSoundPlayer().play('err');
+          return;
+        }
+        let pos = this._map.getSquadPosition();
+        // @TODO: update capsule position
+        if(pos.x != 3 || pos.y != 9) {
+          this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
+          this.enableInput();
+          this._terminal.getSoundPlayer().play('err');
+          return;
+        }
 
-      this._terminal.sequence(
-        `Authorization... ok`,
-        `Starting launching sequence at ${id}`,
-        `Health check:`,
-        {c: 'load'},
-        `All systems up and running`,
-        {c:'ln', d:`Opening docking gates...`, t:700},
-        {c:'ln', d:`Staring the engine...`, t:900},
-        {c:'ln', d:`Enabling shields...`, t:800},
-        {c:'ln', d:`Disconnecting from docking port...`, t:750},
-        {c: 'ln', d: ``, t: 2000},
-        `Done... Unit launched successfully`,
-        {c:'ln', d:`Closing docking gates`, t:1000},
-        `Launching sequence completed`,
-        {c: 'sound', d: 'ok', t: 0},
-        {c: 'chat', d: 's{GOOD JOB SOLIDER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
-        {c: 'sound', d: 'chat', t: 0},
-        {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker', t: 2000},
-        {c: 'sound', d: 'chat', t: 0},
-        {c: 'ln', d: '<div class="finito">THE END</div>', t: 3000},
-        {c: 'sound', d: 'ok', t: 0}
-      );
+        this._terminal.sequence(
+          `Authorization... ok`,
+          `Starting launching sequence at ${id}`,
+          `Modules health check:`,
+          {c: 'load'},
+          `All systems up and running`,
+          {c:'ln', d:`Opening docking gates...`, t:700},
+          {c:'ln', d:`Staring the engine...`, t:900},
+          {c:'ln', d:`Enabling shields...`, t:800},
+          {c:'ln', d:`Disconnecting from docking port...`, t:750},
+          {c: 'ln', d: ``, t: 2000},
+          `Done... Unit launched successfully`,
+          {c:'ln', d:`Closing docking gates`, t:1000},
+          `Launching sequence completed`,
+          {c: 'sound', d: 'ok', t: 0},
+          {c: 'chat', d: 's{GOOD JOB SOLIDER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
+          {c: 'sound', d: 'chat', t: 0},
+          {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker', t: 2000},
+          {c: 'sound', d: 'chat', t: 0},
+          {c: 'ln', d: '<div class="finito">THE END</div>', t: 3000},
+          {c: 'sound', d: 'ok', t: 0}
+        );
+      });
     });
   }
 
@@ -176,10 +179,9 @@ export default class DockCommand extends Command {
       "s{dock status [stationId]}s",
       "Health report of the station and docked spaceship",
       '',
-      "s{dock launch [stationId] [pass]}s",
+      "s{dock launch [stationId]}s",
       "Launch spaceship docked at [stationId].",
-      "Password ([pass] argument) is required to run this operation.",
-      "For example: s{dock launch DS001 MySecretPassword}s",
+      "For example: s{dock launch DS001}s",
       {c: 'sound', d: 'ok', t:0}
     );
   }
