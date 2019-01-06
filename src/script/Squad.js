@@ -43,7 +43,7 @@ export default class Squad {
   }
 
   startBattle(room, door, done) {
-    this._map.startBattle(room, () => this.stopBattle());
+    this._map.startBattle(room, door, () => this.stopBattle());
     let battle = this._map.getBattle();
     let enemy = battle.getDroids().length;
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;

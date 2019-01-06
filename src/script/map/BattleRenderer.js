@@ -50,6 +50,22 @@ export default class BattleRenderer extends ScreenRenderer {
     let color = this.getScreenView().getPrimaryColor();
     let bg = this.getScreenView().getBackgroundColor();
 
+    let flipY = false;
+    let flipX = false;
+    let rotate = false;
+
+    let allDoors = this._battle.getRoom().getDoors();
+    let door = this._battle.getDoor();
+
+    if(allDoors.n == door) {
+      flipY = true;
+    } else if (allDoors.e == door) {
+      rotate = true;
+    } else if (allDoors.w == door) {
+      rotate = true;
+      flipX = true;
+    }
+
     this.getScreenView().clear();
 
     let roomSize = Math.round(Math.min(w, h)*0.7);
@@ -57,12 +73,29 @@ export default class BattleRenderer extends ScreenRenderer {
     let startX = w/2 - roomSize/2;
     let startY = h/2 - roomSize/2;
 
+    let transform = (x, y) => {
+      if(rotate) {
+        let a = x;
+        x = y;
+        y = a;
+      }
+      y = flipY ? 1-y : y;
+      x = flipX ? 1-x : x;
+      return [x, y];
+    };
+
+    let moveTo = (x, y) => {
+      [x, y] = transform(x, y);
+      ctx.moveTo(startX + roomSize*x, startY + roomSize*y);
+    };
+
     let lineTo = (x, y) => {
+      [x, y] = transform(x, y);
       ctx.lineTo(startX + roomSize*x, startY + roomSize*y);
     };
 
     let drawLine = (x1, y1, x2, y2) => {
-      ctx.moveTo(startX + roomSize*x1, startY + roomSize*y1);
+      moveTo(x1, y1);
       lineTo(x2, y2);
     };
 
@@ -71,7 +104,7 @@ export default class BattleRenderer extends ScreenRenderer {
       ctx.strokeStyle = color;
       ctx.fillStyle = null;
       ctx.lineWidth = 3;
-      ctx.moveTo(startX, startY);
+      moveTo(0, 0);
       lineTo(1, 0);
       lineTo(1, 1);
       lineTo(0.6, 1);
@@ -88,6 +121,7 @@ export default class BattleRenderer extends ScreenRenderer {
     };
 
     let renderUnit = (x, y, w, h, c) => {
+      [x, y] = transform(x, y);
       ctx.beginPath();
       ctx.fillStyle = c;
       ctx.strokeStyle = null;
@@ -107,7 +141,10 @@ export default class BattleRenderer extends ScreenRenderer {
         ctx.beginPath();
         ctx.strokeStyle = null;
         ctx.fillStyle = 'rgba(255, 255, 255, ' + (1-shot.frame/4).toFixed(2) + ')';
-        ctx.arc(startX + roomSize*shot.to.x, startY + roomSize*shot.to.y, wallSize*roomSize*shot.frame/4, 0, 2 * Math.PI);
+        let ax = shot.to.x;
+        let ay = shot.to.y;
+        [ax, ay] = transform(ax, ay);
+        ctx.arc(startX + roomSize*ax, startY + roomSize*ay, wallSize*roomSize*shot.frame/4, 0, 2 * Math.PI);
         ctx.fill();
       }
       shot.frame++;

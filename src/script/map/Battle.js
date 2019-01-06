@@ -8,8 +8,9 @@ class Unit {
 
 export default class Battle {
 
-  constructor(room, virus, onFinish) {
+  constructor(room, door, virus, onFinish) {
     this._room = room;
+    this._door = door;
     this._virus = virus;
     this._droids = [];
     this._onFinish = onFinish;
@@ -59,6 +60,10 @@ export default class Battle {
 
   getRoom() {
     return this._room;
+  }
+
+  getDoor() {
+    return this._door;
   }
 
   getDroids() {

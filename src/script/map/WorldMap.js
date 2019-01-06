@@ -27,8 +27,8 @@ export default class WorldMap {
     return this._battle;
   }
 
-  startBattle(room, onWin) {
-    this._battle = new Battle(room, this._virus, onWin);
+  startBattle(room, door, onWin) {
+    this._battle = new Battle(room, door, this._virus, onWin);
     this._battle.start();
   }
 
