@@ -26,6 +26,8 @@ let squad = new Squad(map, terminal, sideSreen, player);
 terminal.installCommand(new HelpCommand());
 terminal.installCommand(new SfxCommand(terminal, sideSreen));
 terminal.installCommand(new ComCommand(squad, map, terminal));
+builder.placeItems(squad, map, map.getVirus());
+
 
 terminal.getView().disable();
 terminal.sequence(

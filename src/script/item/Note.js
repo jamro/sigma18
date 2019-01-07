@@ -12,6 +12,6 @@ export default class Note extends Item {
   }
 
   toString() {
-    return `Note (&quot;${this._msg}&quot;)`;
+    return `Note: &quot;${this._msg}&quot;`;
   }
 }

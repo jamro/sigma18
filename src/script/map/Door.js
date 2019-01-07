@@ -24,6 +24,7 @@ class Door {
     this._onChangeList = [];
     this._room1 = null;
     this._room2 = null;
+    this._requiredKey = null;
     this._securityQuestion = null;
   }
 
@@ -78,6 +79,7 @@ class Door {
 
   lock(user, question, answer) {
     this._securityQuestion = new SecurityQuestion(user, question, answer);
+    return this;
   }
 
   unlock() {
@@ -86,6 +88,15 @@ class Door {
 
   getLock() {
     return this._securityQuestion;
+  }
+
+  getRequiredKey() {
+    return this._requiredKey;
+  }
+
+  requireKey(color) {
+    this._requiredKey = color;
+    return this;
   }
 
 }

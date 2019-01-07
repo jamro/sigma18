@@ -3,6 +3,7 @@ import DockCommand from '../system/command/DockCommand.js';
 import VirusCommand from '../system/command/VirusCommand.js';
 import CrewCommand from '../system/command/CrewCommand.js';
 import StaticItem from '../item/StaticItem.js';
+import KeyCard from '../item/KeyCard.js';
 import Note from '../item/Note.js';
 import Disk from '../item/Disk.js';
 import WorldMap from './WorldMap.js';
@@ -19,12 +20,24 @@ export default class MapBuilder {
     this._layoutRooms();
     this._layoutEnemies();
     this._layoutDoors();
-    this._placeItems();
     this._deploySquad(4, 8);
   }
 
   getMap() {
     return this._map;
+  }
+
+
+  placeItems(squad, map, virus) {
+
+    this._map.getRoom(3, 8).addItem(new Note('Rescue Capsule Auth Code: U317AB'));
+    this._map.getRoom(3, 9).addItem(new KeyCard('yellow'));
+    this._map.getRoom(3, 8).addItem(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
+    this._map.getRoom(3, 8).addItem(new Disk(new DoorCommand(map, squad)));
+    this._map.getRoom(3, 8).addItem(new Disk(new DockCommand(map, this._capsuleDoor)));
+    this._map.getRoom(3, 8).addItem(new Disk(new VirusCommand(map.getVirus())));
+    this._map.getRoom(3, 8).addItem(new Disk(new CrewCommand()));
+
   }
 
   _layoutEnemies() {
@@ -78,7 +91,7 @@ export default class MapBuilder {
   _layoutDoors() {
     this._capsuleDoor = this._map.addDoor(3, 8, 3, 9).close().lock('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // dock -> rescue
     this._map.addDoor(4, 8, 3, 8); // sierra -> dock
-    this._map.addDoor(2, 8, 3, 8).close(); // empty -> dock
+    this._map.addDoor(2, 8, 3, 8).close().requireKey('yellow'); // empty -> dock
     this._map.addDoor(3, 8, 3, 7); // dock -> corridor
     this._map.addDoor(3, 7, 3, 6); // corridor -> corridor
     this._map.addDoor(3, 6, 3, 5).close(); // corridor -> corridor
@@ -119,16 +132,7 @@ export default class MapBuilder {
 
   }
 
-  _placeItems() {
 
-    this._map.getRoom(3, 8).addItem(new Note('Rescue Capsule Auth Code: U317AB'));
-    this._map.getRoom(3, 8).addItem(new StaticItem(`Active SIG-18 communication module (${this._map.getVirus().getUnitZero()})`));
-    this._map.getRoom(3, 8).addItem(new Disk(new DoorCommand(this._map)));
-    this._map.getRoom(3, 8).addItem(new Disk(new DockCommand(this._map, this._capsuleDoor)));
-    this._map.getRoom(3, 8).addItem(new Disk(new VirusCommand(this._map.getVirus())));
-    this._map.getRoom(3, 8).addItem(new Disk(new CrewCommand()));
-
-  }
 
   _deploySquad(x, y) {
     this._map.setSquadPosition(x, y);
