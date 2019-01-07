@@ -24,6 +24,7 @@ class Door {
     this._onChangeList = [];
     this._room1 = null;
     this._room2 = null;
+    this._damaged = false;
     this._requiredKey = null;
     this._securityQuestion = null;
   }
@@ -97,6 +98,15 @@ class Door {
   requireKey(color) {
     this._requiredKey = color;
     return this;
+  }
+
+  damage() {
+    this._damaged = true;
+    return this;
+  }
+
+  isDamaged() {
+    return this._damaged;
   }
 
 }

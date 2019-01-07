@@ -28,7 +28,6 @@ terminal.installCommand(new SfxCommand(terminal, sideSreen));
 terminal.installCommand(new ComCommand(squad, map, terminal));
 builder.placeItems(squad, map, map.getVirus());
 
-
 terminal.getView().disable();
 terminal.sequence(
   "",

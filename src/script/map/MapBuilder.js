@@ -89,25 +89,25 @@ export default class MapBuilder {
   }
 
   _layoutDoors() {
-    this._capsuleDoor = this._map.addDoor(3, 8, 3, 9).close().lock('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // dock -> rescue
+    this._capsuleDoor = this._map.addDoor(3, 8, 3, 9).close(); // dock -> rescue
     this._map.addDoor(4, 8, 3, 8); // sierra -> dock
-    this._map.addDoor(2, 8, 3, 8).close().requireKey('yellow'); // empty -> dock
+    this._map.addDoor(2, 8, 3, 8).close().damage(); // empty -> dock
     this._map.addDoor(3, 8, 3, 7); // dock -> corridor
     this._map.addDoor(3, 7, 3, 6); // corridor -> corridor
-    this._map.addDoor(3, 6, 3, 5).close(); // corridor -> corridor
+    this._map.addDoor(3, 6, 3, 5).close().damage(); // corridor -> corridor
     this._map.addDoor(3, 5, 3, 4); // corridor -> corridor
     this._map.addDoor(3, 4, 3, 3); // corridor -> lobby
-    this._map.addDoor(3, 6, 4, 6).close(); // corridor -> warehouse
-    this._map.addDoor(4, 6, 4, 7).close(); // warehouse -> warehouse
-    this._map.addDoor(4, 7, 5, 7).close(); // warehouse -> warehouse
-    this._map.addDoor(4, 6, 5, 6).close(); // warehouse -> kitchen
+    this._map.addDoor(3, 6, 4, 6).close().requireKey('blue'); // corridor -> warehouse
+    this._map.addDoor(4, 6, 4, 7).close().requireKey('blue'); // warehouse -> warehouse
+    this._map.addDoor(4, 7, 5, 7).close().requireKey('blue'); // warehouse -> warehouse
+    this._map.addDoor(4, 6, 5, 6).close().requireKey('blue'); // warehouse -> kitchen
     this._map.addDoor(3, 5, 4, 5); // corridor -> canteen
     this._map.addDoor(4, 5, 5, 5); // canteen -> canteen
     this._map.addDoor(5, 5, 5, 6).close(); // canteen -> kitchen
     this._map.addDoor(5, 7, 6, 7).close(); // warehouse -> corridor
     this._map.addDoor(6, 7, 6, 6); // corridor -> corridor
-    this._map.addDoor(6, 6, 6, 5); // corridor -> corridor
-    this._map.addDoor(6, 5, 6, 4); // corridor -> corridor
+    this._map.addDoor(6, 6, 6, 5).damage(); // corridor -> corridor
+    this._map.addDoor(6, 5, 6, 4).damage(); // corridor -> corridor
     this._map.addDoor(6, 4, 6, 3).close(); // corridor -> security check
     this._map.addDoor(5, 3, 6, 3).close(); // corridor -> security check
     this._map.addDoor(4, 3, 5, 3); // corridor -> corridor
@@ -115,17 +115,17 @@ export default class MapBuilder {
     this._map.addDoor(6, 3, 7, 3).close(); // security -> lab
     this._map.addDoor(7, 3, 7, 2).close(); // lab -> warehouse
     this._map.addDoor(7, 3, 7, 4).close(); // lab -> server room
-    this._map.addDoor(2, 5, 3, 5); // corridor -> corridor
-    this._map.addDoor(1, 5, 2, 5); // corridor -> corridor
+    this._map.addDoor(2, 5, 3, 5).damage(); // corridor -> corridor
+    this._map.addDoor(1, 5, 2, 5).damage(); // corridor -> corridor
     this._map.addDoor(3, 6, 2, 6); // corridor -> crew quarter
     this._map.addDoor(2, 5, 2, 6).close(); // corridor -> crew quarter
     this._map.addDoor(1, 5, 1, 6).close(); // corridor -> crew quarter
-    this._map.addDoor(1, 5, 0, 5).close(); // corridor -> captain quarter
+    this._map.addDoor(1, 5, 0, 5).close().lock('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // corridor -> captain quarter
     this._map.addDoor(3, 3, 2, 3); // lobby -> corridor
     this._map.addDoor(2, 3, 1, 3).close(); // corridor -> office
     this._map.addDoor(2, 3, 2, 2).close(); // corridor -> office
     this._map.addDoor(3, 3, 3, 2); // lobby -> corridor
-    this._map.addDoor(3, 2, 3, 1); // corridor -> corridor
+    this._map.addDoor(3, 2, 3, 1).damage(); // corridor -> corridor
     this._map.addDoor(3, 1, 3, 0).close(); // corridor -> oxy gen
     this._map.addDoor(3, 0, 4, 0).close(); // oxy gen -> comp core
     this._map.addDoor(3, 0, 2, 0).close(); // oxy gen -> power gen

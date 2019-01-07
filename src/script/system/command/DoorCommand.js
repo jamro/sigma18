@@ -58,6 +58,13 @@ export default class DoorCommand extends Command {
         this.enableInput();
         return;
       }
+      if(door.isDamaged()) {
+        this._terminal.println(`Door found`);
+        this._terminal.println(`Error: Door damaged! Cannot ${doClose ? 'close' : 'open'}!`);
+        this._terminal.getSoundPlayer().play('err');
+        this.enableInput();
+        return;
+      }
 
       this._terminal.println("Door found");
       this._terminal.println("");
