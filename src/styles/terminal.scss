@@ -11,6 +11,7 @@ $terminal-font-size: 1.5em;
   height: 100%;
   font-family: $terminal-font-family;
   font-size: $terminal-font-size;
+  padding: 10px;
 
   .terminal-output {
     position: relative;

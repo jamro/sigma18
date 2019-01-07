@@ -25,6 +25,8 @@ body {
   height: 770px;
   left: 64px;
   top: 185px;
+  padding: 0px;
+  margin: 0px;
 }
 
 #screen-b {
@@ -35,4 +37,6 @@ body {
   height: 482px;
   left: 1140px;
   top: 77px;
+  padding: 0px;
+  margin: 0px;
 }
