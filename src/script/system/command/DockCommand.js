@@ -6,6 +6,11 @@ export default class DockCommand extends Command {
     super();
     this._map = map;
     this._capsuleDoor = capsuleDoor;
+    this._fuel = {
+      DS001: 0,
+      DS002: 0,
+      DS003: 8,
+    };
   }
 
   getName() {
@@ -32,17 +37,19 @@ export default class DockCommand extends Command {
 
   execLaunch(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    let pass = command.length >= 4 ? command[3].toUpperCase() : '';
     this.disableInput();
     this.connect('Dock', '10.43.23.91', [], () => {
       this._terminal.println("Authorization is required!");
       this._terminal.prompt('Auth Code:', (pass) => {
         if(pass.toUpperCase() != 'U317AB') {
+          this._terminal.println("");
           this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
           this.enableInput();
           this._terminal.getSoundPlayer().play('err');
           return;
         }
+        this._terminal.println("Authorization... ok");
+        this._terminal.println("");
 
         if(id != 'DS002') {
           this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
@@ -50,7 +57,6 @@ export default class DockCommand extends Command {
           this._terminal.getSoundPlayer().play('err');
           return;
         }
-        // @TODO: update door id
         if(!this._capsuleDoor.isClosed()) {
           this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
           this.enableInput();
@@ -60,14 +66,21 @@ export default class DockCommand extends Command {
         let pos = this._map.getSquadPosition();
         // @TODO: update capsule position
         if(pos.x != 3 || pos.y != 9) {
+          this._terminal.println("");
           this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
+          this.enableInput();
+          this._terminal.getSoundPlayer().play('err');
+          return;
+        }
+        if(this._fuel.DS002 <= 50) {
+          this._terminal.println("");
+          this._terminal.println(`Error: Spaceship at ${id} has low fuel level! Launch procedure stopped! See s{dock status ${id}}s for more details`);
           this.enableInput();
           this._terminal.getSoundPlayer().play('err');
           return;
         }
 
         this._terminal.sequence(
-          `Authorization... ok`,
           `Starting launching sequence at ${id}`,
           `Modules health check:`,
           {c: 'load'},
@@ -90,6 +103,32 @@ export default class DockCommand extends Command {
         );
       });
     });
+  }
+
+  execFuel(command) {
+    let id = command.length >= 3 ? command[2].toUpperCase() : '';
+    this._fuel[id] = 100;
+    let msg;
+    if(id == 'DS002' || id == 'DS003') {
+      msg = [
+        `Fueling spaceship at ${id}...`,
+        {c: 'load'},
+        ``,
+        `Done. Fuel level: 100%`,
+        {c: 'sound', d:'ok'},
+        {c: 'on'}
+      ];
+    } else {
+      msg = [
+        `Error: No spaceship at ${id}`,
+        {c: 'sound', d:'err'},
+        {c: 'on'}
+      ];
+    }
+
+
+    this.disableInput();
+    this.connect('Dock', '10.43.23.91', msg, () => {});
   }
 
   execStatus(command) {
@@ -127,19 +166,18 @@ export default class DockCommand extends Command {
           break;
         case 'DS002':
           unit = [
-            '* Name: s{Rescue Capsule}s',
-            '* Fuel: s{94%}s'
+            '* Name: s{Rescue Capsule}s'
           ];
           break;
         case 'DS003':
           unit = [
-            '* Name: s{OSS Sierra-23}s',
-            '* Fuel: s{8%}s'
+            '* Name: s{OSS Sierra-23}s'
           ];
           break;
       }
       if(id == 'DS002' || id == 'DS003') {
         unit = unit.concat([
+          this._fuel[id] > 50 ? `* Fuel: s{${this._fuel[id]}%}s` : `* Fuel: r{${this._fuel[id]}%}r`,
           `* Cargo: s{none}s`,
           `* Engine: ${health}`,
           `* Shields: ${health}`,
@@ -178,6 +216,9 @@ export default class DockCommand extends Command {
       '',
       "s{dock status [stationId]}s",
       "Health report of the station and docked spaceship",
+      '',
+      "s{dock fuel [stationId]}s",
+      "Fuel spaceship docked at provided station",
       '',
       "s{dock launch [stationId]}s",
       "Launch spaceship docked at [stationId].",
