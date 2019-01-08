@@ -13,7 +13,7 @@ class Shot {
     };
   }
 
-  isCompleted() {
+  isCompleted$$() {
     return this.frame > 4;
   }
 }
@@ -28,34 +28,34 @@ export default class BattleRenderer extends ScreenRenderer {
     this._shooting = false;
   }
 
-  attach(screenView) {
-    super.attach(screenView);
-    this._loop = setInterval(() => this.render(), 30);
+  attach$$(screenView) {
+    super.attach$$(screenView);
+    this._loop = setInterval(() => this.render$$(), 30);
   }
 
-  detach() {
+  detach$$() {
     clearInterval(this._loop);
-    this.getSoundPlayer().stop('gun');
-    super.detach();
+    this.getSoundPlayer$$().stop$$('gun');
+    super.detach$$();
   }
 
-  render() {
-    if(!this.getScreenView()) {
+  render$$() {
+    if(!this.getScreenView$$()) {
       return;
     }
-    let ctx = this.getScreenView().getContext();
-    let w = this.getScreenView().getWidth();
-    let h = this.getScreenView().getHeight();
-    let red = this.getScreenView().getDangerColor();
-    let color = this.getScreenView().getPrimaryColor();
-    let bg = this.getScreenView().getBackgroundColor();
+    let ctx = this.getScreenView$$().getContext$$();
+    let w = this.getScreenView$$().getWidth$$();
+    let h = this.getScreenView$$().getHeight$$();
+    let red = this.getScreenView$$().getDangerColor$$();
+    let color = this.getScreenView$$().getPrimaryColor$$();
+    let bg = this.getScreenView$$().getBackgroundColor$$();
 
     let flipY = false;
     let flipX = false;
     let rotate = false;
 
-    let allDoors = this._battle.getRoom().getDoors();
-    let door = this._battle.getDoor();
+    let allDoors = this._battle.getRoom$$().getDoors$$();
+    let door = this._battle.getDoor$$();
 
     if(allDoors.n == door) {
       flipY = true;
@@ -66,7 +66,7 @@ export default class BattleRenderer extends ScreenRenderer {
       flipX = true;
     }
 
-    this.getScreenView().clear();
+    this.getScreenView$$().clear$$();
 
     let roomSize = Math.round(Math.min(w, h)*0.7);
     let wallSize = 0.05;
@@ -152,18 +152,18 @@ export default class BattleRenderer extends ScreenRenderer {
 
     renderWalls();
 
-    this._battle.getDroids().forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
-    this._battle.getMarines().forEach((m) => renderUnit(m.x, m.y, 0.05, 0.05, color));
+    this._battle.getDroids$$().forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
+    this._battle.getMarines$$().forEach((m) => renderUnit(m.x, m.y, 0.05, 0.05, color));
 
     let droid, marine;
     let threshold = 8;
     let droids;
-    if(this._battle.isDroidsTurn()) {
+    if(this._battle.isDroidsTurn$$()) {
       if(!this._shooting) {
-        this.getSoundPlayer().play('gun');
+        this.getSoundPlayer$$().play$$('gun');
         this._shooting = true;
       }
-      droids = this._battle.getDroids();
+      droids = this._battle.getDroids$$();
       if(droids.length > 0) {
         droid = droids[Math.floor(droids.length*Math.random())];
         let x = 0.3+0.4*Math.random();
@@ -174,15 +174,15 @@ export default class BattleRenderer extends ScreenRenderer {
         this._shotList.push(new Shot(droid.x, droid.y, x, y));
       }
 
-    } else if (this._battle.isMarinesTurn()) {
+    } else if (this._battle.isMarinesTurn$$()) {
       if(!this._shooting) {
-        this.getSoundPlayer().play('gun');
+        this.getSoundPlayer$$().play$$('gun');
         this._shooting = true;
       }
-      droids = this._battle.getDroids();
+      droids = this._battle.getDroids$$();
       if(droids.length > 0) {
         droid = droids[Math.floor(droids.length*Math.random())];
-        let marines = this._battle.getMarines();
+        let marines = this._battle.getMarines$$();
         marine = marines[Math.floor(Math.random()*2)];
         let x1 = marine.x;
         let y1 = marine.y;
@@ -194,11 +194,11 @@ export default class BattleRenderer extends ScreenRenderer {
         this._shotList.push(new Shot(x1, y1, x2, y2));
       }
     } else {
-      this.getSoundPlayer().stop('gun');
+      this.getSoundPlayer$$().stop$$('gun');
       this._shooting = false;
     }
     this._shotList.forEach((s) => renderShot(s));
-    this._shotList = this._shotList.filter((s) => !s.isCompleted());
+    this._shotList = this._shotList.filter((s) => !s.isCompleted$$());
   }
 
 }

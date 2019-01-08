@@ -7,11 +7,11 @@ export default class KeyCard extends Item {
     this._color = color;
   }
 
-  getType() {
+  getType$$() {
     return 'key';
   }
 
-  getColor() {
+  getColor$$() {
     return this._color;
   }
 

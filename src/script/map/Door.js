@@ -7,7 +7,7 @@ class SecurityQuestion {
     this.answer = answer;
   }
 
-  check(answer) {
+  check$$(answer) {
     return answer.match(this.answer) ? true : false;
   }
 }
@@ -15,102 +15,102 @@ class SecurityQuestion {
 class Door {
 
   constructor() {
-    this._id = 'd' + Math.floor(Math.random()*16).toString(16) + Door._nextId.toString(16);
-    this._id = this._id.toUpperCase();
-    Door._nextId++;
-    this._position = null;
-    this._rotation = null;
-    this._isClosed = false;
-    this._onChangeList = [];
-    this._room1 = null;
-    this._room2 = null;
-    this._damaged = false;
-    this._requiredKey = null;
-    this._securityQuestion = null;
+    this._id$$ = 'd' + Math.floor(Math.random()*16).toString(16) + Door._nextId$$.toString(16);
+    this._id$$ = this._id$$.toUpperCase();
+    Door._nextId$$++;
+    this._position$$ = null;
+    this._rotation$$ = null;
+    this._isClosed$$ = false;
+    this._onChangeList$$ = [];
+    this._room1$$ = null;
+    this._room2$$ = null;
+    this._damaged$$ = false;
+    this._requiredKey$$ = null;
+    this._securityQuestion$$ = null;
   }
 
-  assignRooms(room1, room2) {
-    this._room1 = room1;
-    this._room2 = room2;
+  assignRooms$$(room1, room2) {
+    this._room1$$ = room1;
+    this._room2$$ = room2;
 
-    let pos1 = room1.getPosition();
-    let pos2 = room2.getPosition();
-    this._position = new Position((pos1.x + pos2.x)/2, (pos1.y + pos2.y)/2);
+    let pos1 = room1.getPosition$$();
+    let pos2 = room2.getPosition$$();
+    this._position$$ = new Position((pos1.x + pos2.x)/2, (pos1.y + pos2.y)/2);
 
     let dx = Math.abs(pos1.x - pos2.x);
     let dy = Math.abs(pos1.y - pos2.y);
-    this._rotation = (dx > dy) ? 90 : 0;
+    this._rotation$$ = (dx > dy) ? 90 : 0;
   }
 
-  getPosition() {
-    return this._position.clone();
+  getPosition$$() {
+    return this._position$$.clone$$();
   }
 
-  getRotation() {
-    return this._rotation;
+  getRotation$$() {
+    return this._rotation$$;
   }
 
-  close() {
-    this._isClosed = true;
-    this._onChangeList = this._onChangeList.filter((c) => !c());
+  close$$() {
+    this._isClosed$$ = true;
+    this._onChangeList$$ = this._onChangeList$$.filter((c) => !c());
     return this;
   }
 
-  open() {
-    this._isClosed = false;
-    this._onChangeList = this._onChangeList.filter((c) => !c());
+  open$$() {
+    this._isClosed$$ = false;
+    this._onChangeList$$ = this._onChangeList$$.filter((c) => !c());
     return this;
   }
 
-  isClosed() {
-    return this._isClosed;
+  isClosed$$() {
+    return this._isClosed$$;
   }
 
-  getId() {
-    return this._id;
+  getId$$() {
+    return this._id$$;
   }
 
-  onChange(callback) { // return true to remove callback after execution
-    this._onChangeList.push(callback);
+  onChange$$(callback) { // return true to remove callback after execution
+    this._onChangeList$$.push(callback);
   }
 
-  isVisited() {
-    return this._room1.isVisited() ||this._room2.isVisited();
+  isVisited$$() {
+    return this._room1$$.isVisited$$() ||this._room2$$.isVisited$$();
   }
 
-  lock(user, question, answer) {
-    this._securityQuestion = new SecurityQuestion(user, question, answer);
+  lock$$(user, question, answer) {
+    this._securityQuestion$$ = new SecurityQuestion(user, question, answer);
     return this;
   }
 
-  unlock() {
-    this._securityQuestion = null;
+  unlock$$() {
+    this._securityQuestion$$ = null;
   }
 
-  getLock() {
-    return this._securityQuestion;
+  getLock$$() {
+    return this._securityQuestion$$;
   }
 
-  getRequiredKey() {
-    return this._requiredKey;
+  getRequiredKey$$() {
+    return this._requiredKey$$;
   }
 
-  requireKey(color) {
-    this._requiredKey = color;
+  requireKey$$(color) {
+    this._requiredKey$$ = color;
     return this;
   }
 
-  damage() {
-    this._damaged = true;
+  damage$$() {
+    this._damaged$$ = true;
     return this;
   }
 
-  isDamaged() {
-    return this._damaged;
+  isDamaged$$() {
+    return this._damaged$$;
   }
 
 }
 
-Door._nextId = 0;
+Door._nextId$$ = 0;
 
 export default Door;

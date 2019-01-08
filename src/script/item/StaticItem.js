@@ -7,7 +7,7 @@ export default class StaticItem extends Item {
     this._desc = desc;
   }
 
-  getType() {
+  getType$$() {
     return 'static';
   }
 

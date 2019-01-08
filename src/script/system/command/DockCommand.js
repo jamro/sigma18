@@ -13,74 +13,74 @@ export default class DockCommand extends Command {
     };
   }
 
-  getName() {
+  getName$$() {
     return 'dock';
   }
 
-  getHelp() {
+  getHelp$$() {
     return 'Operate docking stations and rescue capsules';
   }
 
   execList() {
-    this.disableInput();
-    this.connect('Dock', '10.43.23.91', ['Query station list...'], () => {
+    this.disableInput$$();
+    this.connect$$('Dock', '10.43.23.91', ['Query station list...'], () => {
       // @TODO update location of dock stations
-      this._terminal.println("<pre>Station ID | Location | Status  | Docked Unit\n" +
+      this._terminal.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
                         "-----------|----------|---------|-----------------\n" +
                         "DS001      | [C:9]    | Empty   | - \n" +
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
                         "DS003      | [E:9]    | Damaged | ISS Sierra-23</pre>");
-      this.enableInput();
-      this._terminal.getSoundPlayer().play('ok');
+      this.enableInput$$();
+      this._terminal.getSoundPlayer$$().play$$('ok');
     });
   }
 
   execLaunch(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this.disableInput();
-    this.connect('Dock', '10.43.23.91', [], () => {
-      this._terminal.println("Authorization is required!");
-      this._terminal.prompt('Auth Code:', (pass) => {
+    this.disableInput$$();
+    this.connect$$('Dock', '10.43.23.91', [], () => {
+      this._terminal.println$$("Authorization is required!");
+      this._terminal.prompt$$('Auth Code:', (pass) => {
         if(pass.toUpperCase() != 'U317AB') {
-          this._terminal.println("");
-          this._terminal.println(`Error: Authorization failed. Incorrect pass code.`);
-          this.enableInput();
-          this._terminal.getSoundPlayer().play('err');
+          this._terminal.println$$("");
+          this._terminal.println$$(`Error: Authorization failed. Incorrect pass code.`);
+          this.enableInput$$();
+          this._terminal.getSoundPlayer$$().play$$('err');
           return;
         }
-        this._terminal.println("Authorization... ok");
-        this._terminal.println("");
+        this._terminal.println$$("Authorization... ok");
+        this._terminal.println$$("");
 
         if(id != 'DS002') {
-          this._terminal.println(`Error: Cannot start launching sequence at ${id}.`);
-          this.enableInput();
-          this._terminal.getSoundPlayer().play('err');
+          this._terminal.println$$(`Error: Cannot start launching sequence at ${id}.`);
+          this.enableInput$$();
+          this._terminal.getSoundPlayer$$().play$$('err');
           return;
         }
-        if(!this._capsuleDoor.isClosed()) {
-          this._terminal.println(`Error: Close the door of the station before starting launch sequence.`);
-          this.enableInput();
-          this._terminal.getSoundPlayer().play('err');
+        if(!this._capsuleDoor.isClosed$$()) {
+          this._terminal.println$$(`Error: Close the door of the station before starting launch sequence.`);
+          this.enableInput$$();
+          this._terminal.getSoundPlayer$$().play$$('err');
           return;
         }
-        let pos = this._map.getSquadPosition();
+        let pos = this._map.getSquadPosition$$();
         // @TODO: update capsule position
         if(pos.x != 3 || pos.y != 9) {
-          this._terminal.println("");
-          this._terminal.println(`Error: Cannot launch empty capsule without passengers.`);
-          this.enableInput();
-          this._terminal.getSoundPlayer().play('err');
+          this._terminal.println$$("");
+          this._terminal.println$$(`Error: Cannot launch empty capsule without passengers.`);
+          this.enableInput$$();
+          this._terminal.getSoundPlayer$$().play$$('err');
           return;
         }
         if(this._fuel.DS002 <= 50) {
-          this._terminal.println("");
-          this._terminal.println(`Error: Spaceship at ${id} has low fuel level! Launch procedure stopped! See s{dock status ${id}}s for more details`);
-          this.enableInput();
-          this._terminal.getSoundPlayer().play('err');
+          this._terminal.println$$("");
+          this._terminal.println$$(`Error: Spaceship at ${id} has low fuel level! Launch procedure stopped! See s{dock status ${id}}s for more details`);
+          this.enableInput$$();
+          this._terminal.getSoundPlayer$$().play$$('err');
           return;
         }
 
-        this._terminal.sequence(
+        this._terminal.sequence$$(
           `Starting launching sequence at ${id}`,
           `Modules health check:`,
           {c: 'load'},
@@ -127,14 +127,14 @@ export default class DockCommand extends Command {
     }
 
 
-    this.disableInput();
-    this.connect('Dock', '10.43.23.91', msg, () => {});
+    this.disableInput$$();
+    this.connect$$('Dock', '10.43.23.91', msg, () => {});
   }
 
   execStatus(command) {
-    this.disableInput();
+    this.disableInput$$();
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this.connect('Dock', '10.43.23.91', [`Station record found`], () => {
+    this.connect$$('Dock', '10.43.23.91', [`Station record found`], () => {
       let gates, port, net, pressure, health;
       let unit = [];
       let ok = 's{ok}s';
@@ -156,8 +156,8 @@ export default class DockCommand extends Command {
           health = damaged;
           break;
         default:
-          this._terminal.println(`Error: Dock station ${id} not found`);
-          this.enableInput();
+          this._terminal.println$$(`Error: Dock station ${id} not found`);
+          this.enableInput$$();
           return;
       }
       switch(id) {
@@ -202,12 +202,12 @@ export default class DockCommand extends Command {
         {c: 'sound', d: 'ok', t: 0},
         {c: 'on'}
       ]);
-      this._terminal.sequence(msg);
+      this._terminal.sequence$$(msg);
     });
   }
 
   execHelp() {
-    this._terminal.sequence(
+    this._terminal.sequence$$(
       "Use this command to operate docking stations and rescue capsules",
       "Available commands are:",
       '',

@@ -8,17 +8,17 @@ export default class VirusCommand extends Command {
     this._header = `Virus Infector version 3.2.9`;
   }
 
-  getName() {
+  getName$$() {
     return 'virus';
   }
 
-  getHelp() {
+  getHelp$$() {
     return "Infect specified hosts and blocks communication in their newtwork";
   }
 
   execActivate() {
-    let errorMessage = this._virus.validateActivate();
-    let status = this._virus.getStatus();
+    let errorMessage = this._virus.validateActivate$$();
+    let status = this._virus.getStatus$$();
     let queue = [
       {c: 'off', t: 0},
       this._header,
@@ -38,7 +38,7 @@ export default class VirusCommand extends Command {
       queue = queue.concat([
         "Activating... ",
         {c: "load"},
-        {c: () => { this._virus.activate(); }},
+        {c: () => { this._virus.activate$$(); }},
         "Completed",
         "",
         "Virus activation process started.",
@@ -47,7 +47,7 @@ export default class VirusCommand extends Command {
         {c: 'on', t: 0},
       ]);
     }
-    this._terminal.sequence(queue);
+    this._terminal.sequence$$(queue);
   }
 
   execInfect(command) {
@@ -70,7 +70,7 @@ export default class VirusCommand extends Command {
         "Done",
         "",
         "Adding to Boot Loader...",
-        {c: () => { this._virus.infect(ip); }},
+        {c: () => { this._virus.infect$$(ip); }},
         {c: 'ln', d:"Completed!", t: 1000},
         "",
         `Host s{${ip}}s infected.`,
@@ -88,11 +88,11 @@ export default class VirusCommand extends Command {
         {c:'on'}
       ]);
     }
-    this._terminal.sequence(queue);
+    this._terminal.sequence$$(queue);
   }
 
   execStatus() {
-    let data = this._virus.getStatus();
+    let data = this._virus.getStatus$$();
 
     let table = "<pre>| Host           | Status    |  | Host           | Status    |\n" +
                      "|----------------|-----------|  |----------------|-----------| \n";
@@ -114,7 +114,7 @@ export default class VirusCommand extends Command {
       table = "s{No infected hosts found!}s";
     }
 
-    this._terminal.sequence(
+    this._terminal.sequence$$(
       {c:'off'},
       this._header,
       "",
@@ -131,7 +131,7 @@ export default class VirusCommand extends Command {
   }
 
   execHelp() {
-    this._terminal.sequence(
+    this._terminal.sequence$$(
       "The virus attacks SIG-18 communication modules. It will disrupt incoming and outcoming traffic of infected host. The virus will spread across other SIG-18 that try to communicate with infected host, eventually making communication across whole SIG-18 netwoek impossible.",
       "r{WARNING! IT SPREADS VERY FAST! USE WITH CAUTION!}r",
       "",

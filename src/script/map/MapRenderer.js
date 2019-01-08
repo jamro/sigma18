@@ -4,27 +4,27 @@ export default class MapRenderer extends ScreenRenderer {
 
   constructor(soundPlayer, map) {
     super(soundPlayer);
-    this._map = map;
+    this._map$$ = map;
 
-    this._map.onChange(() => {
-      this.render();
+    this._map$$.onChange$$(() => {
+      this.render$$();
     });
-    this.render();
+    this.render$$();
   }
 
-  render() {
-    if(!this.getScreenView()) {
+  render$$() {
+    if(!this.getScreenView$$()) {
       return;
     }
-    let ctx = this.getScreenView().getContext();
-    let w = this.getScreenView().getWidth();
-    let h = this.getScreenView().getHeight();
-    let red = this.getScreenView().getDangerColor();
-    let color = this.getScreenView().getPrimaryColor();
-    let bg = this.getScreenView().getBackgroundColor();
+    let ctx = this.getScreenView$$().getContext$$();
+    let w = this.getScreenView$$().getWidth$$();
+    let h = this.getScreenView$$().getHeight$$();
+    let red = this.getScreenView$$().getDangerColor$$();
+    let color = this.getScreenView$$().getPrimaryColor$$();
+    let bg = this.getScreenView$$().getBackgroundColor$$();
     let pos;
 
-    this.getScreenView().clear();
+    this.getScreenView$$().clear$$();
 
     let segmentSize = Math.round(Math.min(w, h)/12);
     let startX = w/2 - (segmentSize*12)/2;
@@ -75,7 +75,7 @@ export default class MapRenderer extends ScreenRenderer {
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.beginPath();
-      let doors = room.getDoors();
+      let doors = room.getDoors$$();
       if(doors.n) {
         drawLine(x, y, 0.25, 0, 0.25, 0.25);
         drawLine(x, y, 0.75, 0, 0.75, 0.25);
@@ -106,11 +106,11 @@ export default class MapRenderer extends ScreenRenderer {
     // render rooms
     for(let x=0; x <10; x++) {
       for(let y=0; y <10; y++) {
-        if(!this._map.hasRoom(x, y) || !this._map.getRoom(x, y).isVisited()) {
+        if(!this._map$$.hasRoom$$(x, y) || !this._map$$.getRoom$$(x, y).isVisited$$()) {
           continue;
         }
-        let room = this._map.getRoom(x, y);
-        switch(room.getType()) {
+        let room = this._map$$.getRoom$$(x, y);
+        switch(room.getType$$()) {
           case 'corridor':
             renderCorridor(x, y, room);
             break;
@@ -123,7 +123,7 @@ export default class MapRenderer extends ScreenRenderer {
         }
 
         // render enemy
-        if(this._map.getRoom(x, y).getEnemy() > 0) {
+        if(this._map$$.getRoom$$(x, y).getEnemy$$() > 0) {
           renderSquad(x, y, red);
         }
       }
@@ -131,18 +131,18 @@ export default class MapRenderer extends ScreenRenderer {
 
 
     // render doors
-    let doorList = this._map.getDoorList();
+    let doorList = this._map$$.getDoorList$$();
 
     for(let door of doorList) {
-      if(!door.isVisited()) {
+      if(!door.isVisited$$()) {
         continue;
       }
-      pos = door.getPosition();
-      if(door.isClosed()) {
+      pos = door.getPosition$$();
+      if(door.isClosed$$()) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 8;
         ctx.beginPath();
-        if(door.getRotation() == 90) {
+        if(door.getRotation$$() == 90) {
           ctx.moveTo(
             startX + 1.50*segmentSize + pos.x*segmentSize,
             startY + 1.25*segmentSize + pos.y*segmentSize
@@ -176,7 +176,7 @@ export default class MapRenderer extends ScreenRenderer {
     }
 
     // render squad position
-    pos = this._map.getSquadPosition();
+    pos = this._map$$.getSquadPosition$$();
     renderSquad(pos.x, pos.y, color);
   }
 

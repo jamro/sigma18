@@ -7,7 +7,7 @@ export default class Note extends Item {
     this._msg = msg;
   }
 
-  getType() {
+  getType$$() {
     return 'note';
   }
 

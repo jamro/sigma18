@@ -7,16 +7,16 @@ export default class SfxCommand extends Command {
     this._terminal = terminal;
   }
 
-  getName() {
+  getName$$() {
     return 'sfx';
   }
 
-  getHelp() {
+  getHelp$$() {
     return "Turn off/on terminal sound";
   }
 
   execHelp() {
-    this._terminal.sequence(
+    this._terminal.sequence$$(
       "Available commands are:",
       '',
       "s{sfx on}s",
@@ -29,15 +29,15 @@ export default class SfxCommand extends Command {
   }
 
   execOn() {
-    this._terminal.getSoundPlayer().mute(false);
-    this._terminal.println("Sound enabled");
-    this._terminal.getSoundPlayer().play('ok');
+    this._terminal.getSoundPlayer$$().mute$$(false);
+    this._terminal.println$$("Sound enabled");
+    this._terminal.getSoundPlayer$$().play$$('ok');
   }
 
   execOff() {
-    this._terminal.getSoundPlayer().mute(true);
-    this._terminal.println("Sound disabled");
-    this._terminal.getSoundPlayer().play('ok');
+    this._terminal.getSoundPlayer$$().mute$$(true);
+    this._terminal.println$$("Sound disabled");
+    this._terminal.getSoundPlayer$$().play$$('ok');
   }
 
 

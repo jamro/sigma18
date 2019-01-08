@@ -15,20 +15,20 @@ export default class ComCommand extends Command {
     };
   }
 
-  getName() {
+  getName$$() {
     return 'com';
   }
 
-  getHelp() {
+  getHelp$$() {
     return "Communication with squad of marines in the field";
   }
 
   execStatus() {
-    this.disableInput();
-    this._terminal.getSoundPlayer().play('chat');
-    this._terminal.printChat(`Commander, what's going on?`, 'hacker');
-    this._squad.requestStatus(() => {
-      this.enableInput();
+    this.disableInput$$();
+    this._terminal.getSoundPlayer$$().play$$('chat');
+    this._terminal.printChat$$(`Commander, what's going on?`, 'hacker');
+    this._squad.requestStatus$$(() => {
+      this.enableInput$$();
     });
   }
 
@@ -36,21 +36,21 @@ export default class ComCommand extends Command {
     let direction = command.length >= 3 ? command[2] : '';
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
-      this._terminal.getSoundPlayer().play('err');
-      this._terminal.println(`Error: unknown direction ${direction}`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal.println$$(`Error: unknown direction ${direction}`);
       return;
     }
-    this.disableInput();
-    this._terminal.getSoundPlayer().play('chat');
-    this._terminal.printChat(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
+    this.disableInput$$();
+    this._terminal.getSoundPlayer$$().play$$('chat');
+    this._terminal.printChat$$(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
 
-    this._squad.requestMove(direction, (items) => {
+    this._squad.requestMove$$(direction, (items) => {
       items = items || [];
-      let disks = items.filter((i) => i.getType() == 'disk');
-      let appNames = disks.map((d) => d.getCommand().getName());
+      let disks = items.filter((i) => i.getType$$() == 'disk');
+      let appNames = disks.map((d) => d.getCommand$$().getName$$());
       if(disks.length > 0) {
 
-        this._terminal.sequence(
+        this._terminal.sequence$$(
           {c: 'sound', d: 'ok', t: 1000},
           "",
           `Transferring disk data: s{${appNames.join(', ')}}s app.`,
@@ -60,24 +60,24 @@ export default class ComCommand extends Command {
           {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
           {c: 'load'},
           {c: () => {
-            disks.forEach((d) => this._terminal.installCommand(d.getCommand()));
+            disks.forEach((d) => this._terminal.installCommand$$(d.getCommand$$()));
           }},
           'Done.',
           '',
           {c: () => {
-            appNames.forEach((a) => this._terminal.println(`Run s{${a}  help}s for more info.`));
+            appNames.forEach((a) => this._terminal.println$$(`Run s{${a}  help}s for more info.`));
           }},
           {c: 'sound', d: 'ok'},
           {c: 'on'}
         );
       } else {
-        this.enableInput();
+        this.enableInput$$();
       }
     });
   }
 
   execHelp() {
-    this._terminal.sequence(
+    this._terminal.sequence$$(
       "Use this command to communicate with squad of marines in the field",
       "Available commands are:",
       '',

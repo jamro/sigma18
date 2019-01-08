@@ -13,7 +13,7 @@ export default class Position {
     return `[${x}:${y}]`;
   }
 
-  clone() {
+  clone$$() {
     return new Position(this.x, this.y);
   }
 

@@ -7,11 +7,11 @@ export default class Disk extends Item {
     this._command = command;
   }
 
-  getType() {
+  getType$$() {
     return 'disk';
   }
 
-  getCommand() {
+  getCommand$$() {
     return this._command;
   }
 

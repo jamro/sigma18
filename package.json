@@ -10,8 +10,9 @@
     "build:dev": "webpack --config ./webpack.config.js --mode=development",
     "watch": "webpack --watch --config ./webpack.config.js --mode=development",
     "serve": "webpack-dev-server --config ./webpack.config.js --mode=development",
+    "compress": "./build/compress.js dist/js/sigma18.js",
     "test": "./build/size.js",
-    "ci": "npm run-script clean && npm run-script lint && npm run-script build && npm run-script test",
+    "ci": "npm run-script clean && npm run-script lint && npm run-script build && npm run-script compress && npm run-script test",
     "commit": "git-cz"
   },
   "repository": {

@@ -13,23 +13,23 @@ import MapBuilder from './map/MapBuilder.js';
 
 let player = new SoundPlayer();
 let builder = new MapBuilder();
-builder.build();
-let map = builder.getMap();
+builder.build$$();
+let map = builder.getMap$$();
 
 let sideSreen = new Screen(new ScreenView(document), player);
 let terminal = new Terminal(new TerminalView(document), player);
 
-terminal.getView().attachToDOM(document.querySelector('#screen-a'));
-sideSreen.getView().attachToDOM(document.querySelector('#screen-b'));
+terminal.getView$$().attachToDOM$$(document.querySelector('#screen-a'));
+sideSreen.getView$$().attachToDOM$$(document.querySelector('#screen-b'));
 
 let squad = new Squad(map, terminal, sideSreen, player);
-terminal.installCommand(new HelpCommand());
-terminal.installCommand(new SfxCommand(terminal, sideSreen));
-terminal.installCommand(new ComCommand(squad, map, terminal));
-builder.placeItems(squad, map, map.getVirus());
+terminal.installCommand$$(new HelpCommand());
+terminal.installCommand$$(new SfxCommand(terminal, sideSreen));
+terminal.installCommand$$(new ComCommand(squad, map, terminal));
+builder.placeItems$$(squad, map, map.getVirus$$());
 
-terminal.getView().disable();
-terminal.sequence(
+terminal.getView$$().disable$$();
+terminal.sequence$$(
   "",
   "-----------------------------",
   "SIGMA-18 GAME",
@@ -68,7 +68,7 @@ terminal.sequence(
   "Server accepts key",
   "Authentication succeeded (publickey)",
   "Floor plan streaming started",
-  {c: () => sideSreen.showMap(map)},
+  {c: () => sideSreen.showMap$$(map)},
   "",
   "",
   "Welcome to Space Station Sigma-18",

@@ -4,34 +4,34 @@ import BattleRenderer from '../map/BattleRenderer.js';
 export default class Screen {
 
   constructor(view, soundPlayer) {
-    this._view = view;
-    this._soundPlayer = soundPlayer;
-    this._renderer = null;
+    this._view$$ = view;
+    this._soundPlayer$$ = soundPlayer;
+    this._renderer$$ = null;
   }
 
-  getSoundPlayer() {
-    return this._soundPlayer;
+  getSoundPlayer$$() {
+    return this._soundPlayer$$;
   }
 
-  getView() {
-    return this._view;
+  getView$$() {
+    return this._view$$;
   }
 
-  showMap(map) {
-    this._setRenderer(new MapRenderer(this._soundPlayer, map));
+  showMap$$(map) {
+    this._setRenderer$$(new MapRenderer(this._soundPlayer$$, map));
   }
 
-  showBattle(battle) {
-    this._setRenderer(new BattleRenderer(this._soundPlayer, battle));
+  showBattle$$(battle) {
+    this._setRenderer$$(new BattleRenderer(this._soundPlayer$$, battle));
   }
 
-  _setRenderer(r) {
-    if(this._renderer) {
-      this._renderer.detach();
+  _setRenderer$$(r) {
+    if(this._renderer$$) {
+      this._renderer$$.detach$$();
     }
-    this._renderer = r;
-    this._renderer.attach(this._view);
-    this._renderer.render();
+    this._renderer$$ = r;
+    this._renderer$$.attach$$(this._view$$);
+    this._renderer$$.render$$();
   }
 
 }

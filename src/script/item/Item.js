@@ -1,6 +1,6 @@
 export default class Item {
 
-  getType() {
+  getType$$() {
     return 'item';
   }
 
