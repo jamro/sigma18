@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const compressNames = require('./compress/compressNames.js')
+const compressText = require('./compress/compressText.js')
 
 if(process.argv.length < 3) {
   console.error('Error: filename is required');
@@ -10,8 +11,6 @@ if(process.argv.length < 3) {
 }
 
 var filename = process.argv[2];
-
-
 
 fs.readFile(filename, function(err, data) {
   if(err) {
@@ -22,9 +21,10 @@ fs.readFile(filename, function(err, data) {
   let sizeBefore = code.length;
 
   code = compressNames(code);
+  code = compressText(code);
 
   let sizeAfter = code.length;
-  console.log(`Size reduction: ${sizeBefore}B -> ${sizeAfter}B (${(100*sizeAfter/sizeBefore).toFixed(2)}%)`);
+  console.log(`Size reduction: ${sizeBefore}B -> ${sizeAfter}B\nCompression Ratio: ${(100*sizeBefore/sizeAfter).toFixed(1)}%\nSaved: ${sizeBefore-sizeAfter}B`);
 
   const fs = require('fs');
   fs.writeFile(filename, code, function(err) {

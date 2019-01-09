@@ -21,7 +21,7 @@ module.exports = function compressNames(code) {
     return "$" + result;
   }
 
-  let pattern = /[a-zA-Z\_\-]+\$\$/g;
+  let pattern = /[a-zA-Z\_\-]+\$\$/gm;
   let result;
 
   let tokenList = [];
