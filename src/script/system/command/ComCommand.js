@@ -25,10 +25,10 @@ export default class ComCommand extends Command {
 
   execStatus() {
     this.disableInput$$();
-    this._terminal.getSoundPlayer$$().play$$('chat');
-    this._terminal.printChat$$(`Commander, what's going on?`, 'hacker');
-    this._squad.requestStatus$$(() => {
-      this.enableInput$$();
+    this._terminal.printChat$$(`Commander, what's going on?`, 'hacker', () => {
+      this._squad.requestStatus$$(() => {
+        this.enableInput$$();
+      });
     });
   }
 
@@ -41,38 +41,37 @@ export default class ComCommand extends Command {
       return;
     }
     this.disableInput$$();
-    this._terminal.getSoundPlayer$$().play$$('chat');
-    this._terminal.printChat$$(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker');
-
-    this._squad.requestMove$$(direction, (items) => {
-      items = items || [];
-      let disks = items.filter((i) => i.getType$$() == 'disk');
-      let appNames = disks.map((d) => d.getCommand$$().getName$$());
-      if(disks.length > 0) {
-
-        this._terminal.sequence$$(
-          {c: 'sound', d: 'ok', t: 1000},
-          "",
-          `Transferring disk data: s{${appNames.join(', ')}}s app.`,
-          {c: 'load'},
-          'App downloaded',
-          '',
-          {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
-          {c: 'load'},
-          {c: () => {
-            disks.forEach((d) => this._terminal.installCommand$$(d.getCommand$$()));
-          }},
-          'Done.',
-          '',
-          {c: () => {
-            appNames.forEach((a) => this._terminal.println$$(`Run s{${a}  help}s for more info.`));
-          }},
-          {c: 'sound', d: 'ok'},
-          {c: 'on'}
-        );
-      } else {
-        this.enableInput$$();
-      }
+    this._terminal.printChat$$(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker', () => {
+      this._squad.requestMove$$(direction, (items) => {
+        items = items || [];
+        let disks = items.filter((i) => i.getType$$() == 'disk');
+        let appNames = disks.map((d) => d.getCommand$$().getName$$());
+        if(disks.length > 0) {
+          this._terminal.sequence$$(
+            {c: 'chat', d:'I\'ve got a data storage here! Uploading...', f:'commander'},
+            {c: 'sound', d: 'ok', t: 100},
+            "",
+            `Transferring disk data: s{${appNames.join(', ')}}s app.`,
+            {c: 'load'},
+            'App downloaded',
+            '',
+            {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
+            {c: 'load'},
+            {c: () => {
+              disks.forEach((d) => this._terminal.installCommand$$(d.getCommand$$()));
+            }},
+            'Done.',
+            '',
+            {c: () => {
+              appNames.forEach((a) => this._terminal.println$$(`Run s{${a}  help}s for more info.`));
+            }},
+            {c: 'sound', d: 'ok'},
+            {c: 'on'}
+          );
+        } else {
+          this.enableInput$$();
+        }
+      });
     });
   }
 

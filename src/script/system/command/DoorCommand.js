@@ -75,6 +75,9 @@ export default class DoorCommand extends Command {
         "Password authorization is required.",
         {c: 'pass', d: 60},
         doClose ? `Closing...` : `Opening...`,
+        {c:'ln', d:`Done. Door ${door.getId$$()} ${doClose ? 'closed' : 'opened'}.`, t:500},
+        {c: 'sound', d: 'ok', t: 0},
+        {c: 'on'},
         {c: () => {
           if(doClose) {
             door.close$$();
@@ -82,9 +85,6 @@ export default class DoorCommand extends Command {
             door.open$$();
           }
         }, t: 500},
-        `Done. Door ${door.getId$$()} ${doClose ? 'closed' : 'opened'}.`,
-        {c: 'sound', d: 'ok', t: 0},
-        {c: 'on'}
       ];
       if(lock) {
         this._terminal.sequence$$([
@@ -124,10 +124,8 @@ export default class DoorCommand extends Command {
         if(hasKey) {
           this._terminal.sequence$$([
             info,
-            {c:'chat', d:`Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 1800},
-            {c:'sound', d:'chat', t:0},
-            {c:'chat', d:`Done`, f:'commander', t: 1800},
-            {c:'sound', d:'chat', t:0},
+            {c:'chat', d:`Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 800},
+            {c:'chat', d:`Done`, f:'commander', t: 800},
             "",
             {c:'ln', d:`Verification of key card...`, t: 1000},
             {c:'sound', d:'ok', t:0},
@@ -138,10 +136,8 @@ export default class DoorCommand extends Command {
         } else {
           this._terminal.sequence$$([
             info,
-            {c:'chat', d:`Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 1800},
-            {c:'sound', d:'chat', t:0},
-            {c:'chat', d:`We do not have required key card!`, f:'commander', t: 1800},
-            {c:'sound', d:'chat', t:0},
+            {c:'chat', d:`Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 800},
+            {c:'chat', d:`We do not have required key card!`, f:'commander'},
             "",
             {c:'ln', d:`Timeout... access to s{${requiredKey} restricted area}s denied.`, t: 1700},
             {c:'sound', d:'err', t:0},

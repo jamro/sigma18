@@ -41,7 +41,7 @@ export default class Terminal {
       }
       done();
     });
-    this._view$$.setPromptText$$("Press any to continue");
+    this._view$$.setPromptText$$("Press any key to continue");
   }
 
   prompt$$(label, done) {
@@ -92,10 +92,42 @@ export default class Terminal {
     return document.getElementById(id);
   }
 
-  printChat$$(msg, from) {
+  printChat$$(msg, from, done) {
+    let isDisabled = !this._view$$.isEnabled$$();
     from = from ? from : 'hacker';
     let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
     this._view$$.print$$(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
+
+    let finished = false;
+    let cleanUp = () => {
+      if(finished) return;
+      this._view$$.setPromptText$$();
+      this._view$$.setKeyHandler$$();
+      this._view$$.clearInput$$();
+      this._view$$.disable$$();
+    };
+
+    if(isDisabled && done) {
+      this._view$$.enable$$();
+      this._view$$.setPromptText$$("Press any key to skip...");
+      this._view$$.setKeyHandler$$(() => {
+        this._soundPlayer$$.shutUp$$();
+        cleanUp();
+        if(finished) return;
+        finished = true;
+        done();
+      });
+    }
+    this._soundPlayer$$.speak$$(msg, from != 'hacker', () => {
+      if(isDisabled && done) {
+        cleanUp();
+      }
+      if(finished) return;
+      finished = true;
+      if(done) {
+        done();
+      }
+    });
   }
 
   passCrack$$(time, label, done) {
@@ -171,7 +203,7 @@ export default class Terminal {
             cmd.c = () => { this.println$$(cmd.d); };
             break;
           case 'chat':
-            cmd.c = () => { this.printChat$$(cmd.d, cmd.f); };
+            cmd.c = (done) => { this.printChat$$(cmd.d, cmd.f, done); };
             break;
           case 'sound':
             cmd.c = () => { this.getSoundPlayer$$().play$$(cmd.d); };

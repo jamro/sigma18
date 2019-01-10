@@ -116,6 +116,8 @@ export default class TerminalView extends View {
 
   print$$(txt) {
     txt = txt
+      .replace(/m{/g, '') // mute
+      .replace(/}m/g, '') // mute
       .replace(/s{/g, '<strong>')
       .replace(/}s/g, '</strong>')
       .replace(/r{/g, '<span class="red">')

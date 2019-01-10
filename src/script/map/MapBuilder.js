@@ -32,6 +32,7 @@ export default class MapBuilder {
 
     this._map$$.getRoom$$(3, 8).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map$$.getRoom$$(3, 9).addItem$$(new KeyCard('yellow'));
+    this._map$$.getRoom$$(3, 8).addItem$$(new KeyCard('red'));
     this._map$$.getRoom$$(3, 8).addItem$$(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DoorCommand(map, squad)));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DockCommand(map, this._capsuleDoor$$)));
@@ -72,10 +73,10 @@ export default class MapBuilder {
     this._describe$$(7, 2, "It's a dedicated s{warehouse}s for the lab. They keep spare parts of SIG-18 and some backup computers here.");
     this._describe$$(7, 4, 'We have entered the s{server room}s of the lab. Lots of servers are here. Everything is up and running. They are separate to core systems of the space station so they must run services dedicated for researches of the lab.');
     this._describe$$(2, 5, 'It is a s{corridor}s to quarters of the crew.', 'corridor');
-    this._describe$$(1, 5, "We are walking down a s{corridor}s. There is a door plate on the west: Captain's Quarter.", 'corridor');
+    this._describe$$(1, 5, "We are walking down a s{corridor}s. There is a door plate on the west: Commander's Quarter.", 'corridor');
     this._describe$$(2, 6, "That's a s{room of crew members}s. It has 8 beds. There are many signs of a fight: the blood on walls and bullet holes everywhere. The cabinets are smashed on the floor.");
     this._describe$$(1, 6, "It is a s{room of crew members}s. It has 6 beds. The room is very clean comparing to other locations. Seems like it wasn't used recently.");
-    this._describe$$(0, 5, "We are inside the s{captain's quarter}s. It is demolished but there are no signs of a fight. It seems that someone was searching for something here.");
+    this._describe$$(0, 5, "We are inside the s{commander's quarter}s. It is demolished but there are no signs of a fight. It seems that someone was searching for something here.");
     this._describe$$(2, 3, 'A s{corridor}s is leading do office and administration section of the space station. There is a destroyed battle droid (model SIG-18) on the floor.', 'corridor');
     this._describe$$(1, 3, "We are in the s{office}s part of the station. We see a heap of papers and electronics in the centre of the room. It's partially burned. Seems like someone was trying to destroy all records. There are bullet holes on the walls.");
     this._describe$$(2, 2, 'This is an s{office}s after a huge battle: blood, bullet holes, shells and cartridges on the floor, burned equipment. In the corner, we see a destroyed battle droid SIG-18.');

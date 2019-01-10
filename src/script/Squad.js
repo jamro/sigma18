@@ -22,20 +22,21 @@ export default class Squad {
     let winner = this._map$$.getBattle$$().getDroids$$().length == 0;
     setTimeout(()=> {
       this._map$$.stopBattle$$();
-      this._soundPlayer$$.play$$('chat');
       let pos = this._map$$.getSquadPosition$$();
       let virusActive = this._map$$.getVirus$$().isActive$$();
-      let queue = [];
+      let queue = [
+        {c:'off'},
+        {c: () => {this._screen$$.showMap$$(this._map$$); }}
+      ];
       if(winner) {
         queue.push({c: 'chat', d: `Enemy defeated!`, f: 'commander'});
       } else {
-        queue.push({c: 'chat', d: `Thanks! We're at safe spot now: ${pos.toString()}. That was close!`, f: 'commander'});
+        queue.push({c: 'chat', d: `Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`, f: 'commander'});
       }
-      queue.push({c: () => {this._screen$$.showMap$$(this._map$$); }});
       if(!winner && !virusActive) {
-        queue.push({c: 'chat', d: `They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`, f: 'commander', t:1000});
+        queue.push({c: 'chat', d: `They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`, f: 'commander'});
       }
-      queue.push({c: 'sound', d: 'chat', t: 0});
+      queue.push({c:'on'});
 
       this._terminal$$.sequence$$(queue);
 
@@ -49,9 +50,8 @@ export default class Squad {
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
     this._screen$$.showBattle$$(battle);
     this._terminal$$.sequence$$([
-      {c:'chat', d:`Enemy units encountered (${enemies}).<br/> We need going back to previous position!`, f:'commander'},
-      {c:'sound', d:'chat', t:0},
-      {c:'chat', d:'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...', f:'commander', t:1000},
+      {c:'chat', d:`Enemy units encountered m{(${enemies})}m.<br/> We need get back to previous position!`, f:'commander'},
+      {c:'chat', d:'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...', f:'commander', t:300},
       {c: done}
     ]);
     this._battleLoop$$ = setInterval(() => {
@@ -76,13 +76,12 @@ export default class Squad {
         ];
       }
       if(!virusActive || Math.random() > 0.6) {
-        this._soundPlayer$$.play$$('chat');
         this._terminal$$.printChat$$(
           items[Math.floor(Math.random()*items.length)],
           'commander'
         );
       }
-    }, 6000);
+    }, 10000);
     door.onChange$$(() => {
       if(door.isClosed$$()) {
         this.stopBattle$$();
@@ -147,9 +146,7 @@ export default class Squad {
         return;
       }
       this._map$$.setSquadPosition$$(newX, newY);
-    };
 
-    let processItems = () => {
       if(this._map$$.getBattle$$()) {
         return done([]);
       }
@@ -157,27 +154,29 @@ export default class Squad {
       this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
 
       pos = this._map$$.getSquadPosition$$();
-      let msg = `Location ${pos.toString()} secured. ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
+      let msg = `Location m{${pos.toString()}}m secured. ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
       if(items.length > 0) {
-        msg += "<br/><br/>We have found:<br/>";
+        msg += "m{<br/><br/>We have found:<br/>";
         items.forEach((i) => msg += ` * ${i}<br/>`);
+        msg += "}m";
       }
-      this._terminal$$.printChat$$(msg, 'commander');
-      done(items);
+      this._terminal$$.printChat$$(msg, 'commander', () => {
+        this._terminal$$.println$$('');
+        this._terminal$$.println$$('Hint: Run s{com status}s for more details.');
+        done(items);
+      });
     };
 
     this._terminal$$.sequence$$(
-      {c: 'chat', d: `Exploring location on the ${this._directionMap$$[direction]}... Move! Move! Move!`, f: 'commander', t: 500},
-      {c: moveToNewLocation, t: 500},
-      {c: 'sound', d: 'chat', t: 0},
-      {c: processItems, t: 0}
+      {c: 'chat', d: `Exploring location on the ${this._directionMap$$[direction]}... m{Move! Move! Move!}m`, f: 'commander', t: 500},
+      {c: moveToNewLocation, t: 500}
     );
   }
 
   requestStatus$$(done) {
     let pos = this.getPosition$$();
     let fire = this._map$$.getBattle$$() ? 'r{We are under attack!}r ' : '';
-    let msg = `Our current position is ${pos.toString()}. ${fire}${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}<br/>\n<br/>\nPossible ways out:<br/>`;
+    let msg = `m{Our current position is ${pos.toString()}.}m ${fire}${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}<br/>\n<br/>\nm{Possible ways out:<br/>`;
     let doors = this._map$$.getRoom$$(pos.x, pos.y).getDoors$$();
 
     for(let direction in doors) {
@@ -193,6 +192,7 @@ export default class Squad {
     this._inventory$$.forEach((i) => {
       msg += ` * ${i}<br/>\n`;
     });
+    msg += '}m';
     this._terminal$$.sequence$$(
       {c: 'chat', d: msg, f: 'commander', t: 500},
       done

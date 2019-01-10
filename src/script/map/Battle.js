@@ -29,7 +29,7 @@ export default class Battle {
       new Unit(0.65, 1.04)
     ];
     this._loop$$ = null;
-    this._backupTime$$ = -50;
+    this._backupTime$$ = -100;
     this._loop_droidsTurn$$ = false;
     this._marinesTurn$$ = false;
     this._shootCounter$$ = 0;
