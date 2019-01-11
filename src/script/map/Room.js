@@ -2,7 +2,8 @@ import Position from './Position.js';
 
 export default class Room {
 
-  constructor(x, y) {
+  constructor(lightService, x, y) {
+    this._lightService$$ = lightService;
     this._position$$ = new Position(x, y);
     this._isVisited$$ = false;
     this._onChangeList$$ = [];
@@ -14,6 +15,10 @@ export default class Room {
     this._doorMap$$ = {
       n: null, e: null, s: null, w: null
     };
+  }
+
+  hasLight$$() {
+    return this._lightService$$.isRunning$$();
   }
 
   setEnemy$$(v) {
@@ -49,6 +54,7 @@ export default class Room {
   }
 
   visit$$() {
+    if(!this.hasLight$$()) return;
     this._isVisited$$ = true;
     this._onChangeList$$.forEach((c) => c());
   }
@@ -66,12 +72,14 @@ export default class Room {
   }
 
   flushItems$$() {
+    if(!this.hasLight$$()) return [];
     let result = this._itemList$$;
     this._itemList$$ = [];
     return result;
   }
 
   getDescription$$() {
+    if(!this.hasLight$$()) return "We've got total darkness here. Can't see anything.";
     return this._description$$;
   }
 

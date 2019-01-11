@@ -45,29 +45,10 @@ export default class ComCommand extends Command {
       this._squad.requestMove$$(direction, (items) => {
         items = items || [];
         let disks = items.filter((i) => i.getType$$() == 'disk');
-        let appNames = disks.map((d) => d.getCommand$$().getName$$());
         if(disks.length > 0) {
-          this._terminal.sequence$$(
-            {c: 'chat', d:'I\'ve got a data storage here! Uploading...', f:'commander'},
-            {c: 'sound', d: 'ok', t: 100},
-            "",
-            `Transferring disk data: s{${appNames.join(', ')}}s app.`,
-            {c: 'load'},
-            'App downloaded',
-            '',
-            {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
-            {c: 'load'},
-            {c: () => {
-              disks.forEach((d) => this._terminal.installCommand$$(d.getCommand$$()));
-            }},
-            'Done.',
-            '',
-            {c: () => {
-              appNames.forEach((a) => this._terminal.println$$(`Run s{${a}  help}s for more info.`));
-            }},
-            {c: 'sound', d: 'ok'},
-            {c: 'on'}
-          );
+          this._terminal.uploadSoftware$$(disks, () => {
+            this.enableInput$$();
+          });
         } else {
           this.enableInput$$();
         }

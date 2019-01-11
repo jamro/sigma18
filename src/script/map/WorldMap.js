@@ -6,7 +6,8 @@ import Battle from './Battle.js';
 
 export default class WorldMap {
 
-  constructor(width, height) {
+  constructor(services, width, height) {
+    this._services$$ = services;
     this._squadPosition$$ = null;
     this._virus$$ = new Virus();
     this._battle$$ = null;
@@ -14,10 +15,25 @@ export default class WorldMap {
     this._doorMap$$ = {};
     this._grid$$ = [];
     this._onChangeList$$ = [];
+
+    let lightServiceWest = this._services$$.getServiceByName$$('lights-west');
+    let lightServiceEast = this._services$$.getServiceByName$$('lights-east');
+
     for(let x = 0; x < width; x++) {
       this._grid$$[x] = [];
       for(let y = 0; y < height; y++) {
-        this._grid$$[x][y] = new Room(x, y);
+        //let lightService = ((x >= 4 && y != 8) || (x >= 5 && y == 8)) ? lightServiceEast : lightServiceWest;
+        let lightService = (y >= 8) ? lightServiceWest : lightServiceEast;
+        let room = new Room(lightService, x, y);
+        /* jshint ignore:start */
+        lightService.onStatusChange$$((isRunning) => {
+          if(!isRunning || room != this._grid$$[this._squadPosition$$.x][this._squadPosition$$.y]) return;
+          room.visit$$();
+          this._notifyChange$$();
+        });
+        /* jshint ignore:end */
+
+        this._grid$$[x][y] = room;
         this._grid$$[x][y].onChange$$(() => this._notifyChange$$());
       }
     }
@@ -108,7 +124,5 @@ export default class WorldMap {
   _notifyChange$$() {
     this._onChangeList$$.forEach((c) => c());
   }
-
-
 
 }

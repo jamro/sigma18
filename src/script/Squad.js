@@ -1,6 +1,7 @@
 export default class Squad {
 
   constructor(map, terminal, screen, soundPlayer) {
+    this._hasLight = true;
     this._soundPlayer$$ = soundPlayer;
     this._map$$ = map;
     this._screen$$ = screen;
@@ -13,6 +14,14 @@ export default class Squad {
       e: 'east',
       w: 'west',
     };
+    this._map$$.onChange$$(() => {
+      if(this._hasLight) return;
+      let pos = this._map$$.getSquadPosition$$();
+      let room = this._map$$.getRoom$$(pos.x, pos.y);
+      if(!room.hasLight$$()) return;
+      this._hasLight = true;
+      this.onLights();
+    });
   }
 
   stopBattle$$() {
@@ -20,27 +29,25 @@ export default class Squad {
       clearInterval(this._battleLoop$$);
     }
     let winner = this._map$$.getBattle$$().getDroids$$().length == 0;
-    setTimeout(()=> {
-      this._map$$.stopBattle$$();
-      let pos = this._map$$.getSquadPosition$$();
-      let virusActive = this._map$$.getVirus$$().isActive$$();
-      let queue = [
-        {c:'off'},
-        {c: () => {this._screen$$.showMap$$(this._map$$); }}
-      ];
-      if(winner) {
-        queue.push({c: 'chat', d: `Enemy defeated!`, f: 'commander'});
-      } else {
-        queue.push({c: 'chat', d: `Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`, f: 'commander'});
-      }
-      if(!winner && !virusActive) {
-        queue.push({c: 'chat', d: `They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`, f: 'commander'});
-      }
-      queue.push({c:'on'});
 
-      this._terminal$$.sequence$$(queue);
+    this._map$$.stopBattle$$();
+    let pos = this._map$$.getSquadPosition$$();
+    let virusActive = this._map$$.getVirus$$().isActive$$();
+    let queue = [
+      {c:'off', t:0},
+      {c: () => {this._screen$$.showMap$$(this._map$$); }}
+    ];
+    if(winner) {
+      queue.push({c: 'chat', d: `Enemy defeated!`, f: 'commander'});
+    } else {
+      queue.push({c: 'chat', d: `Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`, f: 'commander'});
+    }
+    if(!winner && !virusActive) {
+      queue.push({c: 'chat', d: `They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`, f: 'commander'});
+    }
+    queue.push({c:'on'});
 
-    }, 200);
+    this._terminal$$.sequence$$(queue);
   }
 
   startBattle$$(room, door, done) {
@@ -50,7 +57,7 @@ export default class Squad {
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
     this._screen$$.showBattle$$(battle);
     this._terminal$$.sequence$$([
-      {c:'chat', d:`Enemy units encountered m{(${enemies})}m.<br/> We need get back to previous position!`, f:'commander'},
+      {c:'chat', d:`Enemy units encountered m{(${enemies})}m.`, f:'commander'},
       {c:'chat', d:'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...', f:'commander', t:300},
       {c: done}
     ]);
@@ -90,6 +97,36 @@ export default class Squad {
         return false;
       }
     });
+  }
+
+  onLights() {
+    let pos = this._map$$.getSquadPosition$$();
+    let items = this._map$$.getRoom$$(pos.x, pos.y).flushItems$$();
+    this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
+    let disks = items.filter((i) => i.getType$$() == 'disk');
+    let msg = `Lights on! ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
+    if(items.length > 0) {
+      msg += "m{<br/><br/>We have found:<br/>";
+      items.forEach((i) => msg += ` * ${i}<br/>`);
+      msg += "}m";
+    }
+    this._terminal$$.sequence$$(
+      {c:'off', t:0},
+      {c:'chat', d:msg, f:'commander'},
+      {c: (done) => {
+        if(disks.length > 0) {
+          this._terminal$$.uploadSoftware$$(disks, () => {
+            done();
+          });
+        } else {
+          done();
+        }
+      }},
+      {c:'on'}
+    );
+
+
+
   }
 
   requestMove$$(direction, done) {
@@ -146,6 +183,7 @@ export default class Squad {
         return;
       }
       this._map$$.setSquadPosition$$(newX, newY);
+      this._hasLight = this._map$$.getRoom$$(newX, newY).hasLight$$();
 
       if(this._map$$.getBattle$$()) {
         return done([]);
@@ -176,15 +214,21 @@ export default class Squad {
   requestStatus$$(done) {
     let pos = this.getPosition$$();
     let fire = this._map$$.getBattle$$() ? 'r{We are under attack!}r ' : '';
-    let msg = `m{Our current position is ${pos.toString()}.}m ${fire}${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}<br/>\n<br/>\nm{Possible ways out:<br/>`;
+    let msg = `m{Our current position is ${pos.toString()}.}m ${fire}${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}<br/>\n`;
     let doors = this._map$$.getRoom$$(pos.x, pos.y).getDoors$$();
 
-    for(let direction in doors) {
-      if(doors[direction]) {
-        let state = doors[direction].isClosed$$() ? 'Locked' : 'Opened';
-        msg += ` * ${state} door on the ${this._directionMap$$[direction]} (ID: ${doors[direction].getId$$()})<br/>`;
+    msg += `m{`;
+    if(this._map$$.getRoom$$(pos.x, pos.y).hasLight$$()) {
+      msg += `<br/>\nPossible ways out:<br/>`;
+      for(let direction in doors) {
+        if(doors[direction]) {
+          let state = doors[direction].isClosed$$() ? 'Locked' : 'Opened';
+          msg += ` * ${state} door on the ${this._directionMap$$[direction]} (ID: ${doors[direction].getId$$()})<br/>`;
+        }
       }
     }
+
+
     msg += "<br/>\nInventory:<br/>\n";
     if(this._inventory$$.length == 0) {
       msg += ' * nothing<br/>\n';

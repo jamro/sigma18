@@ -18,7 +18,7 @@ export default class MapBuilder {
   }
 
   build$$() {
-    this._map$$ = new WorldMap(10, 10);
+    this._map$$ = new WorldMap(this._services$$, 10, 10);
     this._layoutRooms$$();
     this._layoutEnemies$$();
     this._layoutDoors$$();
@@ -33,20 +33,21 @@ export default class MapBuilder {
   placeItems$$(squad, map, virus) {
 
     this._map$$.getRoom$$(3, 8).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
+    this._map$$.getRoom$$(3, 7).addItem$$(new KeyCard('blue'));
     this._map$$.getRoom$$(3, 9).addItem$$(new KeyCard('yellow'));
     this._map$$.getRoom$$(3, 8).addItem$$(new KeyCard('red'));
     this._map$$.getRoom$$(3, 8).addItem$$(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DoorCommand(map, squad)));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DockCommand(map, this._capsuleDoor$$)));
-    this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new VirusCommand(map.getVirus$$())));
+    this._map$$.getRoom$$(3, 7).addItem$$(new Disk(new VirusCommand(map.getVirus$$())));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new PowerCommand(this._services$$)));
     this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new CrewCommand()));
 
   }
 
   _layoutEnemies$$() {
-    this._map$$.getRoom$$(3, 7).setEnemy$$(4);
-    this._map$$.getRoom$$(3, 6).setEnemy$$(3);
+    //this._map$$.getRoom$$(3, 7).setEnemy$$(4);
+    this._map$$.getRoom$$(2, 6).setEnemy$$(3);
   }
 
   _layoutRooms$$() {

@@ -7,6 +7,7 @@ export default class TerminalView extends View {
     super(document);
     this._onSubmitCallbackList$$ = [];
     this._refId$$ = 0;
+    this._disableLevel$$ = 0;
     let data = localStorage.getItem('history') || '[]';
     this._historyFull$$ = JSON.parse(data);
     this._history$$ = [''].concat(this._historyFull$$);
@@ -142,18 +143,23 @@ export default class TerminalView extends View {
   }
 
   isEnabled$$() {
-    return !this._view$$.input.textField.element.disabled;
+    return this._disableLevel$$ <= 0;
   }
 
   disable$$() {
+    this._disableLevel$$++;
     this._view$$.input.textField.element.disabled = true;
     this.setPromptText$$('...');
   }
 
   enable$$() {
-    this._view$$.input.textField.element.disabled = false;
-    this.setPromptText$$();
-    this._view$$.input.textField.element.focus();
+    this._disableLevel$$--;
+    this._disableLevel$$ = Math.max(0, this._disableLevel$$);
+    if(this._disableLevel$$ == 0) {
+      this._view$$.input.textField.element.disabled = false;
+      this.setPromptText$$();
+      this._view$$.input.textField.element.focus();
+    }
   }
 
   attachToDOM$$(parent) {

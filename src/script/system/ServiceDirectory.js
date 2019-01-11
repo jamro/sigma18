@@ -6,7 +6,8 @@ export default class ServiceDirectory {
     this._data$$ = [];
     this.addService$$('power-manager', '40.32.125.1', 3).on$$();
     this.addService$$('docker', '40.32.125.120', 10).on$$();
-    this.addService$$('lightning', '40.32.125.231', 14).on$$();
+    this.addService$$('lights-east', '40.32.125.231', 6);
+    this.addService$$('lights-west', '40.32.125.232', 8).on$$();
     this.addService$$('monitoring', '40.32.125.12', 5);
     this.addService$$('oxygen-genertor', '40.32.125.193', 13).on$$();
     this.addService$$('pump-station', '40.32.125.43', 20);
@@ -44,30 +45,27 @@ export default class ServiceDirectory {
     return this._data$$.reduce((sum, srv) => sum += srv.getPower$$(), 0);
   }
 
-  on$$(id) {
+  validateStateChange$$(id, newState) {
     let service = this.getService$$(id);
     if(!service) {
-      throw new Error(`Service ${id} not found`);
+      return `Service ${id} not found`;
     }
-    if(service.isRunning$$()) {
-      throw new Error(`Service ${id} (${service.getName$$()}) is already running`);
+    if(service.isRunning$$() == newState) {
+      return `Service ${id} (${service.getName$$()}) is already ${newState ? 'running' : 'stopped'}.`;
     }
+    let missingPower = this.getTotalPower$$() + service.getRequiredPower$$() - this.getPowerSupply$$();
+    if(newState && missingPower > 0) {
+      return `Not enough of power supply: s{${missingPower.toFixed(2)}kW}s is missing`;
+    }
+  }
+
+  on$$(id) {
+    let service = this.getService$$(id);
     service.on$$();
-    let missingPower = this.getTotalPower$$() - this.getPowerSupply$$();
-    if(missingPower > 0) {
-      service.off$$();
-      throw new Error(`Not enough of power supply: s{${missingPower.toFixed(2)}kW}s is missing`);
-    }
   }
 
   off$$(id) {
     let service = this.getService$$(id);
-    if(!service) {
-      throw new Error(`Service ${id} not found`);
-    }
-    if(!service.isRunning$$()) {
-      throw new Error(`Service ${id} (${service.getName$$()}) is already stopped`);
-    }
     service.off$$();
   }
 

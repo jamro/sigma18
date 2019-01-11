@@ -27,18 +27,13 @@ export default class PowerCommand extends Command {
 
   setStatus$$(id, status) {
     this._terminal.getView$$().disable$$();
+    let errorMessage = this._serviceDirectory$$.validateStateChange$$(id, status);
     this._terminal.connect$$('power-manager', [
       `${status ? "Starting" : "Stopping"} service ${id}...`
     ], () => {
-      try {
-        if(status) {
-          this._serviceDirectory$$.on$$(id);
-        } else {
-          this._serviceDirectory$$.off$$(id);
-        }
-      } catch (err) {
+      if(errorMessage) {
         this._terminal.sequence$$(
-          "Error: " + err.message,
+          "Error: " + errorMessage,
           {c:'sound',d:'err'},
           {c:'on'}
         );
@@ -50,6 +45,13 @@ export default class PowerCommand extends Command {
         {c:'load'},
         `Service ${status ? "started" : "stopped"}`,
         {c:'sound',d:'ok'},
+        {c: () => {
+          if(status) {
+            this._serviceDirectory$$.on$$(id);
+          } else {
+            this._serviceDirectory$$.off$$(id);
+          }
+        }}
       ];
       if(service.getName$$() == 'oxygen-genertor' && !status) {
         queue = queue.concat([

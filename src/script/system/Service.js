@@ -6,6 +6,7 @@ class Service {
     this._ip = ip;
     this._power = power;
     this._isRunning = false;
+    this._onStatusChangeList$$ = [];
   }
 
   isRunning$$() {
@@ -20,6 +21,10 @@ class Service {
     return this._isRunning ? this._power : 0;
   }
 
+  getRequiredPower$$() {
+    return this._power;
+  }
+
   getIp$$() {
     return this._ip;
   }
@@ -29,11 +34,22 @@ class Service {
   }
 
   on$$() {
-    this._isRunning = true;
+    if(!this._isRunning) {
+      this._isRunning = true;
+      this._onStatusChangeList$$.forEach((c) => c(true));
+    }
   }
 
   off$$() {
-    this._isRunning = false;
+    if(this._isRunning) {
+      this._isRunning = false;
+      this._onStatusChangeList$$.forEach((c) => c(false));
+    }
+
+  }
+
+  onStatusChange$$(callback) {
+    this._onStatusChangeList$$.push(callback);
   }
 
 }
