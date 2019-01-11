@@ -22,8 +22,7 @@ export default class WorldMap {
     for(let x = 0; x < width; x++) {
       this._grid$$[x] = [];
       for(let y = 0; y < height; y++) {
-        //let lightService = ((x >= 4 && y != 8) || (x >= 5 && y == 8)) ? lightServiceEast : lightServiceWest;
-        let lightService = (y >= 8) ? lightServiceWest : lightServiceEast;
+        let lightService = ((x >= 4 && y != 8) || (x >= 5 && y == 8)) ? lightServiceEast : lightServiceWest;
         let room = new Room(lightService, x, y);
         /* jshint ignore:start */
         lightService.onStatusChange$$((isRunning) => {
