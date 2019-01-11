@@ -2,7 +2,8 @@
 
 export default class Terminal {
 
-  constructor(view, soundPlayer) {
+  constructor(serviceDirectory, view, soundPlayer) {
+    this._serviceDirectory$$ = serviceDirectory;
     this._view$$ = view;
     this._soundPlayer$$ = soundPlayer;
     this._commandProcessorList$$ = [];
@@ -11,6 +12,39 @@ export default class Terminal {
 
   getSoundPlayer$$() {
     return this._soundPlayer$$;
+  }
+
+  connect$$(serviceName, msg, done) {
+    let handleErr = (err) => {
+      this.sequence$$(
+        "",
+        "Error: " + err,
+        {c:'sound', d:'err'},
+        {c:'on'}
+      );
+    };
+    this.sequence$$(
+      `Connecting to the gateway 10.43.23.4...`,
+      `Connection established`,
+      `Service Discovery in progress...`,
+      {c: () => {
+        let service = this._serviceDirectory$$.getServiceByName$$(serviceName);
+        if(!service) {
+          return handleErr('Cannot find service ' + serviceName);
+        }
+        if(!service.isRunning$$()) {
+          return handleErr(`Service s{${service.getName$$()}}s is down`);
+        }
+
+        let queue = [
+          `Service ${service.getName$$()} found at ${service.getIp$$()}`,
+          {c:'ln',d:'', t:300}
+        ];
+        queue = queue.concat(msg);
+        queue.push({c: () => done()});
+        this.sequence$$(queue);
+      }, t: 300}
+    );
   }
 
   commandReceived$$(command) {

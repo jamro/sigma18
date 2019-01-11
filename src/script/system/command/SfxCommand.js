@@ -2,9 +2,9 @@ import Command from '../Command.js';
 
 export default class SfxCommand extends Command {
 
-  constructor(terminal) {
+  constructor(soundPlayer) {
     super();
-    this._terminal = terminal;
+    this._soundPlayer$$ = soundPlayer;
   }
 
   getName$$() {
@@ -29,15 +29,15 @@ export default class SfxCommand extends Command {
   }
 
   execOn() {
-    this._terminal.getSoundPlayer$$().mute$$(false);
+    this._soundPlayer$$.mute$$(false);
     this._terminal.println$$("Sound enabled");
-    this._terminal.getSoundPlayer$$().play$$('ok');
+    this._soundPlayer$$.play$$('ok');
   }
 
   execOff() {
-    this._terminal.getSoundPlayer$$().mute$$(true);
+    this._soundPlayer$$.mute$$(true);
     this._terminal.println$$("Sound disabled");
-    this._terminal.getSoundPlayer$$().play$$('ok');
+    this._soundPlayer$$.play$$('ok');
   }
 
 

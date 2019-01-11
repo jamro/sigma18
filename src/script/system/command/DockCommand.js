@@ -23,7 +23,7 @@ export default class DockCommand extends Command {
 
   execList() {
     this.disableInput$$();
-    this.connect$$('Dock', '10.43.23.91', ['Query station list...'], () => {
+    this._terminal.connect$$('docker', ['Query station list...'], () => {
       // @TODO update location of dock stations
       this._terminal.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
                         "-----------|----------|---------|-----------------\n" +
@@ -38,7 +38,7 @@ export default class DockCommand extends Command {
   execLaunch(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
     this.disableInput$$();
-    this.connect$$('Dock', '10.43.23.91', [], () => {
+    this._terminal.connect$$('docker', [], () => {
       this._terminal.println$$("Authorization is required!");
       this._terminal.prompt$$('Auth Code:', (pass) => {
         if(pass.toUpperCase() != 'U317AB') {
@@ -126,13 +126,13 @@ export default class DockCommand extends Command {
 
 
     this.disableInput$$();
-    this.connect$$('Dock', '10.43.23.91', msg, () => {});
+    this._terminal.connect$$('pump-station', msg, () => {});
   }
 
   execStatus(command) {
     this.disableInput$$();
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this.connect$$('Dock', '10.43.23.91', [`Station record found`], () => {
+    this._terminal.connect$$('docker', [`Station record found`], () => {
       let gates, port, net, pressure, health;
       let unit = [];
       let ok = 's{ok}s';

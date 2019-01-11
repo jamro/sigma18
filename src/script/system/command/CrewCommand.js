@@ -34,7 +34,7 @@ export default class CrewCommand extends Command {
       return t;
     };
     this.disableInput$$();
-    this.connect$$('CrewDB', '10.43.23.121', ['Query crew data...', this._data.length + " records received"], () => {
+    this._terminal.connect$$('data-warehouse', ['Query crew data...', this._data.length + " records received"], () => {
       let msg = "<pre>User Name   |Full Name          |Role\n" +
                      "------------|-------------------|------------------------\n" ;
       this._data.forEach((r) => {
@@ -53,7 +53,7 @@ export default class CrewCommand extends Command {
     record = record.length ? record[0] : null;
 
     this.disableInput$$();
-    this.connect$$('CrewDB', '10.43.23.121', [
+    this._terminal.connect$$('data-warehouse', [
       'Search Criteria: username=' + name,
       record ? '1 record found' : '',
       {c:'ln', d:"", t: 500}

@@ -16,20 +16,6 @@ export default class Command {
     return (command[0].toLowerCase() == this.getName$$().toLowerCase());
   }
 
-  connect$$(serviceName, serviceIp, msg, done) {
-    let log = [
-      `Connecting to the gateway 10.43.23.4...`,
-      `Connection established`,
-      `Service Discovery in progress...`,
-      `${serviceName} Service found: ${serviceIp}`,
-      ``,
-    ];
-    log = log.concat(msg);
-    this._terminal.sequence$$(log.concat(
-      {c: done}
-    ));
-  }
-
   exec$$(command) {
     let name = command.length >= 2 ? command[1] : "";
     let method = 'exec' + name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();

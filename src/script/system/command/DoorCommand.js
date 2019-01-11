@@ -44,7 +44,7 @@ export default class DoorCommand extends Command {
 
   doorSwitch(command, doClose) {
     this.disableInput$$();
-    this.connect$$('Door', '10.43.23.37', [`Door look up: ${this.getDoorId(command)}...`], () => {
+    this._terminal.connect$$('doors', [`Door look up: ${this.getDoorId(command)}...`], () => {
       let door = this.findDoor(command);
       if(!door) {
         this._terminal.getSoundPlayer$$().play$$('err');
