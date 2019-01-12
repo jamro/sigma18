@@ -125,7 +125,7 @@ export default class DoorCommand extends Command {
           this._terminal.sequence$$([
             info,
             {c:'chat', d:`Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 800},
-            {c:'chat', d:`Done`, f:'commander', t: 800},
+            {c:'chat', d:`The key card is in the reader. Done!`, f:'commander', t: 800},
             "",
             {c:'ln', d:`Verification of key card...`, t: 1000},
             {c:'sound', d:'ok', t:0},
@@ -153,13 +153,16 @@ export default class DoorCommand extends Command {
   execHelp() {
     this._terminal.sequence$$(
       "Use this command to open and close doors of the space station",
+      "It requires ID of door.",
+      "Run s{com status}s to get IDs of all doors in the room",
+      "",
       "Available commands are:",
       '',
       "s{door open [id]}s",
-      "Open the door. For example s{door open D-1234}s",
+      "Open the door. For example s{door open D12}s",
       '',
       "s{door close [id]}s",
-      "Close the door. For example s{door close D-1234}s",
+      "Close the door. For example s{door close D12}s",
       {c: 'sound', d: 'ok', t:0}
     );
 

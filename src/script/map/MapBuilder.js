@@ -29,34 +29,36 @@ export default class MapBuilder {
     return this._map$$;
   }
 
-
   placeItems$$(squad, map, virus) {
-
-    this._map$$.getRoom$$(3, 8).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
-    this._map$$.getRoom$$(3, 7).addItem$$(new KeyCard('blue'));
-    this._map$$.getRoom$$(3, 9).addItem$$(new KeyCard('yellow'));
-    this._map$$.getRoom$$(3, 8).addItem$$(new KeyCard('red'));
-    this._map$$.getRoom$$(3, 8).addItem$$(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
-    this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DoorCommand(map, squad)));
-    this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new DockCommand(map, this._capsuleDoor$$)));
-    this._map$$.getRoom$$(3, 7).addItem$$(new Disk(new VirusCommand(map.getVirus$$())));
-    this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new PowerCommand(this._services$$)));
-    this._map$$.getRoom$$(3, 8).addItem$$(new Disk(new CrewCommand()));
-
+    this._map$$.getRoom$$(4, 0).addItem$$(new Disk(new PowerCommand(this._services$$)));
+    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
+    this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
+    this._map$$.getRoom$$(1, 3).addItem$$(new Disk(new CrewCommand()));
+    this._map$$.getRoom$$(7, 4).addItem$$(new KeyCard('blue'));
+    this._map$$.getRoom$$(0, 5).addItem$$(new Disk(new VirusCommand(map.getVirus$$())));
+    this._map$$.getRoom$$(1, 6).addItem$$(new KeyCard('red'));
+    this._map$$.getRoom$$(2, 6).addItem$$(new Disk(new DoorCommand(map, squad)));
+    this._map$$.getRoom$$(5, 6).addItem$$(new KeyCard('yellow'));
+    this._map$$.getRoom$$(4, 7).addItem$$(new Disk(new DockCommand(map, this._capsuleDoor$$)));
   }
 
   _layoutEnemies$$() {
-    //this._map$$.getRoom$$(3, 7).setEnemy$$(4);
-    this._map$$.getRoom$$(2, 6).setEnemy$$(3);
+    this._map$$.getRoom$$(7, 3).setEnemy$$(6);
+    this._map$$.getRoom$$(6, 6).setEnemy$$(4);
+    this._map$$.getRoom$$(5, 6).setEnemy$$(2);
+    this._map$$.getRoom$$(1, 6).setEnemy$$(3);
+    this._map$$.getRoom$$(2, 8).setEnemy$$(5);
+    this._map$$.getRoom$$(3, 1).setEnemy$$(3);
+    this._map$$.getRoom$$(2, 2).setEnemy$$(4);
   }
 
   _layoutRooms$$() {
-    this._describe$$(4, 8, "It's our spaceship - s{Sierra 23}s. It was totally wrecked during approaching the station. What's worse, the dock station was damaged too. We have stuck here.");
+    this._describe$$(4, 8, "We are at our spaceship - s{Sierra 23}s. It was totally wrecked during approaching the station. What's worse, the dock station was damaged too. We have stuck here.");
     this._describe$$(3, 8, 'We are at s{docks}s. There is a rescue capsule behind the southern door. We could use it to escape from here.');
     this._describe$$(3, 9, "We are at s{dock station DS002}s. It is a rescue capsule! We could use it to escape from here, but we need your help to launch it. Special software may be required.");
     this._describe$$(2, 8, 's{Empty dock station}s. There was probably a rescue capsule before but it has departed a long time ago.');
     this._describe$$(3, 7, 'A long s{corridor}s that joins docks with the rest of the station.', 'corridor');
-    this._describe$$(3, 6, 'A s{corridor}s. There is a plate on the eastern door: Warehouse', 'corridor');
+    this._describe$$(3, 6, 'A s{corridor}s. There is a plate on the eastern door labeled Warehouse', 'corridor');
     this._describe$$(3, 5, 'A s{corridor}s. There is a canteen behind the eastern door. The western corridor leads to quarters of the crew. We see a lobby at the north.', 'corridor');
     this._describe$$(3, 4, 'It is a s{corridor}s that leads to main Lobby. It seems to be totally empty.', 'corridor');
     this._describe$$(3, 3, 'The main s{lobby}s is absolutely empty. There are bullet holes in the front of the reception desk. The logo in the back is damaged. A mix of documents and waste is on the floor. Seems like a regular battle took place here.');
@@ -77,11 +79,11 @@ export default class MapBuilder {
     this._describe$$(7, 2, "It's a dedicated s{warehouse}s for the lab. They keep spare parts of SIG-18 and some backup computers here.");
     this._describe$$(7, 4, 'We have entered the s{server room}s of the lab. Lots of servers are here. Everything is up and running. They are separate to core systems of the space station so they must run services dedicated for researches of the lab.');
     this._describe$$(2, 5, 'It is a s{corridor}s to quarters of the crew.', 'corridor');
-    this._describe$$(1, 5, "We are walking down a s{corridor}s. There is a door plate on the west: Commander's Quarter.", 'corridor');
+    this._describe$$(1, 5, "We are walking down a s{corridor}s. There is a door plate on the west with label: Commander's Quarter.", 'corridor');
     this._describe$$(2, 6, "That's a s{room of crew members}s. It has 8 beds. There are many signs of a fight: the blood on walls and bullet holes everywhere. The cabinets are smashed on the floor.");
     this._describe$$(1, 6, "It is a s{room of crew members}s. It has 6 beds. The room is very clean comparing to other locations. Seems like it wasn't used recently.");
     this._describe$$(0, 5, "We are inside the s{commander's quarter}s. It is demolished but there are no signs of a fight. It seems that someone was searching for something here.");
-    this._describe$$(2, 3, 'A s{corridor}s is leading do office and administration section of the space station. There is a destroyed battle droid (model SIG-18) on the floor.', 'corridor');
+    this._describe$$(2, 3, 'A s{corridor}s is leading to office and administration section of the space station. There is a destroyed battle droid (model SIG-18) on the floor.', 'corridor');
     this._describe$$(1, 3, "We are in the s{office}s part of the station. We see a heap of papers and electronics in the centre of the room. It's partially burned. Seems like someone was trying to destroy all records. There are bullet holes on the walls.");
     this._describe$$(2, 2, 'This is an s{office}s after a huge battle: blood, bullet holes, shells and cartridges on the floor, burned equipment. In the corner, we see a destroyed battle droid SIG-18.');
     this._describe$$(3, 2, "It's the north s{corridor}s. Some documents from the lobby are spread all over the floor.", 'corridor');
@@ -99,7 +101,7 @@ export default class MapBuilder {
     this._map$$.addDoor$$(2, 8, 3, 8).close$$().damage$$(); // empty -> dock
     this._map$$.addDoor$$(3, 8, 3, 7); // dock -> corridor
     this._map$$.addDoor$$(3, 7, 3, 6); // corridor -> corridor
-    this._map$$.addDoor$$(3, 6, 3, 5).close$$().damage$$(); // corridor -> corridor
+    this._map$$.addDoor$$(3, 6, 3, 5).damage$$().close$$(); // corridor -> corridor
     this._map$$.addDoor$$(3, 5, 3, 4); // corridor -> corridor
     this._map$$.addDoor$$(3, 4, 3, 3); // corridor -> lobby
     this._map$$.addDoor$$(3, 6, 4, 6).close$$().requireKey$$('blue'); // corridor -> warehouse
@@ -109,31 +111,32 @@ export default class MapBuilder {
     this._map$$.addDoor$$(3, 5, 4, 5); // corridor -> canteen
     this._map$$.addDoor$$(4, 5, 5, 5); // canteen -> canteen
     this._map$$.addDoor$$(5, 5, 5, 6).close$$(); // canteen -> kitchen
-    this._map$$.addDoor$$(5, 7, 6, 7).close$$(); // warehouse -> corridor
+    this._map$$.addDoor$$(5, 7, 6, 7).close$$().requireKey$$('blue'); // warehouse -> corridor
     this._map$$.addDoor$$(6, 7, 6, 6); // corridor -> corridor
     this._map$$.addDoor$$(6, 6, 6, 5).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(6, 5, 6, 4).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(6, 4, 6, 3).close$$(); // corridor -> security check
     this._map$$.addDoor$$(5, 3, 6, 3).close$$(); // corridor -> security check
     this._map$$.addDoor$$(4, 3, 5, 3); // corridor -> corridor
-    this._map$$.addDoor$$(3, 3, 4, 3); // lobby -> corridor
-    this._map$$.addDoor$$(6, 3, 7, 3).close$$(); // security -> lab
+    this._map$$.addDoor$$(3, 3, 4, 3).close$$(); // lobby -> corridor
+    this._map$$.addDoor$$(6, 3, 7, 3).close$$().requireKey$$('yellow'); // security -> lab
     this._map$$.addDoor$$(7, 3, 7, 2).close$$(); // lab -> warehouse
-    this._map$$.addDoor$$(7, 3, 7, 4).close$$(); // lab -> server room
+    this._map$$.addDoor$$(7, 3, 7, 4).close$$().lock$$('wirving', 'Name of engineer who has red hair', /duncan/i); // lab -> server room
     this._map$$.addDoor$$(2, 5, 3, 5).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(1, 5, 2, 5).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(3, 6, 2, 6); // corridor -> crew quarter
     this._map$$.addDoor$$(2, 5, 2, 6).close$$(); // corridor -> crew quarter
     this._map$$.addDoor$$(1, 5, 1, 6).close$$(); // corridor -> crew quarter
     this._map$$.addDoor$$(1, 5, 0, 5).close$$().lock$$('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // corridor -> captain quarter
-    this._map$$.addDoor$$(3, 3, 2, 3); // lobby -> corridor
+    this._map$$.addDoor$$(3, 3, 2, 3).close$$(); // lobby -> corridor
     this._map$$.addDoor$$(2, 3, 1, 3).close$$(); // corridor -> office
     this._map$$.addDoor$$(2, 3, 2, 2).close$$(); // corridor -> office
     this._map$$.addDoor$$(3, 3, 3, 2); // lobby -> corridor
-    this._map$$.addDoor$$(3, 2, 3, 1).damage$$(); // corridor -> corridor
-    this._map$$.addDoor$$(3, 1, 3, 0).close$$(); // corridor -> oxy gen
-    this._map$$.addDoor$$(3, 0, 4, 0).close$$(); // oxy gen -> comp core
+    this._map$$.addDoor$$(3, 2, 3, 1); // corridor -> corridor
+    this._map$$.addDoor$$(3, 1, 3, 0).close$$().requireKey$$('red'); // corridor -> oxy gen
+    this._map$$.addDoor$$(3, 0, 4, 0).close$$().lock$$('ngallegos', 'What company have most of the crew worked for before?', /elcroy/i); // oxy gen -> comp core
     this._map$$.addDoor$$(3, 0, 2, 0).close$$(); // oxy gen -> power gen
+    this._map$$.addDoor$$(6, 6, 5, 6).close$$(); // back corridor -> kitchen
 
   }
 

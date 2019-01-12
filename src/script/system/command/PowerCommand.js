@@ -60,13 +60,15 @@ export default class PowerCommand extends Command {
         ]);
       }
       if(service.getName$$() == 'power-manager' && !status) {
-        this._serviceDirectory$$.on$$(id);
         queue = queue.concat([
           "",
           {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
           {c:'sound',d:'err', t:500},
           `Restoring service ${id}...`,
           {c:'load'},
+          {c: () => {
+            this._serviceDirectory$$.on$$(id);
+          }},
           `Service restored`,
           {c:'sound',d:'ok'}
         ]);

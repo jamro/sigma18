@@ -132,7 +132,7 @@ export default class VirusCommand extends Command {
 
   execHelp() {
     this._terminal.sequence$$(
-      "The virus attacks SIG-18 communication modules. It will disrupt incoming and outcoming traffic of infected host. The virus will spread across other SIG-18 that try to communicate with infected host, eventually making communication across whole SIG-18 netwoek impossible.",
+      "The virus attacks SIG-18 communication modules. It will disrupt incoming and outcoming traffic of infected host. The virus will spread across other SIG-18 that try to communicate with infected host, eventually making communication across whole SIG-18 network impossible.",
       "r{WARNING! IT SPREADS VERY FAST! USE WITH CAUTION!}r",
       "",
       "Available commands are:",

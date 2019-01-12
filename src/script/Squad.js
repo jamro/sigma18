@@ -125,8 +125,6 @@ export default class Squad {
       {c:'on'}
     );
 
-
-
   }
 
   requestMove$$(direction, done) {
@@ -199,8 +197,6 @@ export default class Squad {
         msg += "}m";
       }
       this._terminal$$.printChat$$(msg, 'commander', () => {
-        this._terminal$$.println$$('');
-        this._terminal$$.println$$('Hint: Run s{com status}s for more details.');
         done(items);
       });
     };

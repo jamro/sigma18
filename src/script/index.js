@@ -11,6 +11,7 @@ import SoundPlayer from './system/common/SoundPlayer.js';
 import Squad from './Squad.js';
 import MapBuilder from './map/MapBuilder.js';
 
+
 let services = new ServiceDirectory();
 let player = new SoundPlayer();
 let builder = new MapBuilder(services);
