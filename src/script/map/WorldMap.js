@@ -3,10 +3,12 @@ import Room from './Room.js';
 import Door from './Door.js';
 import Virus from './Virus.js';
 import Battle from './Battle.js';
+import Walkthrough from '../Walkthrough.js';
 
 export default class WorldMap {
 
   constructor(services, width, height) {
+    this._walkthrough$$ = new Walkthrough();
     this._services$$ = services;
     this._squadPosition$$ = null;
     this._virus$$ = new Virus();
@@ -15,6 +17,20 @@ export default class WorldMap {
     this._doorMap$$ = {};
     this._grid$$ = [];
     this._onChangeList$$ = [];
+
+    this._virus$$.onActivated$$(() => {
+      this._walkthrough$$.handleEvent$$('com-virus-activate');
+    });
+
+    this._services$$.getServiceByName$$('lights-east').onStatusChange$$((state) => {
+      this._walkthrough$$.handleEvent$$('com-lights-east-' + (state ? 'on' : 'off'));
+    });
+
+    this._services$$.getServiceByName$$('pump-station').onStatusChange$$((state) => {
+      this._walkthrough$$.handleEvent$$('com-pump-station-' + (state ? 'on' : 'off'));
+    });
+
+
 
     let lightServiceWest = this._services$$.getServiceByName$$('lights-west');
     let lightServiceEast = this._services$$.getServiceByName$$('lights-east');
@@ -38,11 +54,16 @@ export default class WorldMap {
     }
   }
 
+  getWalthrough$$() {
+    return this._walkthrough$$;
+  }
+
   getBattle$$() {
     return this._battle$$;
   }
 
   startBattle$$(room, door, onWin) {
+    this._walkthrough$$.handleEvent$$('battle-start');
     this._battle$$ = new Battle(room, door, this._virus$$, onWin);
     this._battle$$.start$$();
   }
@@ -104,6 +125,12 @@ export default class WorldMap {
     this._doorList$$.push(door);
     this._doorMap$$[door.getId$$()] = door;
     door.onChange$$(() => this._notifyChange$$());
+    door.onChange$$(() => {
+      let event = 'door-';
+      event += door.isClosed$$() ? 'close' : 'open';
+      event += "-" + door.getLabel$$();
+      this._walkthrough$$.handleEvent$$(event);
+    });
     return door;
   }
 

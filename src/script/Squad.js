@@ -102,7 +102,7 @@ export default class Squad {
   onLights() {
     let pos = this._map$$.getSquadPosition$$();
     let items = this._map$$.getRoom$$(pos.x, pos.y).flushItems$$();
-    this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
+    this.addToInventory$$(items);
     let disks = items.filter((i) => i.getType$$() == 'disk');
     let msg = `Lights on! ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
     if(items.length > 0) {
@@ -187,7 +187,7 @@ export default class Squad {
         return done([]);
       }
       let items = this._map$$.getRoom$$(newX, newY).flushItems$$();
-      this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
+      this.addToInventory$$(items);
 
       pos = this._map$$.getSquadPosition$$();
       let msg = `Location m{${pos.toString()}}m secured. ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
@@ -237,6 +237,11 @@ export default class Squad {
       {c: 'chat', d: msg, f: 'commander', t: 500},
       done
     );
+  }
+
+  addToInventory$$(items) {
+    this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
+    items.forEach((i) => this._map$$.getWalthrough$$().handleEvent$$('item-' + i.getId$$()));
   }
 
   getPosition$$() {

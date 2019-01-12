@@ -56,10 +56,24 @@ export default class ComCommand extends Command {
     });
   }
 
+  execHint() {
+    let hint = this._map.getWalthrough$$().getHint$$();
+    this._terminal.sequence$$(
+      {c:'off'},
+      {c:'chat', d:'Commander, any ideas what to do next?', f:'hacker'},
+      {c:'chat', d:'Really? I thought that you are the hacker here! ' + hint, f:'commander'},
+      {c:'on'}
+    );
+  }
+
   execHelp() {
     this._terminal.sequence$$(
       "Use this command to communicate with squad of marines in the field",
       "Available commands are:",
+      '',
+      "s{com hint}s",
+      "r{NOTICE! Real hacker does not need that! FOR NOOBS ONLY!}r",
+      "Ask marines for a hint. Use it whenever you got stuck and you do not know what to do.",
       '',
       "s{com status}s",
       "Ask marines to send status report from the field.",
@@ -71,7 +85,7 @@ export default class ComCommand extends Command {
       "* s{e}s - East",
       "* s{s}s - South",
       "* s{w}s - West",
-      "For example: s{com go n}s",
+      "For example: s{com go w}s",
       {c: 'sound', d: 'ok', t:0}
     );
   }

@@ -11,7 +11,6 @@ import SoundPlayer from './system/common/SoundPlayer.js';
 import Squad from './Squad.js';
 import MapBuilder from './map/MapBuilder.js';
 
-
 let services = new ServiceDirectory();
 let player = new SoundPlayer();
 let builder = new MapBuilder(services);
@@ -70,3 +69,7 @@ terminal.sequence$$(
   {c: 'sound', d: 'ok', t:0},
   {c: 'on', t:0}
 );
+
+window.onbeforeunload = function(){
+  return 'Are you sure you want to leave?';
+};

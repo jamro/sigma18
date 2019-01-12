@@ -7,6 +7,11 @@ export default class Virus {
     this._hostList$$ = [];
     this._hostLimit$$ = 36;
     this._activationThreshold$$ = 0.9;
+    this._onActivatedList$$ = [];
+  }
+
+  onActivated$$(callback) {
+    this._onActivatedList$$.push(callback);
   }
 
   isActive$$() {
@@ -86,6 +91,7 @@ export default class Virus {
       this._hostList$$[Math.floor(Math.random()*this._hostList$$.length)].active = true;
     }, 500);
     this._isActive$$ = true;
+    this._onActivatedList$$.forEach((c) => c());
     return true;
   }
 

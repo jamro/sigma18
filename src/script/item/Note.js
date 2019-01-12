@@ -11,6 +11,10 @@ export default class Note extends Item {
     return 'note';
   }
 
+  getId$$() {
+    return 'note';
+  }
+
   toString() {
     return `Note: &quot;${this._msg}&quot;`;
   }

@@ -11,6 +11,10 @@ export default class StaticItem extends Item {
     return 'static';
   }
 
+  getId$$() {
+    return 'static';
+  }
+
   toString() {
     return `${this._desc}`;
   }

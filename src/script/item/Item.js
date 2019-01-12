@@ -4,6 +4,10 @@ export default class Item {
     return 'item';
   }
 
+  getId$$() {
+    return 'item';
+  }
+
   toString() {
     return 'Item';
   }

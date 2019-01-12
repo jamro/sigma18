@@ -15,6 +15,10 @@ export default class Disk extends Item {
     return this._command;
   }
 
+  getId$$() {
+    return 'disk-' + this._command.getName$$();
+  }
+
   toString() {
     return `Disk with software`;
   }

@@ -15,6 +15,10 @@ export default class KeyCard extends Item {
     return this._color;
   }
 
+  getId$$() {
+    return 'key-' + this._color;
+  }
+
   toString() {
     let color = this._color[0].toUpperCase() + this._color.slice(1);
     return `${color} key card`;

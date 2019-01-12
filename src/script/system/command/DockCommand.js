@@ -94,7 +94,7 @@ export default class DockCommand extends Command {
           {c:'ln', d:`Closing docking gates`, t:1000},
           `Launching sequence completed`,
           {c: 'sound', d: 'ok', t: 0},
-          {c: 'chat', d: 's{GOOD JOB SOLIDER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
+          {c: 'chat', d: 's{GOOD JOB SOLDIER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
           {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker'},
           {c: 'ln', d: '<div class="finito">THE END</div>', t: 1000},
           {c: 'sound', d: 'ok', t: 0}
