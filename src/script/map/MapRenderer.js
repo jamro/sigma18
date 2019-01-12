@@ -21,6 +21,7 @@ export default class MapRenderer extends ScreenRenderer {
     let h = this.getScreenView$$().getHeight$$();
     let red = this.getScreenView$$().getDangerColor$$();
     let color = this.getScreenView$$().getPrimaryColor$$();
+    let color2 = this.getScreenView$$().getPrimaryColor$$(0.7);
     let bg = this.getScreenView$$().getBackgroundColor$$();
     let pos;
 
@@ -49,6 +50,17 @@ export default class MapRenderer extends ScreenRenderer {
         startY + (1 + segY + y)*segmentSize,
         segmentSize*w,
         segmentSize*h
+      );
+    };
+
+    let write = (segX, segY, x, y, txt) => {
+      ctx.font = "16px \"Courier New\", Courier, monospace";
+      ctx.textAlign = 'center';
+      ctx.fillStyle = color;
+      ctx.fillText(
+        txt,
+        startX + (1 + segX + x)*segmentSize,
+        startY + (1 + segY + y)*segmentSize + 8
       );
     };
 
@@ -103,9 +115,30 @@ export default class MapRenderer extends ScreenRenderer {
       ctx.stroke();
     };
 
+    let x, y;
+    // render grid
+    for(x=0; x <10; x++) {
+      let letters = "ABCDEFGHIJ";
+      write(x, -1, 0.5, 0.5, letters.charAt(x));
+    }
+    for(y=0; y <10; y++) {
+      write(-1, y, 0.5, 0.5, (y+1));
+    }
+
+    for(x=0; x <=10; x++) {
+      for(y=0; y <=10; y++) {
+        ctx.strokeStyle = color2;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        drawLine(x, y, -0.1, 0, 0.1, 0);
+        drawLine(x, y, 0, -0.1, 0, 0.1);
+        ctx.stroke();
+      }
+    }
+
     // render rooms
-    for(let x=0; x <10; x++) {
-      for(let y=0; y <10; y++) {
+    for(x=0; x <10; x++) {
+      for(y=0; y <10; y++) {
         if(!this._map$$.hasRoom$$(x, y) || !this._map$$.getRoom$$(x, y).isVisited$$()) {
           continue;
         }
