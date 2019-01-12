@@ -54,7 +54,6 @@ export default class Walkthrough {
   }
 
   handleEvent$$(event) {
-    console.log('walkthrough event', event);
     this._level$$ = 0;
     this._validators$$.forEach((v) => v.validate$$(event));
     for(let i=0; i < this._validators$$.length; i++) {
@@ -63,7 +62,6 @@ export default class Walkthrough {
       }
       this._level$$++;
     }
-    console.log('LEVEL', this._level$$);
   }
 
   getHint$$() {

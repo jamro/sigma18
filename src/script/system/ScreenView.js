@@ -21,8 +21,9 @@ export default class ScreenView extends View {
     this.clear$$();
   }
 
-  getPrimaryColor$$() {
-    return '#88ff22';
+  getPrimaryColor$$(opacity) {
+    opacity = opacity ? opacity : 0;
+    return `rgba(136,255,34,${(1-opacity).toFixed(2)})`;
   }
 
   getBackgroundColor$$() {
@@ -43,7 +44,7 @@ export default class ScreenView extends View {
 
   getHeight$$() {
     return this._view$$.element.height;
-  } 
+  }
 
   clear$$() {
     let ctx = this.getContext$$();

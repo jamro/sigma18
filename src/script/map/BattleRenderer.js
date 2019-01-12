@@ -1,5 +1,26 @@
 import ScreenRenderer from '../system/ScreenRenderer.js';
 
+class Particle {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.vx = Math.random()*0.06-0.03;
+    this.vy = Math.random()*0.06-0.03;
+    this.frame = 0;
+    this.life = 10;
+  }
+
+  step$$() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.frame++;
+  }
+
+  isCompleted$$() {
+    return this.frame > this.life;
+  }
+}
+
 class Shot {
   constructor(x1, y1, x2, y2) {
     this.frame = 0;
@@ -14,7 +35,7 @@ class Shot {
   }
 
   isCompleted$$() {
-    return this.frame > 4;
+    return this.frame > 6;
   }
 }
 
@@ -25,6 +46,7 @@ export default class BattleRenderer extends ScreenRenderer {
     this._battle = battle;
     this._loop = null;
     this._shotList = [];
+    this._particleList = [];
     this._shooting = false;
   }
 
@@ -48,6 +70,7 @@ export default class BattleRenderer extends ScreenRenderer {
     let h = this.getScreenView$$().getHeight$$();
     let red = this.getScreenView$$().getDangerColor$$();
     let color = this.getScreenView$$().getPrimaryColor$$();
+    let color2 = this.getScreenView$$().getPrimaryColor$$(0.5);
     let bg = this.getScreenView$$().getBackgroundColor$$();
 
     let flipY = false;
@@ -129,27 +152,51 @@ export default class BattleRenderer extends ScreenRenderer {
       ctx.fill();
     };
 
+    let renderParticle = (p) => {
+      let x, y;
+      let size = 0.01;
+      [x, y] = transform(p.x, p.y);
+      ctx.beginPath();
+      ctx.fillStyle = this.getScreenView$$().getPrimaryColor$$(p.frame/p.life);
+      ctx.strokeStyle = null;
+      ctx.rect(startX + roomSize*(x-size/2), startY + roomSize*(y-size/2), size*roomSize, size*roomSize);
+      ctx.fill();
+      p.step$$();
+    };
+
     let renderShot = (shot) => {
-      if(shot.frame == 0) {
+      if(shot.frame <= 1) {
         ctx.beginPath();
         ctx.fillStyle = null;
-        ctx.strokeStyle = "#ffffff";
+        ctx.strokeStyle = color2;
         ctx.lineWidth = 2;
-        drawLine(shot.from.x, shot.from.y, shot.to.x, shot.to.y);
+        let midX = (shot.from.x + shot.to.x)/2;
+        let midY = (shot.from.y + shot.to.y)/2;
+        if(shot.frame == 0) {
+          drawLine(shot.from.x, shot.from.y, midX, midY);
+        } else {
+          drawLine(midX, midY, shot.to.x, shot.to.y);
+        }
         ctx.stroke();
       } else {
         ctx.beginPath();
         ctx.strokeStyle = null;
-        ctx.fillStyle = 'rgba(255, 255, 255, ' + (1-shot.frame/4).toFixed(2) + ')';
+        ctx.fillStyle = this.getScreenView$$().getPrimaryColor$$((shot.frame-2)/4);
         let ax = shot.to.x;
         let ay = shot.to.y;
         [ax, ay] = transform(ax, ay);
-        ctx.arc(startX + roomSize*ax, startY + roomSize*ay, wallSize*roomSize*shot.frame/4, 0, 2 * Math.PI);
+        ctx.arc(startX + roomSize*ax, startY + roomSize*ay, wallSize*roomSize*(shot.frame-2)/4, 0, 2 * Math.PI);
         ctx.fill();
       }
       shot.frame++;
     };
 
+    let shoot = (x1, y1, x2, y2) => {
+      this._shotList.push(new Shot(x1, y1, x2, y2));
+      for(let i=0; i < 5; i++) {
+        this._particleList.push(new Particle(x2, y2));
+      }
+    };
     renderWalls();
 
     this._battle.getDroids$$().forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
@@ -171,7 +218,7 @@ export default class BattleRenderer extends ScreenRenderer {
         if(x > 0.4 && x < 0.6) {
           y += wallSize*Math.random();
         }
-        this._shotList.push(new Shot(droid.x, droid.y, x, y));
+        shoot(droid.x, droid.y, x, y);
       }
 
     } else if (this._battle.isMarinesTurn$$()) {
@@ -191,7 +238,7 @@ export default class BattleRenderer extends ScreenRenderer {
 
         x2 = Math.max(wallSize, Math.min(1-wallSize, x2));
         y2 = Math.max(wallSize, Math.min(1-wallSize, y2));
-        this._shotList.push(new Shot(x1, y1, x2, y2));
+        shoot(x1, y1, x2, y2);
       }
     } else {
       this.getSoundPlayer$$().stop$$('gun');
@@ -199,6 +246,8 @@ export default class BattleRenderer extends ScreenRenderer {
     }
     this._shotList.forEach((s) => renderShot(s));
     this._shotList = this._shotList.filter((s) => !s.isCompleted$$());
+    this._particleList.forEach((p) => renderParticle(p));
+    this._particleList = this._particleList.filter((p) => !p.isCompleted$$());
   }
 
 }
