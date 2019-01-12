@@ -61,7 +61,12 @@ terminal.sequence$$(
   "Server accepts key",
   "Authentication succeeded (publickey)",
   "Floor plan streaming started",
-  {c: () => sideSreen.showMap$$(map)},
+  {c: (done) => {
+    sideSreen.getView$$().turnOn$$(() => {
+      sideSreen.showMap$$(map);
+      done();
+    });
+  }},
   "",
   "",
   "Welcome to Space Station Sigma-18",
@@ -69,6 +74,7 @@ terminal.sequence$$(
   {c: 'sound', d: 'ok', t:0},
   {c: 'on', t:0}
 );
+
 
 window.onbeforeunload = function(){
   return 'Are you sure you want to leave?';

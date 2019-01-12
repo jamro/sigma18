@@ -60,4 +60,41 @@ export default class ScreenView extends View {
     this.rescale$$();
   }
 
+  turnOn$$(done) {
+    let frame = 0;
+    let w = this.getWidth$$();
+    let h = this.getHeight$$();
+    let ctx = this.getContext$$();
+    let p;
+    let loop = setInterval(() => {
+      this.clear$$();
+      frame++;
+      ctx.beginPath();
+      ctx.strokeStyle = null;
+      if(frame <= 20) {
+        p = frame/20;
+        ctx.fillStyle = this.getPrimaryColor$$(1-p);
+        ctx.rect(w/2-0.02*w, h/2-h*0.01, w*0.02, h*0.02);
+      } else if(frame <= 25) {
+        p = (frame-20)/(25-20);
+        ctx.fillStyle = this.getPrimaryColor$$();
+        ctx.rect(w*0.5*(1-p), h/2-h*0.01, w*p, h*0.02);
+      } else if( frame < 30) {
+        p = (frame-25)/(30-25);
+        ctx.fillStyle = this.getPrimaryColor$$();
+        ctx.rect(0, h*0.5*(1-p), w, h*p);
+      } else {
+        p = (frame-30)/(40-29);
+        ctx.fillStyle = this.getPrimaryColor$$(p);
+        ctx.rect(0, 0, w, h);
+      }
+      ctx.fill();
+
+      if(frame >= 41) {
+        clearInterval(loop);
+        done();
+      }
+    }, 30);
+  }
+
 }
