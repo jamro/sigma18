@@ -39,14 +39,15 @@ terminal.sequence$$(
   "Have fun :)",
   "",
   "",
-  "s{PRESS ANY KEY TO BEGIN YOUR ADVENTURE :)}s",
+  "s{PRESS ENTER TO BEGIN YOUR ADVENTURE :)}s",
   "",
   {c:'pause'},
+  {c:'sound', d:'ok'},
   {c:'chat', d:'This is commander of Sierra-23, Kate Decker speaking!!!', f:'comander', t: 100},
   {c:'chat', d:'Sir! Two of our engines are damaged! Emergency landing at Sigma-18! Approaching DS003...', f:'comander', t: 100},
   {c:'chat', d:"We cannot keep the approach path! We are too far on the left!", f:'comander'},
   {c:'chat', d:"Mayday, mayday, mayday...", f:'comander'},
-  {c:'chat', d:"m{...}m", f:'sierra-23', t:1000},
+  {c:'chat', d:"m{...}m", f:'commander', t:1000},
   {c:'chat', d:"Sierra-23, What is the status?", f:'hacker', t:1000},
   {c:'chat', d:"Spaceship wrecked during landing. We cannot use it to get out from here anymore. We are at Sigma-18 Space Station. There seems to be not a soul in the whole location.", f:'commander'},
   {c:'chat', d:"Sir! We need your help! Connect to Sigma-18 Space Station gateway and help us to get away from here!", f:'commander'},
@@ -60,13 +61,17 @@ terminal.sequence$$(
   "Authenticating to sigma18.iss.gov:22...",
   "Server accepts key",
   "Authentication succeeded (publickey)",
-  "Floor plan streaming started",
+  "",
+  "Floor plan streaming.",
+  "Buffering...",
+  {c: 'sound', d: 'ok', t:0},
   {c: (done) => {
     sideSreen.getView$$().turnOn$$(() => {
       sideSreen.showMap$$(map);
       done();
     });
   }},
+  "Map preview available.",
   "",
   "",
   "Welcome to Space Station Sigma-18",

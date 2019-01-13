@@ -34,7 +34,11 @@ export default class Virus {
 
   validateActivate$$() {
     if(this.getStatus$$().stats.infection < this._activationThreshold$$) {
-      return `Infection coverage must be at least ${Math.round(this._activationThreshold$$*100)}% to activate the virus`;
+      let msg = `Infection coverage must be at least ${Math.round(this._activationThreshold$$*100)}% to activate the virus.`;
+      if(this.getStatus$$().stats.infection == 0) {
+        msg += '<br />\nRun s{virus infect [host]}s at first';
+      }
+      return msg;
     }
     if(this._isActive$$) {
       return "Already activated";

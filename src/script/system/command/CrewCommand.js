@@ -8,7 +8,7 @@ export default class CrewCommand extends Command {
     this._data = [
       ['swoodley',    'Sean Woodley',     'Commander',            '2036-01-08', 'Crux Academy',       'm', 'is ultimately responisble for', 'space station management',       "manager", "master's",                23, 10, "army",                      "NESA, ISA and MTR",                                           "operational management of ISS Sigma-18", "space station management"],
       ['wirving',     'Walter Irving',    'Research Director',    '2045-07-21', 'Enderson Institute', 'm', 'looks after', 'team of researchers',                              "engineer", "doctoral",               14,  3, "computer science",          "Enderson Institute, NESA and Elcroy",                         "improving artifical inteligence of SIG-18 battle droids", "artifical inteligence"],
-      ['lparra',      'Lea Parra',        'Engineer',             '2051-03-15', 'Yathe University',   'f', 'develops', 'SIG-18\'s image recognition',                         "engineer", "master's",                6,  3, "software development",      "DataTech and Elcroy",                                         "implementation of artifical inteligence modules for SIG-18 battle droids", "neural networks"],
+      ['vparra',      'Victoria Parra',   'Engineer',             '2051-03-15', 'Yathe University',   'f', 'develops', 'SIG-18\'s image recognition',                         "engineer", "master's",                6,  3, "software development",      "DataTech and Elcroy",                                         "implementation of artifical inteligence modules for SIG-18 battle droids", "neural networks"],
       ['dschaefer',   'Duncan Schaefer',  'Engineer',             '2053-09-30', 'Enderson Institute', 'm', 'develops', 'SIG-18\'s decision alghoritms',                       "engineer", "master's",                4,  2, "software development",      "Elcroy, CorpData an Eclipse Inc",                             "implementation of artifical inteligence modules for SIG-18 battle droids", "machine learning"],
       ['cmcmanus',    'Cristiano Mcmanus','Engineer',             '2050-11-03', 'Sawyr Institute',    'm', 'develops', 'SIG-18\'s battle behaviour',                          "engineer", "master's",                7,  1, "software development",      "SpaceZ, Elcroy and INO Tech",                                 "implementation of artifical inteligence modules for SIG-18 battle droids", "big data"],
       ['ffountain',   'Frank Fountain',   'Security Officer',     '2049-02-22', 'Crux Academy',       'm', 'is responsible for', 'secuirity',                                 "security specialist", "bachelor's",  10,  3, "army",                      "MTR and Seq Inc",                                             "securing researches on artifical inteligence of SIG-18 battle droids", "monitoring systems"],
@@ -49,6 +49,11 @@ export default class CrewCommand extends Command {
 
   execShow(command) {
     let name = command.length >= 3 ? command[2] : '';
+    if(!name) {
+      this._terminal.println$$(`Error: username argument is required. Run s{crew help}s for more info.`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      return;
+    }
     let record = this._data.filter((r) => r[0] == name);
     record = record.length ? record[0] : null;
 

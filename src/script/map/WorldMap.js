@@ -22,18 +22,18 @@ export default class WorldMap {
       this._walkthrough$$.handleEvent$$('com-virus-activate');
     });
 
-    this._services$$.getServiceByName$$('lights-east').onStatusChange$$((state) => {
+    this._services$$.getService$$('lights-east').onStatusChange$$((state) => {
       this._walkthrough$$.handleEvent$$('com-lights-east-' + (state ? 'on' : 'off'));
     });
 
-    this._services$$.getServiceByName$$('pump-station').onStatusChange$$((state) => {
+    this._services$$.getService$$('pump-station').onStatusChange$$((state) => {
       this._walkthrough$$.handleEvent$$('com-pump-station-' + (state ? 'on' : 'off'));
     });
 
 
 
-    let lightServiceWest = this._services$$.getServiceByName$$('lights-west');
-    let lightServiceEast = this._services$$.getServiceByName$$('lights-east');
+    let lightServiceWest = this._services$$.getService$$('lights-west');
+    let lightServiceEast = this._services$$.getService$$('lights-east');
 
     for(let x = 0; x < width; x++) {
       this._grid$$[x] = [];

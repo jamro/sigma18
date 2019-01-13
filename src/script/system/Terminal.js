@@ -8,6 +8,12 @@ export default class Terminal {
     this._soundPlayer$$ = soundPlayer;
     this._commandProcessorList$$ = [];
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
+
+    document.addEventListener("keydown", (e) => {
+      if(!this.getView$$().isEnabled$$()) {
+        this._soundPlayer$$.play$$('err');
+      }
+    });
   }
 
   getSoundPlayer$$() {
@@ -28,12 +34,12 @@ export default class Terminal {
       `Connection established`,
       `Service Discovery in progress...`,
       {c: () => {
-        let service = this._serviceDirectory$$.getServiceByName$$(serviceName);
+        let service = this._serviceDirectory$$.getService$$(serviceName);
         if(!service) {
           return handleErr('Cannot find service ' + serviceName);
         }
         if(!service.isRunning$$()) {
-          return handleErr(`Service s{${service.getName$$()}}s is down`);
+          return handleErr(`Service s{${service.getName$$()}}s is down.<br />\nTry turn it on by s{power up ${service.getName$$()}}s`);
         }
 
         let queue = [
@@ -60,22 +66,29 @@ export default class Terminal {
       }
     }
     this.println$$(`Error: Command s{${command[0]}}s not found!`);
+    this.println$$(`Run s{help}s to list all available commands`);
     this.getSoundPlayer$$().play$$('err');
   }
 
   pause$$(done) {
     let initState = this._view$$.isEnabled$$();
     this._view$$.enable$$();
-    this._view$$.setKeyHandler$$(() => {
+    this._view$$.setKeyHandler$$((event) => {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+      this._view$$.clearInput$$();
+      if(event.keyCode != 13) {
+        this._soundPlayer$$.play$$('err');
+        return;
+      }
       this._view$$.setPromptText$$();
       this._view$$.setKeyHandler$$();
-      this._view$$.clearInput$$();
       if(!initState) {
         this._view$$.disable$$();
       }
       done();
     });
-    this._view$$.setPromptText$$("Press any key to continue");
+    this._view$$.setPromptText$$("Press ENTER to continue");
   }
 
   prompt$$(label, done) {
@@ -85,6 +98,8 @@ export default class Terminal {
       if(event.keyCode != 13) {
         return;
       }
+      event.stopImmediatePropagation();
+      event.preventDefault();
       this._view$$.setPromptText$$();
       this._view$$.setKeyHandler$$();
       this._view$$.clearInput$$();
@@ -143,8 +158,14 @@ export default class Terminal {
 
     if(isDisabled && done) {
       this._view$$.enable$$();
-      this._view$$.setPromptText$$("Press any key to skip...");
-      this._view$$.setKeyHandler$$(() => {
+      this._view$$.setPromptText$$("Press ENTER to skip...");
+      this._view$$.setKeyHandler$$((event) => {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        if(event.keyCode != 13) {
+          this._soundPlayer$$.play$$('err');
+          return;
+        }
         this._soundPlayer$$.shutUp$$();
         cleanUp();
         if(finished) return;
@@ -220,6 +241,7 @@ export default class Terminal {
       {c: () => {
         appNames.forEach((a) => this.println$$(`Run s{${a}  help}s for more info.`));
       }},
+      'Run s{help}s to list all available commands',
       {c: 'sound', d: 'ok'},
       {c: done}
     );

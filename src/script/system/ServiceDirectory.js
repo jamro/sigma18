@@ -27,17 +27,12 @@ export default class ServiceDirectory {
     return service;
   }
 
-  getServices$$() {
+  getAllServices$$() {
     return this._data$$;
   }
 
-  getServiceByName$$(name) {
+  getService$$(name) {
     let result = this._data$$.filter((s) => s._name == name);
-    return result.length ? result[0] : null;
-  }
-
-  getService$$(id) {
-    let result = this._data$$.filter((s) => s._id == id);
     return result.length ? result[0] : null;
   }
 
@@ -45,27 +40,27 @@ export default class ServiceDirectory {
     return this._data$$.reduce((sum, srv) => sum += srv.getPower$$(), 0);
   }
 
-  validateStateChange$$(id, newState) {
-    let service = this.getService$$(id);
+  validateStateChange$$(name, newState) {
+    let service = this.getService$$(name);
     if(!service) {
-      return `Service ${id} not found`;
+      return `Service ${name} not found`;
     }
     if(service.isRunning$$() == newState) {
-      return `Service ${id} (${service.getName$$()}) is already ${newState ? 'running' : 'stopped'}.`;
+      return `Service ${name} (${service.getName$$()}) is already ${newState ? 'running' : 'stopped'}.`;
     }
     let missingPower = this.getTotalPower$$() + service.getRequiredPower$$() - this.getPowerSupply$$();
     if(newState && missingPower > 0) {
-      return `Not enough of power supply: s{${missingPower.toFixed(2)}kW}s is missing`;
+      return `Not enough power: s{${missingPower.toFixed(2)}kW}s is missing.<br/>\nTry to turn off some services.<br/>\nRun s{power list}s to review available services.`;
     }
   }
 
-  on$$(id) {
-    let service = this.getService$$(id);
+  on$$(name) {
+    let service = this.getService$$(name);
     service.on$$();
   }
 
-  off$$(id) {
-    let service = this.getService$$(id);
+  off$$(name) {
+    let service = this.getService$$(name);
     service.off$$();
   }
 

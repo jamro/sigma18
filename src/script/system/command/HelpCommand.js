@@ -22,6 +22,9 @@ export default class HelpCommand extends Command {
       }
     }
     this._terminal.println$$("Run s{[command] help}s for more info");
+    this._terminal.println$$("");
+    this._terminal.println$$("-------------------");
+    this._terminal.println$$("If you really got stuck and you have no idea what to do, ask marines for a hint. Type s{com hint}s and press ENTER");
     this._terminal.getSoundPlayer$$().play$$('ok');
   }
 }

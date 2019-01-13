@@ -16,30 +16,36 @@ export default class PowerCommand extends Command {
   }
 
   execUp(command) {
-    let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this.setStatus$$(id, true);
+    let name = command.length >= 3 ? command[2].toLowerCase() : '';
+    this.setStatus$$(name, true);
   }
 
   execDown(command) {
-    let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this.setStatus$$(id, false);
+    let name = command.length >= 3 ? command[2].toLowerCase() : '';
+    this.setStatus$$(name, false);
   }
 
-  setStatus$$(id, status) {
+  setStatus$$(name, status) {
+    if(!name) {
+      this._terminal.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      return;
+    }
     this._terminal.getView$$().disable$$();
-    let errorMessage = this._serviceDirectory$$.validateStateChange$$(id, status);
+    let errorMessage = this._serviceDirectory$$.validateStateChange$$(name, status);
     this._terminal.connect$$('power-manager', [
-      `${status ? "Starting" : "Stopping"} service ${id}...`
+      `${status ? "Starting" : "Stopping"} service ${name}...`
     ], () => {
       if(errorMessage) {
         this._terminal.sequence$$(
+          "",
           "Error: " + errorMessage,
           {c:'sound',d:'err'},
           {c:'on'}
         );
         return;
       }
-      let service = this._serviceDirectory$$.getService$$(id);
+      let service = this._serviceDirectory$$.getService$$(name);
       let queue = [
         `${service.getName$$()}: ${service.getIp$$()}`,
         {c:'load'},
@@ -47,9 +53,9 @@ export default class PowerCommand extends Command {
         {c:'sound',d:'ok'},
         {c: () => {
           if(status) {
-            this._serviceDirectory$$.on$$(id);
+            this._serviceDirectory$$.on$$(name);
           } else {
-            this._serviceDirectory$$.off$$(id);
+            this._serviceDirectory$$.off$$(name);
           }
         }}
       ];
@@ -64,10 +70,10 @@ export default class PowerCommand extends Command {
           "",
           {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
           {c:'sound',d:'err', t:500},
-          `Restoring service ${id}...`,
+          `Restoring service ${name}...`,
           {c:'load'},
           {c: () => {
-            this._serviceDirectory$$.on$$(id);
+            this._serviceDirectory$$.on$$(name);
           }},
           `Service restored`,
           {c:'sound',d:'ok'}
@@ -88,9 +94,9 @@ export default class PowerCommand extends Command {
       "s{power list}s",
       "Display status and power consumption for all services",
       '',
-      "s{power [up/down] [serviceId]}s",
-      "Power up/down specified serive",
-      "For example: s{power up S4}s",
+      "s{power [up/down] [serviceName]}s",
+      "Power up/down specified service",
+      "For example: s{power up lab-services}s",
       {c: 'sound', d: 'ok', t:0}
     );
   }
@@ -111,11 +117,15 @@ export default class PowerCommand extends Command {
       }
       return txt;
     };
-    let data = this._serviceDirectory$$.getServices$$();
-    let services = "<pre>ID | Name            | Address       | Status | P.Consumption\n" +
-                        "---|-----------------|---------------|--------|---------------\n";
+    let data = this._serviceDirectory$$.getAllServices$$();
+    let services = "<pre>Name            | Address       | Status | P.Consumption\n" +
+                        "----------------|---------------|--------|---------------\n";
     for(let service of data) {
-      services += `${service.getId$$()} | ${left(service.getName$$(), 16)}| ${left(service.getIp$$(), 14)}| ${service.isRunning$$() ? '    on' : '   r{off}r'} | ${service.isRunning$$() ? right(service.getPower$$().toFixed(2) + "kW", 13) : '       r{0.00kW}r'}\n`;
+      if(service.isRunning$$()) {
+        services += `${left(service.getName$$(), 16)}| ${left(service.getIp$$(), 14)}|     on | ${right(service.getPower$$().toFixed(2) + "kW", 13)}\n`;
+      } else {
+        services += `r{${left(service.getName$$(), 16)}}r| r{${left(service.getIp$$(), 14)}}r|    r{off}r |        r{0.00kW}r\n`;
+      }
     }
     services += "</pre>";
 
@@ -123,7 +133,7 @@ export default class PowerCommand extends Command {
 
     this._terminal.connect$$('power-manager', [
       services,
-      `Total power consumption: s{${total.toFixed(2)}kW}s / ${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW (${(100*total/this._serviceDirectory$$.getPowerSupply$$()).toFixed(1)}%)`,
+      `Total power consumption: s{${total.toFixed(2)}kW}s / ${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW`,
       {c:'sound', d: 'ok', t:0},
       {c:'on'}
     ], () => {
@@ -143,7 +153,7 @@ export default class PowerCommand extends Command {
 
     this._terminal.connect$$('power-manager', [
       generators,
-      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 150.00kW (${(100*this._serviceDirectory$$.getPowerSupply$$()/150).toFixed(1)}%)`,
+      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 150.00kW`,
       {c:'sound', d: 'ok', t:0},
       {c:'on'}
     ], () => {

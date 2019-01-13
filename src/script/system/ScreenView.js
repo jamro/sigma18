@@ -27,7 +27,7 @@ export default class ScreenView extends View {
   }
 
   getBackgroundColor$$() {
-    return '#112211';
+    return '#001100';
   }
 
   getDangerColor$$() {
@@ -79,18 +79,18 @@ export default class ScreenView extends View {
         p = (frame-20)/(25-20);
         ctx.fillStyle = this.getPrimaryColor$$();
         ctx.rect(w*0.5*(1-p), h/2-h*0.01, w*p, h*0.02);
-      } else if( frame < 30) {
-        p = (frame-25)/(30-25);
+      } else if( frame < 28) {
+        p = (frame-25)/(28-25);
         ctx.fillStyle = this.getPrimaryColor$$();
         ctx.rect(0, h*0.5*(1-p), w, h*p);
       } else {
-        p = (frame-30)/(40-29);
+        p = (frame-28)/(35-28);
         ctx.fillStyle = this.getPrimaryColor$$(p);
         ctx.rect(0, 0, w, h);
       }
       ctx.fill();
 
-      if(frame >= 41) {
+      if(frame >= 35) {
         clearInterval(loop);
         done();
       }

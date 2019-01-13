@@ -3,6 +3,7 @@ import Position from './Position.js';
 export default class Room {
 
   constructor(lightService, x, y) {
+    this.animation$$ = 0;
     this._lightService$$ = lightService;
     this._position$$ = new Position(x, y);
     this._isVisited$$ = false;
@@ -55,8 +56,12 @@ export default class Room {
 
   visit$$() {
     if(!this.hasLight$$()) return;
-    this._isVisited$$ = true;
-    this._onChangeList$$.forEach((c) => c());
+    if(!this._isVisited$$) {
+      this.animation$$ = 20;
+      this._isVisited$$ = true;
+      this._onChangeList$$.forEach((c) => c());
+    }
+
   }
 
   isVisited$$() {

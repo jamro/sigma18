@@ -14,6 +14,12 @@ export default class TerminalView extends View {
     this._historyIndex$$ = 0;
     this._keyHandler$$ = this.handleKeyDown$$;
 
+    this._shortcuts$$ = [];
+    this._shortcuts$$[38] = "com go n";
+    this._shortcuts$$[40] = "com go s";
+    this._shortcuts$$[37] = "com go w";
+    this._shortcuts$$[39] = "com go e";
+
     this._view$$ = this.createElement$$("DIV", {
       cssClass: "terminal-root"
     });
@@ -58,11 +64,24 @@ export default class TerminalView extends View {
     this._keyHandler$$ = callback ? callback : this.handleKeyDown$$;
   }
 
+  setInputText$$(txt) {
+    this._view$$.input.textField.element.value = txt;
+  }
+
   handleKeyDown$$(event, txt) {
     let updateFromHistory = () => {
-      this._view$$.input.textField.element.value = this._history$$[this._historyIndex$$];
+      this.setInputText$$(this._history$$[this._historyIndex$$]);
       setTimeout(() => { this._view$$.input.textField.element.selectionStart = this._view$$.input.textField.element.selectionEnd = 10000; }, 0);
     };
+
+    event.stopImmediatePropagation();
+
+    if(this._shortcuts$$[event.keyCode] && event.shiftKey) {
+      this.setInputText$$(this._shortcuts$$[event.keyCode]);
+      this.submit$$();
+      return;
+    }
+
     switch(event.keyCode) {
       case 13:
         this._history$$[this._historyIndex$$] = txt;
@@ -104,7 +123,7 @@ export default class TerminalView extends View {
   }
 
   clearInput$$() {
-    this._view$$.input.textField.element.value = '';
+    this.setInputText$$('');
   }
 
 

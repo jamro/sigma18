@@ -31,7 +31,7 @@ export default class MapBuilder {
 
   placeItems$$(squad, map, virus) {
     this._map$$.getRoom$$(4, 0).addItem$$(new Disk(new PowerCommand(this._services$$)));
-    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`Active SIG-18 communication module (${virus.getUnitZero()})`));
+    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.getUnitZero()})`));
     this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map$$.getRoom$$(1, 3).addItem$$(new Disk(new CrewCommand()));
     this._map$$.getRoom$$(7, 4).addItem$$(new KeyCard('blue'));
@@ -88,7 +88,7 @@ export default class MapBuilder {
     this._describe$$(2, 2, 'This is an s{office}s after a huge battle: blood, bullet holes, shells and cartridges on the floor, burned equipment. In the corner, we see a destroyed battle droid SIG-18.');
     this._describe$$(3, 2, "It's the north s{corridor}s. Some documents from the lobby are spread all over the floor.", 'corridor');
     this._describe$$(3, 1, 'We are in a s{corridor}s. In the end, there is an entrance to the internal services area.', 'corridor');
-    this._describe$$(3, 0, 'There is an s{oxygen generator}s in the room. It recycles oxygen from  CO2. Someone was trying to break in here but unsuccessfully. The door is slightly damaged.');
+    this._describe$$(3, 0, 'There is an central s{oxygen generator}s in the room. It recycles oxygen from  CO2. Someone was trying to break in here but unsuccessfully. The door is slightly damaged.');
     this._describe$$(2, 0, 'We are in the s{power generator room}s. It supplies the whole station. It is very noisy here. Everything seems to be up and running.');
     this._describe$$(4, 0, 'It is the s{computing core}s of the station. Servers here host core services of the station. Everything seems to be up and running.');
 
@@ -121,7 +121,7 @@ export default class MapBuilder {
     this._map$$.addDoor$$(3, 3, 4, 3).close$$(); // lobby -> corridor
     this._map$$.addDoor$$(6, 3, 7, 3).close$$().label$$('yellow').requireKey$$('yellow'); // security -> lab
     this._map$$.addDoor$$(7, 3, 7, 2).close$$(); // lab -> warehouse
-    this._map$$.addDoor$$(7, 3, 7, 4).close$$().label$$('lab-server').lock$$('wirving', 'Name of engineer who has red hair', /duncan/i); // lab -> server room
+    this._map$$.addDoor$$(7, 3, 7, 4).close$$().label$$('lab-server').lock$$('wirving', 'First name of an engineer who has red hair', /duncan/i); // lab -> server room
     this._map$$.addDoor$$(2, 5, 3, 5).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(1, 5, 2, 5).damage$$(); // corridor -> corridor
     this._map$$.addDoor$$(3, 6, 2, 6); // corridor -> crew quarter
@@ -134,7 +134,7 @@ export default class MapBuilder {
     this._map$$.addDoor$$(3, 3, 3, 2); // lobby -> corridor
     this._map$$.addDoor$$(3, 2, 3, 1); // corridor -> corridor
     this._map$$.addDoor$$(3, 1, 3, 0).close$$().label$$('red').requireKey$$('red'); // corridor -> oxy gen
-    this._map$$.addDoor$$(3, 0, 4, 0).close$$().label$$('core-comp').lock$$('ngallegos', 'What company have most of the crew worked for before?', /elcroy/i); // oxy gen -> comp core
+    this._map$$.addDoor$$(3, 0, 4, 0).close$$().label$$('core-comp').lock$$('ngallegos', 'What company have most of engineers worked for before?', /elcroy/i); // oxy gen -> comp core
     this._map$$.addDoor$$(3, 0, 2, 0).close$$(); // oxy gen -> power gen
     this._map$$.addDoor$$(6, 6, 5, 6).close$$(); // back corridor -> kitchen
 

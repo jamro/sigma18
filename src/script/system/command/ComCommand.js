@@ -34,6 +34,11 @@ export default class ComCommand extends Command {
 
   execGo(command) {
     let direction = command.length >= 3 ? command[2] : '';
+    if(!direction) {
+      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal.println$$(`Error: Direction argument is required. Run s{com help}s for more info.`);
+      return;
+    }
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
       this._terminal.getSoundPlayer$$().play$$('err');
@@ -81,11 +86,13 @@ export default class ComCommand extends Command {
       "s{com go [direction]}s",
       "Ask marines to explore next location in defined direction.",
       "Possible directions are:",
-      "* s{n}s - North",
-      "* s{e}s - East",
-      "* s{s}s - South",
-      "* s{w}s - West",
+      "* s{n}s - North (shortcut s{SHIFT + UP_ARROW}s)",
+      "* s{e}s - East (shortcut s{SHIFT + RIGHT_ARROW}s)",
+      "* s{s}s - South (shortcut s{SHIFT + DOWN_ARROW}s)",
+      "* s{w}s - West (shortcut s{SHIFT + LEFT_ARROW}s)",
       "For example: s{com go w}s",
+      "",
+      "s{Hint}s: Use key shortcuts (SHIFT + ARROW_KEY) to navigate quicker.",
       {c: 'sound', d: 'ok', t:0}
     );
   }

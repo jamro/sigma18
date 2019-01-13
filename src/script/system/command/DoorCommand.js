@@ -28,6 +28,7 @@ export default class DoorCommand extends Command {
       this._terminal.getSoundPlayer$$().play$$('err');
     } else if(!door) {
       this._terminal.println$$(`Error: Door (ID: ${id}) not found!`);
+      this._terminal.println$$(`Get IDs of doors in current location by s{com status}s.`);
       this._terminal.getSoundPlayer$$().play$$('err');
     }
     return door;
@@ -43,8 +44,15 @@ export default class DoorCommand extends Command {
 
 
   doorSwitch(command, doClose) {
+    let id = this.getDoorId(command);
+    if(!id) {
+      this._terminal.println$$(`Error: DoorID argument is required. Run s{door help}s for more info.`);
+      this._terminal.println$$(`Get IDs of doors in current location by s{com status}s.`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      return;
+    }
     this.disableInput$$();
-    this._terminal.connect$$('doors', [`Door look up: ${this.getDoorId(command)}...`], () => {
+    this._terminal.connect$$('doors', [`Door look up: ${id}...`], () => {
       let door = this.findDoor(command);
       if(!door) {
         this._terminal.getSoundPlayer$$().play$$('err');
@@ -88,19 +96,19 @@ export default class DoorCommand extends Command {
       ];
       if(lock) {
         this._terminal.sequence$$([
-          {c:'sound', d: 'err', t:300},
+          {c:'sound', d: 'ok', t:300},
           `Your account (s{${lock.user}}s) has been locked.`,
           "There were 3 unsuccessful attempts of login.",
           "Answer security question to unlock:",
           `s{${lock.question}}s`,
           {c: (done) => {
             this._terminal.prompt$$("Answer:", (txt) => {
-              this._terminal.println$$(txt);
+              this._terminal.println$$('Answer: ' + txt);
               if(lock.check$$(txt)) {
                 door.unlock$$();
                 this._terminal.sequence$$([
                   {c:'sound', d: 'ok'},
-                  "Answer correct. Account unlocked.",
+                  "The answer is correct. Account unlocked.",
                   "",
                 ].concat(openSequence));
                 done();

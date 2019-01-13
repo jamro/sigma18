@@ -29,7 +29,7 @@ export default class DockCommand extends Command {
                         "-----------|----------|---------|-----------------\n" +
                         "DS001      | [C:9]    | Empty   | - \n" +
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
-                        "DS003      | [E:9]    | Damaged | ISS Sierra-23</pre>");
+                        "r{DS003}r      | r{[E:9]}r    | r{Damaged}r | r{ISS Sierra-23}r</pre>");
       this.enableInput$$();
       this._terminal.getSoundPlayer$$().play$$('ok');
     });
@@ -37,6 +37,11 @@ export default class DockCommand extends Command {
 
   execLaunch(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
+    if(!id) {
+      this._terminal.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      return;
+    }
     this.disableInput$$();
     this._terminal.connect$$('docker', [], () => {
       this._terminal.println$$("Authorization is required!");
@@ -105,6 +110,11 @@ export default class DockCommand extends Command {
 
   execFuel(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
+    if(!id) {
+      this._terminal.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
+      this._terminal.getSoundPlayer$$().play$$('err');
+      return;
+    }
     this._fuel[id] = 100;
     let msg;
     if(id == 'DS002' || id == 'DS003') {

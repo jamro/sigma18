@@ -27,7 +27,7 @@ class Door {
     this._damaged$$ = false;
     this._requiredKey$$ = null;
     this._securityQuestion$$ = null;
-    this._label$$ = '';
+    this._label$$ = 'standard';
   }
 
   getLabel$$() {

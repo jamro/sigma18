@@ -131,7 +131,7 @@ export default class Squad {
     let doneOnObstacle = () => { done([]); };
     if(this._map$$.getBattle$$()) {
       return this._terminal$$.sequence$$(
-        {c: 'chat', d: `r{We are under fire!}r Cannot move anywhere!`, f: 'commander', t: 500},
+        {c: 'chat', d: `r{We are under fire!}r Cannot move anywhere!`, f: 'commander'},
         doneOnObstacle
       );
     }
@@ -148,7 +148,7 @@ export default class Squad {
 
     if(invalidReason) {
       return this._terminal$$.sequence$$(
-        {c: 'chat', d: `Cannot move to the ${this._directionMap$$[direction]}! ${invalidReason}`, f: 'commander', t: 500},
+        {c: 'chat', d: `Cannot move to the ${this._directionMap$$[direction]}! ${invalidReason}`, f: 'commander'},
         doneOnObstacle
       );
     }
@@ -202,8 +202,8 @@ export default class Squad {
     };
 
     this._terminal$$.sequence$$(
-      {c: 'chat', d: `Exploring location on the ${this._directionMap$$[direction]}... m{Move! Move! Move!}m`, f: 'commander', t: 500},
-      {c: moveToNewLocation, t: 500}
+      {c: 'chat', d: `Exploring location on the ${this._directionMap$$[direction]}... m{Move! Move! Move!}m`, f: 'commander'},
+      {c: moveToNewLocation}
     );
   }
 

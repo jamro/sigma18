@@ -6,10 +6,23 @@ export default class MapRenderer extends ScreenRenderer {
     super(soundPlayer);
     this._map$$ = map;
 
-    this._map$$.onChange$$(() => {
-      this.render$$();
-    });
+
     this.render$$();
+  }
+
+  attach$$(screenView) {
+    super.attach$$(screenView);
+    this._loop$$ = setInterval(() => {
+      this.render$$();
+    }, 30);
+  }
+
+  detach$$() {
+    super.detach$$();
+    if(this._loop$$ ) {
+      clearInterval(this._loop$$);
+      this._loop$$  = null;
+    }
   }
 
   render$$() {
@@ -24,6 +37,7 @@ export default class MapRenderer extends ScreenRenderer {
     let color2 = this.getScreenView$$().getPrimaryColor$$(0.7);
     let bg = this.getScreenView$$().getBackgroundColor$$();
     let pos;
+    let room;
 
     this.getScreenView$$().clear$$();
 
@@ -139,10 +153,17 @@ export default class MapRenderer extends ScreenRenderer {
     // render rooms
     for(x=0; x <10; x++) {
       for(y=0; y <10; y++) {
-        if(!this._map$$.hasRoom$$(x, y) || !this._map$$.getRoom$$(x, y).isVisited$$()) {
+        if(!this._map$$.hasRoom$$(x, y)) {
           continue;
         }
-        let room = this._map$$.getRoom$$(x, y);
+        room = this._map$$.getRoom$$(x, y);
+        if(!room.isVisited$$()) {
+          continue;
+        }
+        if(room.animation$$ > 0) {
+          room.animation$$--;
+          if(Math.random() > 0.5) continue;
+        }
         switch(room.getType$$()) {
           case 'corridor':
             renderCorridor(x, y, room);

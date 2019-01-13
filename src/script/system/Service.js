@@ -1,7 +1,5 @@
 class Service {
   constructor(name, ip, power) {
-    this._id = "S" + Service._nextId.toString(16).toUpperCase();
-    Service._nextId++;
     this._name = name;
     this._ip = ip;
     this._power = power;
@@ -29,10 +27,6 @@ class Service {
     return this._ip;
   }
 
-  getId$$() {
-    return this._id;
-  }
-
   on$$() {
     if(!this._isRunning) {
       this._isRunning = true;
@@ -54,5 +48,4 @@ class Service {
 
 }
 
-Service._nextId = 1;
 export default Service;
