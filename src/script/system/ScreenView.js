@@ -1,3 +1,4 @@
+import DigitalNoise from './DigitalNoise.js';
 import View from './common/View.js';
 import '../../styles/screen.scss';
 
@@ -6,18 +7,27 @@ export default class ScreenView extends View {
   constructor(document) {
     super(document);
 
-    this._view$$ = this.createElement$$("CANVAS", {
+    this._view$$ = this.createElement$$("DIV", {
       cssClass: "screen-root"
     });
 
-    this._context$$ = this._view$$.element.getContext("2d");
+    this._noise$$ = new DigitalNoise(document);
+    this._view$$.element.appendChild(this._noise$$.getDOM$$());
+
+    this._view$$.canvas = this.createElement$$("CANVAS", {
+      cssClass: "screen-canvas",
+      parent: this._view$$
+    });
+
+    this._context$$ = this._view$$.canvas.element.getContext("2d");
     this.clear$$();
   }
 
   rescale$$() {
-    let el = this._view$$.element;
+    let el = this._view$$.canvas.element;
     el.width = el.parentElement.clientWidth;
     el.height = el.parentElement.clientHeight;
+    this._noise$$.rescale$$();
     this.clear$$();
   }
 
@@ -39,11 +49,11 @@ export default class ScreenView extends View {
   }
 
   getWidth$$() {
-    return this._view$$.element.width;
+    return this._view$$.canvas.element.width;
   }
 
   getHeight$$() {
-    return this._view$$.element.height;
+    return this._view$$.canvas.element.height;
   }
 
   clear$$() {
@@ -92,6 +102,7 @@ export default class ScreenView extends View {
 
       if(frame >= 35) {
         clearInterval(loop);
+        this._noise$$.start();
         done();
       }
     }, 30);

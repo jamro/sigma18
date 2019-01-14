@@ -1,3 +1,4 @@
+import DigitalNoise from './DigitalNoise.js';
 import View from './common/View.js';
 import '../../styles/terminal.scss';
 
@@ -17,7 +18,6 @@ export default class TerminalView extends View {
     this._eventBuffer = null;
     this._eventBufferTime = 0;
 
-
     this._shortcuts$$ = [];
     this._shortcuts$$[38] = "com go n";
     this._shortcuts$$[40] = "com go s";
@@ -27,6 +27,10 @@ export default class TerminalView extends View {
     this._view$$ = this.createElement$$("DIV", {
       cssClass: "terminal-root"
     });
+
+    this._noise$$ = new DigitalNoise(document);
+    this._view$$.element.appendChild(this._noise$$.getDOM$$());
+    this._noise$$.start();
 
     this._view$$.output = this.createElement$$("DIV", {
       cssClass: "terminal-output",
@@ -61,7 +65,10 @@ export default class TerminalView extends View {
 
     this.setPromptText$$();
 
-    this._view$$.input.textField.element.addEventListener("keydown", (e) => this._keyHandler$$(e, this._view$$.input.textField.element.value));
+    this._view$$.input.textField.element.addEventListener("keydown", (e) => {
+      this._keyHandler$$(e, this._view$$.input.textField.element.value);
+      this._noise$$.prevent();
+    });
   }
 
   setEventBuffer$$(event) {
@@ -174,6 +181,7 @@ export default class TerminalView extends View {
     content = content.substring(content.length - lengthLimit);
     inputElement.innerHTML = content;
     inputElement.scrollTop = inputElement.scrollHeight;
+    this._noise$$.prevent();
   }
 
   printel$$() {
@@ -210,5 +218,6 @@ export default class TerminalView extends View {
   attachToDOM$$(parent) {
     super.attachToDOM$$(parent);
     this.enableAutoFocus$$();
+    this._noise$$.rescale$$();
   }
 }
