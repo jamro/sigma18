@@ -3,6 +3,7 @@ My entry for [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwi
 
 # Rules of the Challenge
 Create a game that meets the following requirements:
+
 - The game must be an unrealistic hacking simulator.
 - The game setting must be: the player is a space marine's tech/hacker that aids a squad of space marines while they explore an abandoned space station.
 - The game must be made in client-side web technology that runs by default on the newest stable Chrome on Windows 10 (1803/1809)
@@ -21,9 +22,10 @@ It's the year 2080. You are a space marine's tech who specializes in security an
 
 
 # How to Play
-![Game Screenhot](doc/screenshot.png)
+![Game Screenhot](docs/screenshot.png)
 
 You should be able to find all instruction in the game. Here are a few hints for the beginning:
+
 - use left console to run commands and hack systems of ISS Sigma-18
 - right screen shows map and current location of the squad. Only visited location are show on the map
 - to list all available commands type **help** and press ENTER. At the beginning there is not many of them available, however, you will get more commands as proceeding in the game
