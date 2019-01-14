@@ -25,10 +25,8 @@ export default class ComCommand extends Command {
 
   execStatus() {
     this.disableInput$$();
-    this._terminal.printChat$$(`Commander, what's going on?`, 'hacker', () => {
-      this._squad.requestStatus$$(() => {
-        this.enableInput$$();
-      });
+    this._squad.requestStatus$$(() => {
+      this.enableInput$$();
     });
   }
 
@@ -46,18 +44,16 @@ export default class ComCommand extends Command {
       return;
     }
     this.disableInput$$();
-    this._terminal.printChat$$(`Commander, check the door on the ${this._directionMap[direction]}.`, 'hacker', () => {
-      this._squad.requestMove$$(direction, (items) => {
-        items = items || [];
-        let disks = items.filter((i) => i.getType$$() == 'disk');
-        if(disks.length > 0) {
-          this._terminal.uploadSoftware$$(disks, () => {
-            this.enableInput$$();
-          });
-        } else {
+    this._squad.requestMove$$(direction, (items) => {
+      items = items || [];
+      let disks = items.filter((i) => i.getType$$() == 'disk');
+      if(disks.length > 0) {
+        this._terminal.uploadSoftware$$(disks, () => {
           this.enableInput$$();
-        }
-      });
+        });
+      } else {
+        this.enableInput$$();
+      }
     });
   }
 
@@ -65,8 +61,10 @@ export default class ComCommand extends Command {
     let hint = this._map.getWalthrough$$().getHint$$();
     this._terminal.sequence$$(
       {c:'off'},
-      {c:'chat', d:'Commander, any ideas what to do next?', f:'hacker'},
-      {c:'chat', d:'Really? I thought that you are the hacker here! ' + hint, f:'commander'},
+      {c:'chat', d:[
+        ['hacker','Commander, any ideas what to do next?'],
+        ['commander','Really? I thought that you are the hacker here! ' + hint]
+      ]},
       {c:'on'}
     );
   }

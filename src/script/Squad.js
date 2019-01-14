@@ -37,14 +37,16 @@ export default class Squad {
       {c:'off', t:0},
       {c: () => {this._screen$$.showMap$$(this._map$$); }}
     ];
+    let msgQueue = [];
     if(winner) {
-      queue.push({c: 'chat', d: `Enemy defeated!`, f: 'commander'});
+      msgQueue.push(['commander' ,`Enemy defeated!`]);
     } else {
-      queue.push({c: 'chat', d: `Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`, f: 'commander'});
+      msgQueue.push(['commander' ,`Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`]);
     }
     if(!winner && !virusActive) {
-      queue.push({c: 'chat', d: `They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`, f: 'commander'});
+      msgQueue.push(['commander' ,`They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`]);
     }
+    queue.push({c: 'chat', d: msgQueue});
     queue.push({c:'on'});
 
     this._terminal$$.sequence$$(queue);
@@ -57,8 +59,10 @@ export default class Squad {
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
     this._screen$$.showBattle$$(battle);
     this._terminal$$.sequence$$([
-      {c:'chat', d:`Enemy units encountered m{(${enemies})}m.`, f:'commander'},
-      {c:'chat', d:'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...', f:'commander', t:300},
+      {c:'chat', d:[
+        ['commander', `Enemy units encountered m{(${enemies})}m.`],
+        ['commander', 'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...']
+      ]},
       {c: done}
     ]);
     this._battleLoop$$ = setInterval(() => {
@@ -83,10 +87,10 @@ export default class Squad {
         ];
       }
       if(!virusActive || Math.random() > 0.6) {
-        this._terminal$$.printChat$$(
-          items[Math.floor(Math.random()*items.length)],
-          'commander'
-        );
+        this._terminal$$.printChat$$([[
+          'commander',
+          items[Math.floor(Math.random()*items.length)]
+        ]]);
       }
     }, 10000);
     door.onChange$$(() => {
@@ -128,18 +132,13 @@ export default class Squad {
   }
 
   requestMove$$(direction, done) {
-    let doneOnObstacle = () => { done([]); };
-    if(this._map$$.getBattle$$()) {
-      return this._terminal$$.sequence$$(
-        {c: 'chat', d: `r{We are under fire!}r Cannot move anywhere!`, f: 'commander'},
-        doneOnObstacle
-      );
-    }
-
+    let msgQueue = [];
+    let items = [];
     let invalidReason = '';
     let pos = this._map$$.getSquadPosition$$();
     let room = this._map$$.getRoom$$(pos.x, pos.y);
     let door = room.getDoors$$()[direction];
+
     if(!door) {
       invalidReason = 'No doors on that side.';
     } else if(door.isClosed$$()) {
@@ -147,64 +146,60 @@ export default class Squad {
       invalidReason += this._terminal$$.hasCommand$$('door') ? "Use s{door}s app to open them." : "Explore other locations and find a way to open them.";
     }
 
-    if(invalidReason) {
-      return this._terminal$$.sequence$$(
-        {c: 'chat', d: `Cannot move to the ${this._directionMap$$[direction]}! ${invalidReason}`, f: 'commander'},
-        doneOnObstacle
-      );
-    }
-    let dx = 0;
-    let dy = 0;
-    switch(direction) {
-      case 'n':
-        dy = -1;
-        break;
-      case 's':
-        dy = 1;
-        break;
-      case 'w':
-        dx = -1;
-        break;
-      case 'e':
-        dx = 1;
-        break;
-    }
-    pos = this._map$$.getSquadPosition$$();
-    let newX = pos.x + dx;
-    let newY = pos.y + dy;
+    msgQueue.push(['hacker', `Commander, check the door on the ${this._directionMap$$[direction]}.`]);
 
-    let moveToNewLocation = () => {
+    if(this._map$$.getBattle$$()) {
+      msgQueue.push(['commander', `r{We are under fire!}r Cannot move anywhere!`]);
+    } else if(invalidReason) {
+      msgQueue.push(['commander', `Cannot move to the ${this._directionMap$$[direction]}! ${invalidReason}`]);
+    } else {
+      let dx = 0;
+      let dy = 0;
+      switch(direction) {
+        case 'n':
+          dy = -1;
+          break;
+        case 's':
+          dy = 1;
+          break;
+        case 'w':
+          dx = -1;
+          break;
+        case 'e':
+          dx = 1;
+          break;
+      }
+
+      pos = this._map$$.getSquadPosition$$();
+      let newX = pos.x + dx;
+      let newY = pos.y + dy;
       this._map$$.getRoom$$(newX, newY).visit$$();
+
 
       let battleRoom = this._map$$.getRoom$$(newX, newY);
       if(battleRoom.getEnemy$$() > 0) {
-        this.startBattle$$(battleRoom, door, doneOnObstacle);
+        this.startBattle$$(battleRoom, door, () => done(items));
         return;
       }
+
       this._map$$.setSquadPosition$$(newX, newY);
       this._hasLight = this._map$$.getRoom$$(newX, newY).hasLight$$();
-
-      if(this._map$$.getBattle$$()) {
-        return done([]);
-      }
-      let items = this._map$$.getRoom$$(newX, newY).flushItems$$();
+      items = this._map$$.getRoom$$(newX, newY).flushItems$$();
       this.addToInventory$$(items);
-
       pos = this._map$$.getSquadPosition$$();
+
       let msg = `Location m{${pos.toString()}}m secured. ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
       if(items.length > 0) {
         msg += "m{<br/><br/>We have found:<br/>";
         items.forEach((i) => msg += ` * ${i}<br/>`);
         msg += "}m";
       }
-      this._terminal$$.printChat$$(msg, 'commander', () => {
-        done(items);
-      });
-    };
+      msgQueue.push(['commander', msg]);
+    }
 
     this._terminal$$.sequence$$(
-      {c: 'chat', d: `Exploring location on the ${this._directionMap$$[direction]}... m{Move! Move! Move!}m`, f: 'commander'},
-      {c: moveToNewLocation}
+      {c:'chat', d:msgQueue},
+      {c:() => done(items)}
     );
   }
 
@@ -234,8 +229,12 @@ export default class Squad {
       msg += ` * ${i}<br/>\n`;
     });
     msg += '}m';
+
     this._terminal$$.sequence$$(
-      {c: 'chat', d: msg, f: 'commander', t: 500},
+      {c: 'chat', d: [
+        ['hacker', `Commander, what's going on?`],
+        ['commander', msg]
+      ]},
       done
     );
   }

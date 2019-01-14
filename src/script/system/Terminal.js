@@ -145,20 +145,38 @@ export default class Terminal {
     return document.getElementById(id);
   }
 
-  printChat$$(msg, from, done) {
-    let isDisabled = !this._view$$.isEnabled$$();
-    from = from ? from : 'hacker';
-    let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
-    this._view$$.print$$(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
-
+  printChat$$(msgQueue, done) {
+    let msgPointer = 0;
     let finished = false;
+
+    let printNext = (queueCompleted) => {
+      if(finished) return;
+      let from = msgQueue[msgPointer][0];
+      let msg = msgQueue[msgPointer][1];
+      msgPointer++;
+      this._printSingleChat$$(from, msg, () => {
+        if(msgPointer < msgQueue.length) {
+          printNext(queueCompleted);
+        } else {
+          queueCompleted();
+        }
+      });
+    };
     let cleanUp = () => {
       if(finished) return;
+      while(msgPointer < msgQueue.length) {
+        let from = msgQueue[msgPointer][0];
+        let msg = msgQueue[msgPointer][1];
+        this._printSingleChatSilent$$(from, msg);
+        msgPointer++;
+      }
       this._view$$.setPromptText$$();
       this._view$$.setKeyHandler$$();
       this._view$$.clearInput$$();
       this._view$$.disable$$();
     };
+
+    let isDisabled = !this._view$$.isEnabled$$();
 
     if(isDisabled && done) {
       this._view$$.enable$$();
@@ -177,7 +195,8 @@ export default class Terminal {
         done();
       });
     }
-    this._soundPlayer$$.speak$$(msg, from != 'hacker', () => {
+
+    printNext(() => {
       if(isDisabled && done) {
         cleanUp();
       }
@@ -187,6 +206,18 @@ export default class Terminal {
         done();
       }
     });
+  }
+
+  _printSingleChat$$(from, msg, done) {
+      this._printSingleChatSilent$$(from, msg);
+      this._soundPlayer$$.speak$$(msg, from != 'hacker', () => {
+        done();
+      });
+  }
+
+  _printSingleChatSilent$$(from, msg) {
+      let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
+      this._view$$.print$$(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 
   passCrack$$(time, label, done) {
@@ -257,7 +288,7 @@ export default class Terminal {
     - {c: callback}
     - {c: callback, t: delay}
     - {c: 'ln', d: 'text', t: delay}
-    - {c: 'chat', d: 'text', f: 'from', t: delay}
+    - {c: 'chat', d: [['from','text'], ...], t: delay}
     - {c: 'sound', d: 'soundId', t: delay}
     - {c: 'pass', d: duration(def=100), l:label(def=Password) t: delay}
     - {c: 'load', t: delay}
@@ -289,7 +320,11 @@ export default class Terminal {
             cmd.c = () => { this.println$$(cmd.d); };
             break;
           case 'chat':
-            cmd.c = (done) => { this.printChat$$(cmd.d, cmd.f, done); };
+            if(Array.isArray(cmd.d)) {
+              cmd.c = (done) => { this.printChat$$(cmd.d, done); };
+            } else {
+              cmd.c = (done) => { this.printChat$$([[cmd.f,cmd.d]], done); };
+            }
             break;
           case 'sound':
             cmd.c = () => { this.getSoundPlayer$$().play$$(cmd.d); };

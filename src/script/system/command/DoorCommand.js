@@ -132,8 +132,10 @@ export default class DoorCommand extends Command {
         if(hasKey) {
           this._terminal.sequence$$([
             info,
-            {c:'chat', d:`Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 800},
-            {c:'chat', d:`The key card is in the reader. Done!`, f:'commander', t: 800},
+            {c:'chat', d:[
+              ['hacker', `Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`],
+              ['commander', `The key card is in the reader. Done!`]
+            ], t: 800},
             "",
             {c:'ln', d:`Verification of key card...`, t: 1000},
             {c:'sound', d:'ok', t:0},
@@ -144,8 +146,10 @@ export default class DoorCommand extends Command {
         } else {
           this._terminal.sequence$$([
             info,
-            {c:'chat', d:`Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`, f:'hacker', t: 800},
-            {c:'chat', d:`We do not have required key card!`, f:'commander'},
+            {c:'chat', d:[
+              ['hacker', `Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`],
+              ['commander', `We do not have required key card!`]
+            ], t: 800},
             "",
             {c:'ln', d:`Timeout... access to s{${requiredKey} restricted area}s denied.`, t: 1700},
             {c:'sound', d:'err', t:0},

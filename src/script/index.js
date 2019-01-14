@@ -43,14 +43,18 @@ terminal.sequence$$(
   "",
   {c:'pause'},
   {c:'sound', d:'ok'},
-  {c:'chat', d:'This is commander of Sierra-23, Kate Decker speaking!!!', f:'comander', t: 100},
-  {c:'chat', d:'Sir! Two of our engines are damaged! Emergency landing at Sigma-18! Approaching DS003...', f:'comander', t: 100},
-  {c:'chat', d:"We cannot keep the approach path! We are too far on the left!", f:'comander'},
-  {c:'chat', d:"Mayday, mayday, mayday...", f:'comander'},
-  {c:'chat', d:"m{...}m", f:'commander', t:1000},
-  {c:'chat', d:"Sierra-23, What is the status?", f:'hacker', t:1000},
-  {c:'chat', d:"Spaceship wrecked during landing. We cannot use it to get out from here anymore. We are at Sigma-18 Space Station. There seems to be not a soul in the whole location.", f:'commander'},
-  {c:'chat', d:"Sir! We need your help! Connect to Sigma-18 Space Station gateway and help us to get away from here!", f:'commander'},
+  {c:'chat', d:[
+    ['comander', 'This is commander of Sierra-23, Kate Decker speaking!!!'],
+    ['comander', 'Sir! Two of our engines are damaged! Emergency landing at Sigma-18! Approaching DS003...'],
+    ['comander', 'We cannot keep the approach path! We are too far on the left!'],
+    ['comander', "Mayday, mayday, mayday..."],
+    ['comander', "m{...}m"]
+  ], t: 100},
+  {c:'chat', d:[
+    ['hacker', "Sierra-23, What is the status?"],
+    ['commander', "Spaceship wrecked during landing. We cannot use it to get out from here anymore. We are at Sigma-18 Space Station. There seems to be not a soul in the whole location."],
+    ['commander', "Sir! We need your help! Connect to Sigma-18 Space Station gateway and help us to get away from here!"]
+  ], t: 500},
   {c:'pause'},
   {c: 'ln', d:'<div class="terminal-command">s{&gt;}s ssh hacker@sigma18.iss.gov</div>'},
   {c: 'ln', d:"Connecting to sigma18.iss.gov port 22...", t: 500},
