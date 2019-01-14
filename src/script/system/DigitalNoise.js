@@ -40,7 +40,7 @@ export default class DigitalNoise extends View {
   }
 
   render$$() {
-    let r = Math.random();
+    let r = Math.random;
     if(!this._enabled$$) return;
     this._timer$$++;
     this._context$$.clearRect(0, 0, this._view$$.element.width, this._view$$.element.height);
