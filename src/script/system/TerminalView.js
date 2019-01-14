@@ -14,6 +14,10 @@ export default class TerminalView extends View {
     this._historyIndex$$ = 0;
     this._keyHandler$$ = this.handleKeyDown$$;
 
+    this._eventBuffer = null;
+    this._eventBufferTime = 0;
+
+
     this._shortcuts$$ = [];
     this._shortcuts$$[38] = "com go n";
     this._shortcuts$$[40] = "com go s";
@@ -60,8 +64,29 @@ export default class TerminalView extends View {
     this._view$$.input.textField.element.addEventListener("keydown", (e) => this._keyHandler$$(e, this._view$$.input.textField.element.value));
   }
 
+  setEventBuffer$$(event) {
+    this._eventBufferTime = event ? (new Date()).getTime() : 0;
+    this._eventBuffer = event;
+  }
+
+  flushEventBuffer$$() {
+    if(!this._eventBuffer) return;
+    if((new Date()).getTime() - this._eventBufferTime > 500) return;
+    if(this._keyHandler$$ != this.handleKeyDown$$) return;
+    if(!this.isEnabled$$()) return;
+    let event = this._eventBuffer;
+    this._eventBuffer = null;
+    if(this._keyHandler$$) {
+      this._keyHandler$$(event);
+    }
+    if(this.isEnabled$$() && event.key.toString().length == 1) {
+      this._view$$.input.textField.element.value += event.key;
+    }
+  }
+
   setKeyHandler$$(callback) {
     this._keyHandler$$ = callback ? callback : this.handleKeyDown$$;
+    this.flushEventBuffer$$();
   }
 
   setInputText$$(txt) {
@@ -178,6 +203,7 @@ export default class TerminalView extends View {
       this._view$$.input.textField.element.disabled = false;
       this.setPromptText$$();
       this._view$$.input.textField.element.focus();
+      this.flushEventBuffer$$();
     }
   }
 

@@ -81,7 +81,6 @@ export default class Terminal {
         this._soundPlayer$$.play$$('err');
         return;
       }
-      this._view$$.setPromptText$$();
       this._view$$.setKeyHandler$$();
       if(!initState) {
         this._view$$.disable$$();
@@ -100,12 +99,14 @@ export default class Terminal {
       }
       event.stopImmediatePropagation();
       event.preventDefault();
-      this._view$$.setPromptText$$();
-      this._view$$.setKeyHandler$$();
       this._view$$.clearInput$$();
       if(!initState) {
         this._view$$.disable$$();
+      } else {
+        this._view$$.setPromptText$$();
       }
+
+      this._view$$.setKeyHandler$$();
       done(txt);
     });
     this._view$$.setPromptText$$(label);
@@ -170,24 +171,22 @@ export default class Terminal {
         this._printSingleChatSilent$$(from, msg);
         msgPointer++;
       }
-      this._view$$.setPromptText$$();
-      this._view$$.setKeyHandler$$();
+
       this._view$$.clearInput$$();
       this._view$$.disable$$();
+      this._view$$.setKeyHandler$$();
     };
 
     let isDisabled = !this._view$$.isEnabled$$();
 
     if(isDisabled && done) {
       this._view$$.enable$$();
-      this._view$$.setPromptText$$("Press ENTER to skip...");
+      this._view$$.setPromptText$$("Press any key to skip...");
       this._view$$.setKeyHandler$$((event) => {
         event.stopImmediatePropagation();
         event.preventDefault();
-        if(event.keyCode != 13) {
-          this._soundPlayer$$.play$$('err');
-          return;
-        }
+        this._view$$.setEventBuffer$$(event);
+
         this._soundPlayer$$.shutUp$$();
         cleanUp();
         if(finished) return;
@@ -259,7 +258,6 @@ export default class Terminal {
     disks = disks || [];
     let appNames = disks.map((d) => d.getCommand$$().getName$$());
     this.sequence$$(
-      {c: 'chat', d:'I\'ve got a data storage here! Uploading...', f:'commander'},
       {c: 'sound', d: 'ok', t: 100},
       "",
       `Transferring disk data: s{${appNames.join(', ')}}s app.`,

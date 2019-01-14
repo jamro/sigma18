@@ -59,7 +59,7 @@ export default class PowerCommand extends Command {
           }
         }}
       ];
-      if(service.getName$$() == 'oxygen-genertor' && !status) {
+      if(service.getName$$() == 'oxygen-generator' && !status) {
         queue = queue.concat([
           {c:'ln', d:"r{WARNING: Oxygen Generator is down. Threat to the life of the crew!}r", t:300},
           {c:'chat', d:'Oxygen level is low. Putting on the masks.', f:'commander', t:1500}

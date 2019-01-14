@@ -46,9 +46,9 @@ export default class MapBuilder {
     this._map$$.getRoom$$(7, 3).setEnemy$$(6);
     this._map$$.getRoom$$(6, 6).setEnemy$$(4);
     this._map$$.getRoom$$(5, 6).setEnemy$$(2);
-    this._map$$.getRoom$$(1, 6).setEnemy$$(3);
+    this._map$$.getRoom$$(1, 6).setEnemy$$(4);
     this._map$$.getRoom$$(2, 8).setEnemy$$(5);
-    this._map$$.getRoom$$(3, 1).setEnemy$$(3);
+    this._map$$.getRoom$$(3, 1).setEnemy$$(4);
     this._map$$.getRoom$$(2, 2).setEnemy$$(4);
   }
 

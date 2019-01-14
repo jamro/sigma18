@@ -94,6 +94,7 @@ export default class Squad {
       }
     }, 10000);
     door.onChange$$(() => {
+      if(!this._map$$.getBattle$$()) return true;
       if(door.isClosed$$()) {
         this.stopBattle$$();
         return true;
@@ -173,14 +174,14 @@ export default class Squad {
       pos = this._map$$.getSquadPosition$$();
       let newX = pos.x + dx;
       let newY = pos.y + dy;
-      this._map$$.getRoom$$(newX, newY).visit$$();
-
-
+      
       let battleRoom = this._map$$.getRoom$$(newX, newY);
       if(battleRoom.getEnemy$$() > 0) {
         this.startBattle$$(battleRoom, door, () => done(items));
         return;
       }
+
+      this._map$$.getRoom$$(newX, newY).visit$$();
 
       this._map$$.setSquadPosition$$(newX, newY);
       this._hasLight = this._map$$.getRoom$$(newX, newY).hasLight$$();
@@ -195,6 +196,11 @@ export default class Squad {
         msg += "}m";
       }
       msgQueue.push(['commander', msg]);
+
+      let disks = items.filter((i) => i.getType$$() == 'disk');
+      if(disks.length > 0) {
+        msgQueue.push(['commander', 'I\'ve got a data storage here! Uploading...']);
+      }
     }
 
     this._terminal$$.sequence$$(
