@@ -1,6 +1,6 @@
-import DigitalNoise from './DigitalNoise.js';
-import View from './common/View.js';
-import '../../styles/terminal.scss';
+import DigitalNoise from '../common/DigitalNoise.js';
+import View from '../common/View.js';
+import '../../../styles/terminal.scss';
 
 export default class TerminalView extends View {
 

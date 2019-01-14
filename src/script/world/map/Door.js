@@ -1,4 +1,4 @@
-import Position from './Position.js';
+import Position from '../common/Position.js';
 
 class SecurityQuestion {
   constructor(user, question, answer) {

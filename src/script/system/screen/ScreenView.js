@@ -1,6 +1,6 @@
-import DigitalNoise from './DigitalNoise.js';
-import View from './common/View.js';
-import '../../styles/screen.scss';
+import DigitalNoise from '../common/DigitalNoise.js';
+import View from '../common/View.js';
+import '../../../styles/screen.scss';
 
 export default class ScreenView extends View {
 

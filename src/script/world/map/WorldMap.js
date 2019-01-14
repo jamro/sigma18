@@ -1,8 +1,8 @@
-import Position from './Position.js';
+import Position from '../common/Position.js';
 import Room from './Room.js';
 import Door from './Door.js';
-import Virus from './Virus.js';
-import Battle from './Battle.js';
+import Virus from '../Virus.js';
+import Battle from '../Battle.js';
 import Walkthrough from '../Walkthrough.js';
 
 export default class WorldMap {

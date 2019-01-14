@@ -1,5 +1,5 @@
-import MapRenderer from '../map/MapRenderer.js';
-import BattleRenderer from '../map/BattleRenderer.js';
+import MapRenderer from './renderer/MapRenderer.js';
+import BattleRenderer from './renderer/BattleRenderer.js';
 
 export default class Screen {
 

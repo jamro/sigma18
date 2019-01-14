@@ -1,4 +1,4 @@
-import ScreenRenderer from '../system/ScreenRenderer.js';
+import ScreenRenderer from '../ScreenRenderer.js';
 
 class Particle {
   constructor(x, y) {

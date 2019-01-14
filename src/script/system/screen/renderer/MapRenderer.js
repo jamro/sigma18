@@ -1,4 +1,4 @@
-import ScreenRenderer from '../system/ScreenRenderer.js';
+import ScreenRenderer from '../ScreenRenderer.js';
 
 export default class MapRenderer extends ScreenRenderer {
 

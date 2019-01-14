@@ -1,15 +1,15 @@
-import TerminalView from './system/TerminalView.js';
-import Terminal from './system/Terminal.js';
-import ScreenView from './system/ScreenView.js';
-import Screen from './system/Screen.js';
-import ServiceDirectory from './system/ServiceDirectory.js';
-import HelpCommand from './system/command/HelpCommand.js';
-import ComCommand from './system/command/ComCommand.js';
-import SfxCommand from './system/command/SfxCommand.js';
+import TerminalView from './system/terminal/TerminalView.js';
+import Terminal from './system/terminal/Terminal.js';
+import ScreenView from './system/screen/ScreenView.js';
+import Screen from './system/screen/Screen.js';
+import ServiceDirectory from './world/ServiceDirectory.js';
+import HelpCommand from './system/terminal/command/HelpCommand.js';
+import ComCommand from './system/terminal/command/ComCommand.js';
+import SfxCommand from './system/terminal/command/SfxCommand.js';
 import SoundPlayer from './system/common/SoundPlayer.js';
 
-import Squad from './Squad.js';
-import MapBuilder from './map/MapBuilder.js';
+import Squad from './world/Squad.js';
+import MapBuilder from './world/map/MapBuilder.js';
 
 let services = new ServiceDirectory();
 let player = new SoundPlayer();

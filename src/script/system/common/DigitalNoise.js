@@ -1,4 +1,4 @@
-import View from './common/View.js';
+import View from './View.js';
 
 export default class DigitalNoise extends View {
   constructor(document) {
