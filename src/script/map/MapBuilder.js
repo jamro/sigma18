@@ -31,7 +31,7 @@ export default class MapBuilder {
 
   placeItems$$(squad, map, virus) {
     this._map$$.getRoom$$(4, 0).addItem$$(new Disk(new PowerCommand(this._services$$)));
-    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.getUnitZero()})`));
+    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.getUnitZero$$()})`));
     this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map$$.getRoom$$(1, 3).addItem$$(new Disk(new CrewCommand()));
     this._map$$.getRoom$$(7, 4).addItem$$(new KeyCard('blue'));

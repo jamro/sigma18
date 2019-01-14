@@ -23,69 +23,69 @@ export default class DockCommand extends Command {
 
   execList() {
     this.disableInput$$();
-    this._terminal.connect$$('docker', ['Query station list...'], () => {
+    this._terminal$$.connect$$('docker', ['Query station list...'], () => {
       // @TODO update location of dock stations
-      this._terminal.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
+      this._terminal$$.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
                         "-----------|----------|---------|-----------------\n" +
                         "DS001      | [C:9]    | Empty   | - \n" +
                         "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
                         "r{DS003}r      | r{[E:9]}r    | r{Damaged}r | r{ISS Sierra-23}r</pre>");
       this.enableInput$$();
-      this._terminal.getSoundPlayer$$().play$$('ok');
+      this._terminal$$.getSoundPlayer$$().play$$('ok');
     });
   }
 
   execLaunch(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
     if(!id) {
-      this._terminal.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
     this.disableInput$$();
-    this._terminal.connect$$('docker', [], () => {
-      this._terminal.println$$("Authorization is required!");
-      this._terminal.prompt$$('Auth Code:', (pass) => {
+    this._terminal$$.connect$$('docker', [], () => {
+      this._terminal$$.println$$("Authorization is required!");
+      this._terminal$$.prompt$$('Auth Code:', (pass) => {
         if(pass.toUpperCase() != 'U317AB') {
-          this._terminal.println$$("");
-          this._terminal.println$$(`Error: Authorization failed. Incorrect pass code.`);
+          this._terminal$$.println$$("");
+          this._terminal$$.println$$(`Error: Authorization failed. Incorrect pass code.`);
           this.enableInput$$();
-          this._terminal.getSoundPlayer$$().play$$('err');
+          this._terminal$$.getSoundPlayer$$().play$$('err');
           return;
         }
-        this._terminal.println$$("Authorization... ok");
-        this._terminal.println$$("");
+        this._terminal$$.println$$("Authorization... ok");
+        this._terminal$$.println$$("");
 
         if(id != 'DS002') {
-          this._terminal.println$$(`Error: Cannot start launching sequence at ${id}.`);
+          this._terminal$$.println$$(`Error: Cannot start launching sequence at ${id}.`);
           this.enableInput$$();
-          this._terminal.getSoundPlayer$$().play$$('err');
+          this._terminal$$.getSoundPlayer$$().play$$('err');
           return;
         }
         if(!this._capsuleDoor.isClosed$$()) {
-          this._terminal.println$$(`Error: Close the door of the station before starting launch sequence.`);
+          this._terminal$$.println$$(`Error: Close the door of the station before starting launch sequence.`);
           this.enableInput$$();
-          this._terminal.getSoundPlayer$$().play$$('err');
+          this._terminal$$.getSoundPlayer$$().play$$('err');
           return;
         }
         let pos = this._map.getSquadPosition$$();
         // @TODO: update capsule position
         if(pos.x != 3 || pos.y != 9) {
-          this._terminal.println$$("");
-          this._terminal.println$$(`Error: Cannot launch empty capsule without passengers.`);
+          this._terminal$$.println$$("");
+          this._terminal$$.println$$(`Error: Cannot launch empty capsule without passengers.`);
           this.enableInput$$();
-          this._terminal.getSoundPlayer$$().play$$('err');
+          this._terminal$$.getSoundPlayer$$().play$$('err');
           return;
         }
         if(this._fuel.DS002 <= 50) {
-          this._terminal.println$$("");
-          this._terminal.println$$(`Error: Spaceship at ${id} has low fuel level! Launch procedure stopped! See s{dock status ${id}}s for more details`);
+          this._terminal$$.println$$("");
+          this._terminal$$.println$$(`Error: Spaceship at ${id} has low fuel level! Launch procedure stopped! See s{dock status ${id}}s for more details`);
           this.enableInput$$();
-          this._terminal.getSoundPlayer$$().play$$('err');
+          this._terminal$$.getSoundPlayer$$().play$$('err');
           return;
         }
 
-        this._terminal.sequence$$(
+        this._terminal$$.sequence$$(
           `Starting launching sequence at ${id}`,
           `Modules health check:`,
           {c: 'load'},
@@ -111,8 +111,8 @@ export default class DockCommand extends Command {
   execFuel(command) {
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
     if(!id) {
-      this._terminal.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: StationId argument is required. Run s{dock help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
     this._fuel[id] = 100;
@@ -136,13 +136,13 @@ export default class DockCommand extends Command {
 
 
     this.disableInput$$();
-    this._terminal.connect$$('pump-station', msg, () => {});
+    this._terminal$$.connect$$('pump-station', msg, () => {});
   }
 
   execStatus(command) {
     this.disableInput$$();
     let id = command.length >= 3 ? command[2].toUpperCase() : '';
-    this._terminal.connect$$('docker', [`Station record found`], () => {
+    this._terminal$$.connect$$('docker', [`Station record found`], () => {
       let gates, port, net, pressure, health;
       let unit = [];
       let ok = 's{ok}s';
@@ -164,7 +164,7 @@ export default class DockCommand extends Command {
           health = damaged;
           break;
         default:
-          this._terminal.println$$(`Error: Dock station ${id} not found`);
+          this._terminal$$.println$$(`Error: Dock station ${id} not found`);
           this.enableInput$$();
           return;
       }
@@ -210,12 +210,12 @@ export default class DockCommand extends Command {
         {c: 'sound', d: 'ok', t: 0},
         {c: 'on'}
       ]);
-      this._terminal.sequence$$(msg);
+      this._terminal$$.sequence$$(msg);
     });
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Use this command to operate docking stations and rescue capsules",
       "Available commands are:",
       '',

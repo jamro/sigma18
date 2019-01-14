@@ -6,7 +6,6 @@ export default class MapRenderer extends ScreenRenderer {
     super(soundPlayer);
     this._map$$ = map;
 
-
     this.render$$();
   }
 

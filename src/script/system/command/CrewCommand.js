@@ -34,38 +34,38 @@ export default class CrewCommand extends Command {
       return t;
     };
     this.disableInput$$();
-    this._terminal.connect$$('data-warehouse', ['Query crew data...', this._data.length + " records received"], () => {
+    this._terminal$$.connect$$('data-warehouse', ['Query crew data...', this._data.length + " records received"], () => {
       let msg = "<pre>User Name   |Full Name          |Role\n" +
                      "------------|-------------------|------------------------\n" ;
       this._data.forEach((r) => {
         msg += pad(r[0],12) + "|" + pad(r[1],19) + "|" + r[2] + "\n";
       });
 
-      this._terminal.println$$(msg);
+      this._terminal$$.println$$(msg);
       this.enableInput$$();
-      this._terminal.getSoundPlayer$$().play$$('ok');
+      this._terminal$$.getSoundPlayer$$().play$$('ok');
     });
   }
 
   execShow(command) {
     let name = command.length >= 3 ? command[2] : '';
     if(!name) {
-      this._terminal.println$$(`Error: username argument is required. Run s{crew help}s for more info.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: username argument is required. Run s{crew help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
     let record = this._data.filter((r) => r[0] == name);
     record = record.length ? record[0] : null;
 
     this.disableInput$$();
-    this._terminal.connect$$('data-warehouse', [
+    this._terminal$$.connect$$('data-warehouse', [
       'Search Criteria: username=' + name,
       record ? '1 record found' : '',
       {c:'ln', d:"", t: 500}
     ], () => {
       if(!record) {
-        this._terminal.println$$(`Error: no record matching the criteria`);
-        this._terminal.getSoundPlayer$$().play$$('err');
+        this._terminal$$.println$$(`Error: no record matching the criteria`);
+        this._terminal$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
@@ -74,7 +74,7 @@ export default class CrewCommand extends Command {
 
       let bio = `${record[1]} is a ${record[2]} with ISS Sigma-18. In this role, ${heshe} ${record[6]} all aspects of ${record[7]}.  ${record[1]} is a qualified ${record[8]} and holds the ${record[9]} degree from ${record[4]}. Has more than ${record[10]} years of experience in ${record[12]}. Before joining ISS Sigma-18 in ${(2080-record[11])}, ${heshe} worked for ${(record[10]-record[11])} years for a diverse range of organizations, including ${record[13]}. In current role, ${heshe} is responsible for ${record[14]}. ${record[1]} specializes in ${record[15]}.`;
 
-      this._terminal.sequence$$(
+      this._terminal$$.sequence$$(
         's{Full Name}s:  ' + record[1],
         's{Login}s:      ' + record[0],
         's{Role}s:       ' + record[2],
@@ -85,14 +85,14 @@ export default class CrewCommand extends Command {
         {c: 'sound', d: 'ok'},
         {c: 'on'}
       );
-      this._terminal.getSoundPlayer$$().play$$('ok');
+      this._terminal$$.getSoundPlayer$$().play$$('ok');
       this.enableInput$$();
 
     });
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Available commands are:",
       '',
       "s{crew list}s",

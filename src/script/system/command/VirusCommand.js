@@ -47,14 +47,14 @@ export default class VirusCommand extends Command {
         {c: 'on', t: 0},
       ]);
     }
-    this._terminal.sequence$$(queue);
+    this._terminal$$.sequence$$(queue);
   }
 
   execInfect(command) {
     let ip = command.length >= 3 ? command[2] : '';
     if(!ip) {
-      this._terminal.println$$(`Error: Host argument is required. Run s{virus help}s for more info.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: Host argument is required. Run s{virus help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
     let queue = [
@@ -63,7 +63,7 @@ export default class VirusCommand extends Command {
       ``,
       `Connecting to host s{${ip}}s...`,
     ];
-    let errorMessage = this._virus.validateInfection(ip);
+    let errorMessage = this._virus.validateInfection$$(ip);
     if(!errorMessage) {
       queue = queue.concat([
         {c:'ln', d: "Warning: Session key is required!", t:500},
@@ -93,7 +93,7 @@ export default class VirusCommand extends Command {
         {c:'on'}
       ]);
     }
-    this._terminal.sequence$$(queue);
+    this._terminal$$.sequence$$(queue);
   }
 
   execStatus() {
@@ -119,7 +119,7 @@ export default class VirusCommand extends Command {
       table = "s{No infected hosts found!}s";
     }
 
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       {c:'off'},
       this._header,
       "",
@@ -136,7 +136,7 @@ export default class VirusCommand extends Command {
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "The virus attacks SIG-18 communication modules. It will disrupt incoming and outcoming traffic of infected host. The virus will spread across other SIG-18 that try to communicate with infected host, eventually making communication across whole SIG-18 network impossible.",
       "r{WARNING! IT SPREADS VERY FAST! USE WITH CAUTION!}r",
       "",

@@ -4,7 +4,7 @@ export default class ComCommand extends Command {
 
   constructor(squad, map, terminal) {
     super();
-    this._terminal = terminal;
+    this._terminal$$ = terminal;
     this._squad = squad;
     this._map = map;
     this._directionMap = {
@@ -33,14 +33,14 @@ export default class ComCommand extends Command {
   execGo(command) {
     let direction = command.length >= 3 ? command[2] : '';
     if(!direction) {
-      this._terminal.getSoundPlayer$$().play$$('err');
-      this._terminal.println$$(`Error: Direction argument is required. Run s{com help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: Direction argument is required. Run s{com help}s for more info.`);
       return;
     }
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
-      this._terminal.getSoundPlayer$$().play$$('err');
-      this._terminal.println$$(`Error: unknown direction ${direction}`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: unknown direction ${direction}`);
       return;
     }
     this.disableInput$$();
@@ -48,7 +48,7 @@ export default class ComCommand extends Command {
       items = items || [];
       let disks = items.filter((i) => i.getType$$() == 'disk');
       if(disks.length > 0) {
-        this._terminal.uploadSoftware$$(disks, () => {
+        this._terminal$$.uploadSoftware$$(disks, () => {
           this.enableInput$$();
         });
       } else {
@@ -59,7 +59,7 @@ export default class ComCommand extends Command {
 
   execHint() {
     let hint = this._map.getWalthrough$$().getHint$$();
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       {c:'off'},
       {c:'chat', d:[
         ['hacker','Commander, any ideas what to do next?'],
@@ -70,7 +70,7 @@ export default class ComCommand extends Command {
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Use this command to communicate with squad of marines in the field",
       "Available commands are:",
       '',

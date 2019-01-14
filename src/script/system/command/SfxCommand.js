@@ -16,7 +16,7 @@ export default class SfxCommand extends Command {
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Available commands are:",
       '',
       "s{sfx on}s",
@@ -30,13 +30,13 @@ export default class SfxCommand extends Command {
 
   execOn() {
     this._soundPlayer$$.mute$$(false);
-    this._terminal.println$$("Sound enabled");
+    this._terminal$$.println$$("Sound enabled");
     this._soundPlayer$$.play$$('ok');
   }
 
   execOff() {
     this._soundPlayer$$.mute$$(true);
-    this._terminal.println$$("Sound disabled");
+    this._terminal$$.println$$("Sound disabled");
     this._soundPlayer$$.play$$('ok');
   }
 

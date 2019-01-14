@@ -24,12 +24,12 @@ export default class DoorCommand extends Command {
     let id = this.getDoorId(command);
     let door = this._map.getDoorById$$(id);
     if(id == "") {
-      this._terminal.println$$(`Error: door ID is missing!`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: door ID is missing!`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
     } else if(!door) {
-      this._terminal.println$$(`Error: Door (ID: ${id}) not found!`);
-      this._terminal.println$$(`Get IDs of doors in current location by s{com status}s.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: Door (ID: ${id}) not found!`);
+      this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
     }
     return door;
   }
@@ -46,36 +46,36 @@ export default class DoorCommand extends Command {
   doorSwitch(command, doClose) {
     let id = this.getDoorId(command);
     if(!id) {
-      this._terminal.println$$(`Error: DoorID argument is required. Run s{door help}s for more info.`);
-      this._terminal.println$$(`Get IDs of doors in current location by s{com status}s.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: DoorID argument is required. Run s{door help}s for more info.`);
+      this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
     this.disableInput$$();
-    this._terminal.connect$$('doors', [`Door look up: ${id}...`], () => {
+    this._terminal$$.connect$$('doors', [`Door look up: ${id}...`], () => {
       let door = this.findDoor(command);
       if(!door) {
-        this._terminal.getSoundPlayer$$().play$$('err');
+        this._terminal$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isClosed$$() == doClose) {
-        this._terminal.println$$(`Door found`);
-        this._terminal.println$$(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
-        this._terminal.getSoundPlayer$$().play$$('err');
+        this._terminal$$.println$$(`Door found`);
+        this._terminal$$.println$$(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
+        this._terminal$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isDamaged$$()) {
-        this._terminal.println$$(`Door found`);
-        this._terminal.println$$(`Error: Door damaged! Cannot ${doClose ? 'close' : 'open'}!`);
-        this._terminal.getSoundPlayer$$().play$$('err');
+        this._terminal$$.println$$(`Door found`);
+        this._terminal$$.println$$(`Error: Door damaged! Cannot ${doClose ? 'close' : 'open'}!`);
+        this._terminal$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
 
-      this._terminal.println$$("Door found");
-      this._terminal.println$$("");
+      this._terminal$$.println$$("Door found");
+      this._terminal$$.println$$("");
       let lock = door.getLock$$();
       let requiredKey = door.getRequiredKey$$();
 
@@ -95,25 +95,25 @@ export default class DoorCommand extends Command {
         }, t: 500},
       ];
       if(lock) {
-        this._terminal.sequence$$([
+        this._terminal$$.sequence$$([
           {c:'sound', d: 'ok', t:300},
           `Your account (s{${lock.user}}s) has been locked.`,
           "There were 3 unsuccessful attempts of login.",
           "Answer security question to unlock:",
           `s{${lock.question}}s`,
           {c: (done) => {
-            this._terminal.prompt$$("Answer:", (txt) => {
-              this._terminal.println$$('Answer: ' + txt);
+            this._terminal$$.prompt$$("Answer:", (txt) => {
+              this._terminal$$.println$$('Answer: ' + txt);
               if(lock.check$$(txt)) {
                 door.unlock$$();
-                this._terminal.sequence$$([
+                this._terminal$$.sequence$$([
                   {c:'sound', d: 'ok'},
                   "The answer is correct. Account unlocked.",
                   "",
                 ].concat(openSequence));
                 done();
               } else {
-                this._terminal.sequence$$(
+                this._terminal$$.sequence$$(
                   "Error: Incorrect Answer! The account remains locked",
                   {c:'sound', d: 'err'},
                   {c:'on'}
@@ -130,7 +130,7 @@ export default class DoorCommand extends Command {
         hasKey = hasKey.length ? true : false;
         let info = {c: 'ln', d:`This area is restricted! A s{${requiredKey} key card}s is required to access`, t: 500};
         if(hasKey) {
-          this._terminal.sequence$$([
+          this._terminal$$.sequence$$([
             info,
             {c:'chat', d:[
               ['hacker', `Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`],
@@ -144,7 +144,7 @@ export default class DoorCommand extends Command {
             ""
           ].concat(openSequence));
         } else {
-          this._terminal.sequence$$([
+          this._terminal$$.sequence$$([
             info,
             {c:'chat', d:[
               ['hacker', `Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`],
@@ -157,13 +157,13 @@ export default class DoorCommand extends Command {
           ]);
         }
       } else {
-        this._terminal.sequence$$(openSequence);
+        this._terminal$$.sequence$$(openSequence);
       }
     });
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Use this command to open and close doors of the space station",
       "It requires ID of door.",
       "Run s{com status}s to get IDs of all doors in the room",

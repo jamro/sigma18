@@ -32,7 +32,7 @@ export default class ServiceDirectory {
   }
 
   getService$$(name) {
-    let result = this._data$$.filter((s) => s._name == name);
+    let result = this._data$$.filter((s) => s.getName$$() == name);
     return result.length ? result[0] : null;
   }
 

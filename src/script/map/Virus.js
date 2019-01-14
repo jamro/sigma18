@@ -18,12 +18,12 @@ export default class Virus {
     return this._isActive$$;
   }
 
-  getUnitZero() {
+  getUnitZero$$() {
     return '20.110.231.18';
   }
 
-  validateInfection(ip) {
-    if(ip != this.getUnitZero()) {
+  validateInfection$$(ip) {
+    if(ip != this.getUnitZero$$()) {
       return 'Unable to establish connection with the host!';
     }
     if(this.isInfected$$(ip)) {
@@ -51,7 +51,7 @@ export default class Virus {
   }
 
   infect$$(host) {
-    let ip = this.getUnitZero();
+    let ip = this.getUnitZero$$();
     if(host != ip) {
       return false;
     }

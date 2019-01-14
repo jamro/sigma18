@@ -4,7 +4,7 @@ export default class Disk extends Item {
 
   constructor(command) {
     super();
-    this._command = command;
+    this._command$$ = command;
   }
 
   getType$$() {
@@ -12,11 +12,11 @@ export default class Disk extends Item {
   }
 
   getCommand$$() {
-    return this._command;
+    return this._command$$;
   }
 
   getId$$() {
-    return 'disk-' + this._command.getName$$();
+    return 'disk-' + this._command$$.getName$$();
   }
 
   toString() {

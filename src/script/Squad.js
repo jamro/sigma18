@@ -1,7 +1,7 @@
 export default class Squad {
 
   constructor(map, terminal, screen, soundPlayer) {
-    this._hasLight = true;
+    this._hasLight$$ = true;
     this._soundPlayer$$ = soundPlayer;
     this._map$$ = map;
     this._screen$$ = screen;
@@ -15,11 +15,11 @@ export default class Squad {
       w: 'west',
     };
     this._map$$.onChange$$((type) => {
-      if(type != 'light' || this._hasLight) return;
+      if(type != 'light' || this._hasLight$$) return;
       let pos = this._map$$.getSquadPosition$$();
       let room = this._map$$.getRoom$$(pos.x, pos.y);
       if(!room.hasLight$$()) return;
-      this._hasLight = true;
+      this._hasLight$$ = true;
       this.onLights();
     });
   }
@@ -174,7 +174,7 @@ export default class Squad {
       pos = this._map$$.getSquadPosition$$();
       let newX = pos.x + dx;
       let newY = pos.y + dy;
-      
+
       let battleRoom = this._map$$.getRoom$$(newX, newY);
       if(battleRoom.getEnemy$$() > 0) {
         this.startBattle$$(battleRoom, door, () => done(items));
@@ -184,7 +184,7 @@ export default class Squad {
       this._map$$.getRoom$$(newX, newY).visit$$();
 
       this._map$$.setSquadPosition$$(newX, newY);
-      this._hasLight = this._map$$.getRoom$$(newX, newY).hasLight$$();
+      this._hasLight$$ = this._map$$.getRoom$$(newX, newY).hasLight$$();
       items = this._map$$.getRoom$$(newX, newY).flushItems$$();
       this.addToInventory$$(items);
       pos = this._map$$.getSquadPosition$$();

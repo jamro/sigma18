@@ -15,8 +15,8 @@ export default class TerminalView extends View {
     this._historyIndex$$ = 0;
     this._keyHandler$$ = this.handleKeyDown$$;
 
-    this._eventBuffer = null;
-    this._eventBufferTime = 0;
+    this._eventBuffer$$ = null;
+    this._eventBuffer$$Time$$ = 0;
 
     this._shortcuts$$ = [];
     this._shortcuts$$[38] = "com go n";
@@ -72,17 +72,17 @@ export default class TerminalView extends View {
   }
 
   setEventBuffer$$(event) {
-    this._eventBufferTime = event ? (new Date()).getTime() : 0;
-    this._eventBuffer = event;
+    this._eventBuffer$$Time$$ = event ? (new Date()).getTime() : 0;
+    this._eventBuffer$$ = event;
   }
 
   flushEventBuffer$$() {
-    if(!this._eventBuffer) return;
-    if((new Date()).getTime() - this._eventBufferTime > 500) return;
+    if(!this._eventBuffer$$) return;
+    if((new Date()).getTime() - this._eventBuffer$$Time$$ > 500) return;
     if(this._keyHandler$$ != this.handleKeyDown$$) return;
     if(!this.isEnabled$$()) return;
-    let event = this._eventBuffer;
-    this._eventBuffer = null;
+    let event = this._eventBuffer$$;
+    this._eventBuffer$$ = null;
     if(this._keyHandler$$) {
       this._keyHandler$$(event);
     }

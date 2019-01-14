@@ -27,17 +27,17 @@ export default class PowerCommand extends Command {
 
   setStatus$$(name, status) {
     if(!name) {
-      this._terminal.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
-      this._terminal.getSoundPlayer$$().play$$('err');
+      this._terminal$$.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
+      this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
-    this._terminal.getView$$().disable$$();
+    this._terminal$$.getView$$().disable$$();
     let errorMessage = this._serviceDirectory$$.validateStateChange$$(name, status);
-    this._terminal.connect$$('power-manager', [
+    this._terminal$$.connect$$('power-manager', [
       `${status ? "Starting" : "Stopping"} service ${name}...`
     ], () => {
       if(errorMessage) {
-        this._terminal.sequence$$(
+        this._terminal$$.sequence$$(
           "",
           "Error: " + errorMessage,
           {c:'sound',d:'err'},
@@ -80,12 +80,12 @@ export default class PowerCommand extends Command {
         ]);
       }
       queue.push({c:'on'});
-      this._terminal.sequence$$(queue);
+      this._terminal$$.sequence$$(queue);
     });
   }
 
   execHelp() {
-    this._terminal.sequence$$(
+    this._terminal$$.sequence$$(
       "Available commands are:",
       '',
       "s{power status}s",
@@ -102,7 +102,7 @@ export default class PowerCommand extends Command {
   }
 
   execList() {
-    this._terminal.getView$$().disable$$();
+    this._terminal$$.getView$$().disable$$();
     let left = (txt, len) => {
       txt = txt || "";
       while(txt.length < len) {
@@ -131,7 +131,7 @@ export default class PowerCommand extends Command {
 
     let total = this._serviceDirectory$$.getTotalPower$$();
 
-    this._terminal.connect$$('power-manager', [
+    this._terminal$$.connect$$('power-manager', [
       services,
       `Total power consumption: s{${total.toFixed(2)}kW}s / ${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW`,
       {c:'sound', d: 'ok', t:0},
@@ -142,7 +142,7 @@ export default class PowerCommand extends Command {
   }
 
   execStatus() {
-    this._terminal.getView$$().disable$$();
+    this._terminal$$.getView$$().disable$$();
 
     let generators = "<pre>Generator | Status  | Efficiency | Power Supply\n" +
                           "----------|---------|------------|--------------\n" +
@@ -151,7 +151,7 @@ export default class PowerCommand extends Command {
                           "Gamma     | ok      |        54% |      26.97kW</pre>";
 
 
-    this._terminal.connect$$('power-manager', [
+    this._terminal$$.connect$$('power-manager', [
       generators,
       `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 150.00kW`,
       {c:'sound', d: 'ok', t:0},

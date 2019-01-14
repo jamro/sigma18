@@ -4,7 +4,7 @@ export default class KeyCard extends Item {
 
   constructor(color) {
     super();
-    this._color = color;
+    this._color$$ = color;
   }
 
   getType$$() {
@@ -12,15 +12,15 @@ export default class KeyCard extends Item {
   }
 
   getColor$$() {
-    return this._color;
+    return this._color$$;
   }
 
   getId$$() {
-    return 'key-' + this._color;
+    return 'key-' + this._color$$;
   }
 
   toString() {
-    let color = this._color[0].toUpperCase() + this._color.slice(1);
+    let color = this._color$$[0].toUpperCase() + this._color$$.slice(1);
     return `${color} key card`;
   }
 }
