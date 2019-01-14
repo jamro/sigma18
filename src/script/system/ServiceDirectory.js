@@ -9,7 +9,7 @@ export default class ServiceDirectory {
     this.addService$$('lights-east', '40.32.125.231', 6);
     this.addService$$('lights-west', '40.32.125.232', 8).on$$();
     this.addService$$('monitoring', '40.32.125.12', 5).on$$();
-    this.addService$$('oxygen-genertor', '40.32.125.193', 13).on$$();
+    this.addService$$('oxygen-generator', '40.32.125.193', 13).on$$();
     this.addService$$('pump-station', '40.32.125.43', 20);
     this.addService$$('data-warehouse', '40.32.125.73', 14).on$$();
     this.addService$$('lab-services', '40.32.125.100', 50);

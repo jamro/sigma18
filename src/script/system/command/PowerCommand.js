@@ -118,13 +118,13 @@ export default class PowerCommand extends Command {
       return txt;
     };
     let data = this._serviceDirectory$$.getAllServices$$();
-    let services = "<pre>Name            | Address       | Status | P.Consumption\n" +
-                        "----------------|---------------|--------|---------------\n";
+    let services = "<pre>Name             | Address       | Status | P.Consumption\n" +
+                        "-----------------|---------------|--------|---------------\n";
     for(let service of data) {
       if(service.isRunning$$()) {
-        services += `${left(service.getName$$(), 16)}| ${left(service.getIp$$(), 14)}|     on | ${right(service.getPower$$().toFixed(2) + "kW", 13)}\n`;
+        services += `${left(service.getName$$(), 17)}| ${left(service.getIp$$(), 14)}|     on | ${right(service.getPower$$().toFixed(2) + "kW", 13)}\n`;
       } else {
-        services += `r{${left(service.getName$$(), 16)}}r| r{${left(service.getIp$$(), 14)}}r|    r{off}r |        r{0.00kW}r\n`;
+        services += `r{${left(service.getName$$(), 17)}}r| r{${left(service.getIp$$(), 14)}}r|    r{off}r |        r{0.00kW}r\n`;
       }
     }
     services += "</pre>";

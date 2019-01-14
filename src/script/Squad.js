@@ -14,8 +14,8 @@ export default class Squad {
       e: 'east',
       w: 'west',
     };
-    this._map$$.onChange$$(() => {
-      if(this._hasLight) return;
+    this._map$$.onChange$$((type) => {
+      if(type != 'light' || this._hasLight) return;
       let pos = this._map$$.getSquadPosition$$();
       let room = this._map$$.getRoom$$(pos.x, pos.y);
       if(!room.hasLight$$()) return;
@@ -143,7 +143,8 @@ export default class Squad {
     if(!door) {
       invalidReason = 'No doors on that side.';
     } else if(door.isClosed$$()) {
-      invalidReason = 'The door is locked.';
+      invalidReason = 'The door is closed. ';
+      invalidReason += this._terminal$$.hasCommand$$('door') ? "Use s{door}s app to open them." : "Explore other locations and find a way to open them.";
     }
 
     if(invalidReason) {

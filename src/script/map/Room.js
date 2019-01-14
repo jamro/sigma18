@@ -84,7 +84,7 @@ export default class Room {
   }
 
   getDescription$$() {
-    if(!this.hasLight$$()) return "We've got total darkness here. Can't see anything.";
+    if(!this.hasLight$$()) return "We've got total s{darkness}s here. Can't see anything. There is no point to explore this location. Try to turn the lights on at first.";
     return this._description$$;
   }
 

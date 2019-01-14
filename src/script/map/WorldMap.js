@@ -30,8 +30,6 @@ export default class WorldMap {
       this._walkthrough$$.handleEvent$$('com-pump-station-' + (state ? 'on' : 'off'));
     });
 
-
-
     let lightServiceWest = this._services$$.getService$$('lights-west');
     let lightServiceEast = this._services$$.getService$$('lights-east');
 
@@ -44,12 +42,12 @@ export default class WorldMap {
         lightService.onStatusChange$$((isRunning) => {
           if(!isRunning || room != this._grid$$[this._squadPosition$$.x][this._squadPosition$$.y]) return;
           room.visit$$();
-          this._notifyChange$$();
+          this._notifyChange$$("light");
         });
         /* jshint ignore:end */
 
         this._grid$$[x][y] = room;
-        this._grid$$[x][y].onChange$$(() => this._notifyChange$$());
+        this._grid$$[x][y].onChange$$(() => this._notifyChange$$("room"));
       }
     }
   }
@@ -81,7 +79,7 @@ export default class WorldMap {
 
   setSquadPosition$$(x, y) {
     this._squadPosition$$ = new Position(x, y);
-    this._notifyChange$$();
+    this._notifyChange$$("squad");
   }
 
   getSquadPosition$$() {
@@ -124,7 +122,7 @@ export default class WorldMap {
 
     this._doorList$$.push(door);
     this._doorMap$$[door.getId$$()] = door;
-    door.onChange$$(() => this._notifyChange$$());
+    door.onChange$$(() => this._notifyChange$$("door"));
     door.onChange$$(() => {
       let event = 'door-';
       event += door.isClosed$$() ? 'close' : 'open';
@@ -147,8 +145,8 @@ export default class WorldMap {
     this._onChangeList$$.push(callback);
   }
 
-  _notifyChange$$() {
-    this._onChangeList$$.forEach((c) => c());
+  _notifyChange$$(type) {
+    this._onChangeList$$.forEach((c) => c(type));
   }
 
 }

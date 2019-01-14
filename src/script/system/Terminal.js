@@ -123,6 +123,10 @@ export default class Terminal {
     });
   }
 
+  hasCommand$$(name) {
+    return this._commandProcessorList$$.filter((c) => c.getName$$() == name).length > 0;
+  }
+
   getCommandList$$() {
     return this._commandProcessorList$$;
   }

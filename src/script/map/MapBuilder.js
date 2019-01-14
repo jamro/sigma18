@@ -58,9 +58,9 @@ export default class MapBuilder {
     this._describe$$(3, 9, "We are at s{dock station DS002}s. It is a rescue capsule! We could use it to escape from here, but we need your help to launch it. Special software may be required.");
     this._describe$$(2, 8, 's{Empty dock station}s. There was probably a rescue capsule before but it has departed a long time ago.');
     this._describe$$(3, 7, 'A long s{corridor}s that joins docks with the rest of the station.', 'corridor');
-    this._describe$$(3, 6, 'A s{corridor}s. There is a plate on the eastern door labeled Warehouse', 'corridor');
+    this._describe$$(3, 6, 'A s{corridor}s. There is a plate on the eastern door labelled Warehouse', 'corridor');
     this._describe$$(3, 5, 'A s{corridor}s. There is a canteen behind the eastern door. The western corridor leads to quarters of the crew. We see a lobby at the north.', 'corridor');
-    this._describe$$(3, 4, 'It is a s{corridor}s that leads to main Lobby. It seems to be totally empty.', 'corridor');
+    this._describe$$(3, 4, 'It is a s{corridor}s that leads to the main Lobby. It seems to be totally empty.', 'corridor');
     this._describe$$(3, 3, 'The main s{lobby}s is absolutely empty. There are bullet holes in the front of the reception desk. The logo in the back is damaged. A mix of documents and waste is on the floor. Seems like a regular battle took place here.');
     this._describe$$(4, 6, 'The s{warehouse}s seems to have several rooms. This one contains mostly food supplies and cleaning stuff. More interesting items are probably behind southern doors.');
     this._describe$$(4, 7, 'This room of the s{warehouse}s is full of spare parts, electronic modules and some repair tools. There is a huge mess here. Shelves are on the floor and nothing seems to be in the right place. There are some doors at the end of the room.');
@@ -88,7 +88,7 @@ export default class MapBuilder {
     this._describe$$(2, 2, 'This is an s{office}s after a huge battle: blood, bullet holes, shells and cartridges on the floor, burned equipment. In the corner, we see a destroyed battle droid SIG-18.');
     this._describe$$(3, 2, "It's the north s{corridor}s. Some documents from the lobby are spread all over the floor.", 'corridor');
     this._describe$$(3, 1, 'We are in a s{corridor}s. In the end, there is an entrance to the internal services area.', 'corridor');
-    this._describe$$(3, 0, 'There is an central s{oxygen generator}s in the room. It recycles oxygen from  CO2. Someone was trying to break in here but unsuccessfully. The door is slightly damaged.');
+    this._describe$$(3, 0, 'There is the central s{oxygen generator}s in the room. It recycles oxygen from  CO2. Someone was trying to break in here but unsuccessfully. The door is slightly damaged.');
     this._describe$$(2, 0, 'We are in the s{power generator room}s. It supplies the whole station. It is very noisy here. Everything seems to be up and running.');
     this._describe$$(4, 0, 'It is the s{computing core}s of the station. Servers here host core services of the station. Everything seems to be up and running.');
 
