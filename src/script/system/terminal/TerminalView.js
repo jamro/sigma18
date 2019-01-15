@@ -30,7 +30,7 @@ export default class TerminalView extends View {
 
     this._noise$$ = new DigitalNoise(document);
     this._view$$.element.appendChild(this._noise$$.getDOM$$());
-    this._noise$$.start();
+    this._noise$$.start$$();
 
     this._view$$.output = this.createElement$$("DIV", {
       cssClass: "terminal-output",
@@ -67,7 +67,7 @@ export default class TerminalView extends View {
 
     this._view$$.input.textField.element.addEventListener("keydown", (e) => {
       this._keyHandler$$(e, this._view$$.input.textField.element.value);
-      this._noise$$.prevent();
+      this._noise$$.prevent$$();
     });
   }
 
@@ -181,7 +181,7 @@ export default class TerminalView extends View {
     content = content.substring(content.length - lengthLimit);
     inputElement.innerHTML = content;
     inputElement.scrollTop = inputElement.scrollHeight;
-    this._noise$$.prevent();
+    this._noise$$.prevent$$();
   }
 
   printel$$() {

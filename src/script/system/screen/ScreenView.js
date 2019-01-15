@@ -21,6 +21,7 @@ export default class ScreenView extends View {
 
     this._context$$ = this._view$$.canvas.element.getContext("2d");
     this.clear$$();
+    window.addEventListener('resize', () => this.rescale$$());
   }
 
   rescale$$() {
@@ -102,7 +103,7 @@ export default class ScreenView extends View {
 
       if(frame >= 35) {
         clearInterval(loop);
-        this._noise$$.start();
+        this._noise$$.start$$();
         done();
       }
     }, 30);

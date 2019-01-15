@@ -10,6 +10,10 @@ import SoundPlayer from './system/common/SoundPlayer.js';
 
 import Squad from './world/Squad.js';
 import MapBuilder from './world/map/MapBuilder.js';
+import Container from './Container.js';
+
+let screenA = new Container(document, '#screen-a', '#overlay', 64, 185, 1025, 770);
+let screenB = new Container(document, '#screen-b', '#overlay', 1140, 77, 721, 482);
 
 let services = new ServiceDirectory();
 let player = new SoundPlayer();

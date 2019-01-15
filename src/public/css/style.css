@@ -9,35 +9,21 @@ body {
   position: absolute;
   left: 0px;
   top: 0px;
-  margin: 0px;
-  width: 1920px;
-  height: 1080px;
-  background-image: url('../img/gwgc201819_overlay.png');
-  display: block;
-  border: 3px solid black;
   z-index: 100;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 #screen-a {
-  background-color: #888;
-  color: #000;
+  background-color: #000;
   position: absolute;
-  width: 1025px;
-  height: 770px;
-  left: 64px;
-  top: 185px;
   padding: 0px;
   margin: 0px;
 }
 
 #screen-b {
-  background-color: #888;
-  color: #000;
+  background-color: #000;
   position: absolute;
-  width: 721px;
-  height: 482px;
-  left: 1140px;
-  top: 77px;
-  padding: 0px;
   margin: 0px;
+  padding: 0px;
 }

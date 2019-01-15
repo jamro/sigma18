@@ -67,7 +67,7 @@ export default class MapRenderer extends ScreenRenderer {
     };
 
     let write = (segX, segY, x, y, txt) => {
-      ctx.font = "16px \"Courier New\", Courier, monospace";
+      ctx.font = "1em \"Courier New\", Courier, monospace";
       ctx.textAlign = 'center';
       ctx.fillStyle = color;
       ctx.fillText(

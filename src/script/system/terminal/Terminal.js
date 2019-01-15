@@ -10,7 +10,7 @@ export default class Terminal {
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
 
     document.addEventListener("keydown", (e) => {
-      if(!this.getView$$().isEnabled$$()) {
+      if(!this.getView$$().isEnabled$$() && !e.ctrlKey) {
         this._soundPlayer$$.play$$('err');
       }
     });
@@ -77,7 +77,7 @@ export default class Terminal {
       event.stopImmediatePropagation();
       event.preventDefault();
       this._view$$.clearInput$$();
-      if(event.keyCode != 13) {
+      if(event.keyCode != 13 && !e.ctrlKey) {
         this._soundPlayer$$.play$$('err');
         return;
       }
@@ -94,7 +94,7 @@ export default class Terminal {
     let initState = this._view$$.isEnabled$$();
     this._view$$.enable$$();
     this._view$$.setKeyHandler$$((event, txt) => {
-      if(event.keyCode != 13) {
+      if(event.keyCode != 13 && !e.ctrlKey) {
         return;
       }
       event.stopImmediatePropagation();

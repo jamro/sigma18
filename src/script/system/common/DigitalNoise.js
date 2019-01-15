@@ -11,6 +11,7 @@ export default class DigitalNoise extends View {
     });
     this._context$$ = this._view$$.element.getContext("2d");
     this._loop$$ = setInterval(() => this.render$$(), 40);
+    window.addEventListener('resize', () => this.rescale$$());
   }
 
   rescale$$() {
@@ -30,12 +31,12 @@ export default class DigitalNoise extends View {
     ctx.fill();
   }
 
-  start() {
+  start$$() {
     this._enabled$$ = true;
     this._timer$$ = 0;
   }
 
-  prevent() {
+  prevent$$() {
     this._timer$$ = 100;
   }
 
