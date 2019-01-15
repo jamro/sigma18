@@ -2,7 +2,6 @@ $terminal-background-color: #001100;
 $terminal-primary-color: #88ff22;
 $terminal-input-height: 2.5em;
 $terminal-font-family: "Courier New", Courier, monospace;
-$terminal-font-size: 1.5em;
 
 .digital-noise {
   width: 100%;
@@ -18,7 +17,8 @@ $terminal-font-size: 1.5em;
   width: 100%;
   height: 100%;
   font-family: $terminal-font-family;
-  font-size: $terminal-font-size;
+  font-size: 1.4em;
+  line-height: 1.4em;
 
   .terminal-output {
     position: relative;

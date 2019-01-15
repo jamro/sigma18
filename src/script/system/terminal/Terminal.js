@@ -77,7 +77,7 @@ export default class Terminal {
       event.stopImmediatePropagation();
       event.preventDefault();
       this._view$$.clearInput$$();
-      if(event.keyCode != 13 && !e.ctrlKey) {
+      if(event.keyCode != 13 && !event.ctrlKey) {
         this._soundPlayer$$.play$$('err');
         return;
       }
@@ -94,7 +94,7 @@ export default class Terminal {
     let initState = this._view$$.isEnabled$$();
     this._view$$.enable$$();
     this._view$$.setKeyHandler$$((event, txt) => {
-      if(event.keyCode != 13 && !e.ctrlKey) {
+      if(event.keyCode != 13 && !event.ctrlKey) {
         return;
       }
       event.stopImmediatePropagation();
