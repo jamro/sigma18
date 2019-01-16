@@ -21,6 +21,7 @@ export default class ScreenView extends View {
     this._context$$ = this._view$$.canvas.element.getContext("2d");
     this.clear$$();
     window.addEventListener('resize', () => this.rescale$$());
+    window.addEventListener('load', () => this.rescale$$());
   }
 
   rescale$$() {
