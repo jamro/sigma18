@@ -1,17 +1,18 @@
 export default class Container {
 
-  constructor(document, element, ref,  x, y, w, h) {
-    this._element$$ = document.querySelector(element);
-    this._ref$$ = document.querySelector(ref);
+  constructor(element, ref,  x, y, w, h) {
+    this._element$$ = element;
+    this._ref$$ = ref;
     this._x = x;
     this._y = y;
     this._w = w;
     this._h = h;
-    this.rescale();
-    window.addEventListener('resize',() => this.rescale());
+    this.rescale$$();
+    window.addEventListener('resize',() => this.rescale$$());
+    window.addEventListener('load',() => this.rescale$$());
   }
 
-  rescale() {
+  rescale$$() {
     let scale = this._ref$$.width/1920;
     this._element$$.style.width = Math.round(scale*this._w)+ "px";
     this._element$$.style.height = Math.round(scale*this._h) + "px";

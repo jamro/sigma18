@@ -1,3 +1,8 @@
+import '../styles/reset.scss';
+import '../styles/page.scss';
+import '../styles/terminal.scss';
+import '../styles/screen.scss';
+
 import TerminalView from './system/terminal/TerminalView.js';
 import Terminal from './system/terminal/Terminal.js';
 import ScreenView from './system/screen/ScreenView.js';
@@ -12,8 +17,24 @@ import Squad from './world/Squad.js';
 import MapBuilder from './world/map/MapBuilder.js';
 import Container from './Container.js';
 
-let screenA = new Container(document, '#screen-a', '#overlay', 64, 185, 1025, 770);
-let screenB = new Container(document, '#screen-b', '#overlay', 1140, 77, 721, 482);
+
+let screenAElement, screenBElement, overlayElement;
+screenAElement = document.createElement('DIV');
+screenAElement.id = "screen-a";
+document.body.appendChild(screenAElement);
+
+screenBElement = document.createElement('DIV');
+screenBElement.id = "screen-b";
+document.body.appendChild(screenBElement);
+
+overlayElement = document.createElement('IMG');
+overlayElement.id = "overlay";
+overlayElement.src = '../img/gwgc201819_overlay.png';
+document.body.appendChild(overlayElement);
+
+
+let screenA = new Container(screenAElement, overlayElement, 64, 185, 1025, 770);
+let screenB = new Container(screenBElement, overlayElement, 1140, 77, 721, 482);
 
 let services = new ServiceDirectory();
 let player = new SoundPlayer();
