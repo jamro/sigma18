@@ -33,6 +33,8 @@ terminal.installCommand$$(new SfxCommand(player));
 terminal.installCommand$$(new ComCommand(squad, map, terminal));
 builder.placeItems$$(squad, map, map.getVirus$$());
 
+let chromeInfo = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
+
 terminal.getView$$().disable$$();
 terminal.sequence$$(
   "",
@@ -42,6 +44,7 @@ terminal.sequence$$(
   "Version of terminal: 1.0.0",
   "Have fun :)",
   "",
+  chromeInfo,
   "",
   "s{PRESS ENTER TO BEGIN YOUR ADVENTURE :)}s",
   "",
