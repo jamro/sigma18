@@ -7,11 +7,22 @@ export default class SoundPlayer {
     this._primaryVoice$$ = null;
     this._secondaryVoice$$ = null;
 
+    let findVoice = (name) => {
+      let englishVoices = window.speechSynthesis.getVoices().filter((v) => v.lang.substring(0,2) == 'en');
+      let voice = englishVoices.filter((v) => v.name == name);
+      if(voice.length > 0) {
+        return voice[0];
+      }
+      if(englishVoices.length > 0) {
+        return englishVoices[0];
+      }
+      return null;
+    };
+
     window.speechSynthesis.onvoiceschanged = () => {
-      let voice = window.speechSynthesis.getVoices().filter((v) => v.name == 'Google UK English Male');
-      this._primaryVoice$$ = voice.length > 0 ? voice[0] : null;
-      voice = window.speechSynthesis.getVoices().filter((v) => v.name == 'Google UK English Female');
-      this._secondaryVoice$$ = voice.length > 0 ? voice[0] : null;
+      let englishVoices = window.speechSynthesis.getVoices().filter((v) => v.lang.substring(0,2) == 'en');
+      this._primaryVoice$$ = findVoice('Google UK English Male');
+      this._secondaryVoice$$ = findVoice('Google UK English Female');
     };
 
     this._sounds$$ = {};
@@ -66,8 +77,12 @@ export default class SoundPlayer {
     }
 
     try {
+      let voice = secondary ? this._secondaryVoice$$ : this._primaryVoice$$;
+      if(!voice) {
+        throw Error('No voice found');
+      }
       this._utter$$ = new SpeechSynthesisUtterance(pureText);
-      this._utter$$.voice = secondary ? this._secondaryVoice$$ : this._primaryVoice$$;
+      this._utter$$.voice = voice;
       this._utter$$.rate = secondary ? 1.1 : 1.0;
       this._utter$$.pitch = secondary ? 0.9 : 1.1;
       this._utter$$.onend = () => {

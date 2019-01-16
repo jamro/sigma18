@@ -48,7 +48,7 @@ terminal.sequence$$(
   {c:'pause'},
   {c:'sound', d:'ok'},
   {c:'chat', d:[
-    ['comander', 'This is commander of Sierra-23, Kate Decker speaking!!!'],
+    ['comander', 'This is commander of Sierra-23, Alex Decker speaking!!!'],
     ['comander', 'Sir! Two of our engines are damaged! Emergency landing at Sigma-18! Approaching DS003...'],
     ['comander', 'We cannot keep the approach path! We are too far on the left!'],
     ['comander', "Mayday, mayday, mayday..."],
