@@ -18,7 +18,7 @@ Create a game that meets the following requirements:
 More details at [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=697)
 
 # The Plot
-It's the year 2080. You are a space marine's tech who specializes in security and hacking. The squad that you are supporting is leading by commander Kate Decker. They are on their way back home from a reconnaissance mission in The Teta Colony. Unfortunately, the spaceship was damaged and they were forced to have an emergency landing at International Space Station Sigma-18. The ship was wrecked during the landing so you must help the squad to find another way out.
+It's the year 2080. You are a space marine's tech who specializes in security and hacking. The squad that you are supporting is leading by commander Alex Decker. They are on their way back home from a reconnaissance mission in The Teta Colony. Unfortunately, the spaceship was damaged and they were forced to have an emergency landing at International Space Station Sigma-18. The ship was wrecked during the landing so you must help the squad to find another way out.
 
 
 # How to Play
