@@ -5,14 +5,8 @@ export default class StaticItem extends Item {
   constructor(desc) {
     super();
     this._desc = desc;
-  }
-
-  getType$$() {
-    return 'static';
-  }
-
-  getId$$() {
-    return 'static';
+    this.type$$ = 'static';
+    this.id$$ = 'static';
   }
 
   toString() {

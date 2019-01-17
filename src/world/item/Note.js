@@ -5,14 +5,8 @@ export default class Note extends Item {
   constructor(msg) {
     super();
     this._msg = msg;
-  }
-
-  getType$$() {
-    return 'note';
-  }
-
-  getId$$() {
-    return 'note';
+    this.type$$ = 'note';
+    this.id$$ = 'note';
   }
 
   toString() {

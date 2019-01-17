@@ -121,7 +121,7 @@ export default class DoorCommand extends Command {
       } else if(requiredKey) {
         let hasKey = this._squad
           .getInventory$$()
-          .filter((i) => (i.getType$$() == 'key' && i.getColor$$() == requiredKey));
+          .filter((i) => (i.type$$ == 'key' && i.color$$ == requiredKey));
         hasKey = hasKey.length ? true : false;
         let info = {c: 'ln', d:`This area is restricted! A s{${requiredKey} key card}s is required to access`, t: 500};
         if(hasKey) {

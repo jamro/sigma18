@@ -4,19 +4,9 @@ export default class Disk extends Item {
 
   constructor(command) {
     super();
-    this._command$$ = command;
-  }
-
-  getType$$() {
-    return 'disk';
-  }
-
-  getCommand$$() {
-    return this._command$$;
-  }
-
-  getId$$() {
-    return 'disk-' + this._command$$.name$$;
+    this.command$$ = command;
+    this.type$$ = 'disk';
+    this.id$$ = 'disk-' + this.command$$.name$$;
   }
 
   toString() {

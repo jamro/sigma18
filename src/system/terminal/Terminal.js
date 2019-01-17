@@ -248,7 +248,7 @@ export default class Terminal {
 
   uploadSoftware$$(disks, done) {
     disks = disks || [];
-    let appNames = disks.map((d) => d.getCommand$$().name$$);
+    let appNames = disks.map((d) => d.command$$.name$$);
     this.sequence$$(
       {c: 'sound', d: 'ok', t: 100},
       "",
@@ -259,7 +259,7 @@ export default class Terminal {
       {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
       {c: 'load'},
       {c: () => {
-        disks.forEach((d) => this.installCommand$$(d.getCommand$$()));
+        disks.forEach((d) => this.installCommand$$(d.command$$));
       }},
       'Done.',
       '',

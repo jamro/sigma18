@@ -4,19 +4,9 @@ export default class KeyCard extends Item {
 
   constructor(color) {
     super();
-    this._color$$ = color;
-  }
-
-  getType$$() {
-    return 'key';
-  }
-
-  getColor$$() {
-    return this._color$$;
-  }
-
-  getId$$() {
-    return 'key-' + this._color$$;
+    this.color$$ = color;
+    this.type$$ = 'key';
+    this.id$$ = 'key-' + this._color$$;
   }
 
   toString() {

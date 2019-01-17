@@ -41,7 +41,7 @@ export default class ComCommand extends Command {
     this.disableInput$$();
     this._squad.requestMove$$(direction, (items) => {
       items = items || [];
-      let disks = items.filter((i) => i.getType$$() == 'disk');
+      let disks = items.filter((i) => i.type$$ == 'disk');
       if(disks.length > 0) {
         this._terminal$$.uploadSoftware$$(disks, () => {
           this.enableInput$$();

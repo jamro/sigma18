@@ -108,7 +108,7 @@ export default class Squad {
     let pos = this._map$$.getSquadPosition$$();
     let items = this._map$$.getRoom$$(pos.x, pos.y).flushItems$$();
     this.addToInventory$$(items);
-    let disks = items.filter((i) => i.getType$$() == 'disk');
+    let disks = items.filter((i) => i.type$$ == 'disk');
     let msg = `Lights on! ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
     if(items.length > 0) {
       msg += "m{<br/><br/>We have found:<br/>";
@@ -197,7 +197,7 @@ export default class Squad {
       }
       msgQueue.push(['commander', msg]);
 
-      let disks = items.filter((i) => i.getType$$() == 'disk');
+      let disks = items.filter((i) => i.type$$ == 'disk');
       if(disks.length > 0) {
         msgQueue.push(['commander', 'I\'ve got a data storage here! Uploading...']);
       }
@@ -246,7 +246,7 @@ export default class Squad {
   }
 
   addToInventory$$(items) {
-    this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.getType$$() != 'disk'));
+    this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.type$$ != 'disk'));
     items.forEach((i) => this._map$$.getWalthrough$$().handleEvent$$('item-' + i.getId$$()));
   }
 
