@@ -78,7 +78,7 @@ export default class DoorCommand extends Command {
         "Password authorization is required.",
         {c: 'pass', d: 60},
         doClose ? `Closing...` : `Opening...`,
-        {c:'ln', d:`Done. Door ${door.getId$$()} ${doClose ? 'closed' : 'opened'}.`, t:500},
+        {c:'ln', d:`Done. Door ${door.id$$} ${doClose ? 'closed' : 'opened'}.`, t:500},
         {c: 'sound', d: 'ok', t: 0},
         {c: 'on'},
         {c: () => {
@@ -128,7 +128,7 @@ export default class DoorCommand extends Command {
           this._terminal$$.sequence$$([
             info,
             {c:'chat', d:[
-              ['hacker', `Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.getId$$()}`],
+              ['hacker', `Commander, I need your assistance. Use ${requiredKey} key card to open the door ${door.id$$}`],
               ['commander', `The key card is in the reader. Done!`]
             ], t: 800},
             "",
@@ -142,7 +142,7 @@ export default class DoorCommand extends Command {
           this._terminal$$.sequence$$([
             info,
             {c:'chat', d:[
-              ['hacker', `Commander, We need a ${requiredKey} key card to open the door ${door.getId$$()}`],
+              ['hacker', `Commander, We need a ${requiredKey} key card to open the door ${door.id$$}`],
               ['commander', `We do not have required key card!`]
             ], t: 800},
             "",

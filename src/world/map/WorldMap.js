@@ -121,7 +121,7 @@ export default class WorldMap {
     door.assignRooms$$(room1, room2);
 
     this._doorList$$.push(door);
-    this._doorMap$$[door.getId$$()] = door;
+    this._doorMap$$[door.id$$] = door;
     door.onChange$$(() => this._notifyChange$$("door"));
     door.onChange$$(() => {
       let event = 'door-';

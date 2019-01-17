@@ -15,8 +15,8 @@ class SecurityQuestion {
 class Door {
 
   constructor() {
-    this._id$$ = 'd' + Math.floor(Math.random()*16).toString(16) + Door._nextId$$.toString(16);
-    this._id$$ = this._id$$.toUpperCase();
+    this.id$$ = 'd' + Math.floor(Math.random()*16).toString(16) + Door._nextId$$.toString(16);
+    this.id$$ = this.id$$.toUpperCase();
     Door._nextId$$++;
     this._position$$ = null;
     this._rotation$$ = null;
@@ -74,10 +74,6 @@ class Door {
 
   isClosed$$() {
     return this._isClosed$$;
-  }
-
-  getId$$() {
-    return this._id$$;
   }
 
   onChange$$(callback) { // return true to remove callback after execution

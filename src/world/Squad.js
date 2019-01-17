@@ -66,7 +66,7 @@ export default class Squad {
       {c: done}
     ]);
     this._battleLoop$$ = setInterval(() => {
-      let doorId = door.getId$$();
+      let doorId = door.id$$;
       let items;
       let virusActive = this._map$$.getVirus$$().isActive$$;
       if(virusActive) {
@@ -221,7 +221,7 @@ export default class Squad {
       for(let direction in doors) {
         if(doors[direction]) {
           let state = doors[direction].isClosed$$() ? 'Locked' : 'Opened';
-          msg += ` * ${state} door on the ${this._directionMap$$[direction]} (ID: ${doors[direction].getId$$()})<br/>`;
+          msg += ` * ${state} door on the ${this._directionMap$$[direction]} (ID: ${doors[direction].id$$})<br/>`;
         }
       }
     }
@@ -247,7 +247,7 @@ export default class Squad {
 
   addToInventory$$(items) {
     this._inventory$$ = this._inventory$$.concat(items.filter((i) => i.type$$ != 'disk'));
-    items.forEach((i) => this._map$$.getWalthrough$$().handleEvent$$('item-' + i.getId$$()));
+    items.forEach((i) => this._map$$.getWalthrough$$().handleEvent$$('item-' + i.id$$));
   }
 
   getPosition$$() {

@@ -7,7 +7,7 @@ class Validator {
 
   validate$$(e) {
     if(e == this._condition$$) {
-      this._passed$$ = true;
+      this.passed$$ = true;
     }
   }
 }
