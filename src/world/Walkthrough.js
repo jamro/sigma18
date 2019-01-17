@@ -1,7 +1,7 @@
 class Validator {
   constructor(condition, hint) {
-    this._passed$$ = false;
-    this._hint$$ = hint;
+    this.passed$$ = false;
+    this.hint$$ = hint;
     this._condition$$ = condition;
   }
 
@@ -9,14 +9,6 @@ class Validator {
     if(e == this._condition$$) {
       this._passed$$ = true;
     }
-  }
-
-  getHint$$() {
-    return this._hint$$;
-  }
-
-  isPassed$$() {
-    return this._passed$$;
   }
 }
 
@@ -58,7 +50,7 @@ export default class Walkthrough {
     this._level$$ = 0;
     this._validators$$.forEach((v) => v.validate$$(event));
     for(let i=0; i < this._validators$$.length; i++) {
-      if(!this._validators$$[i].isPassed$$()) {
+      if(!this._validators$$[i].passed$$) {
         break;
       }
       this._level$$++;
@@ -67,7 +59,7 @@ export default class Walkthrough {
 
   getHint$$() {
     if(!this._validators$$[this._level$$]) return "You can figure it out by yourself";
-    return this._validators$$[this._level$$].getHint$$();
+    return this._validators$$[this._level$$].hint$$;
   }
 
 }
