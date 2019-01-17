@@ -8,8 +8,13 @@ export default class TerminalView extends View {
     this._onSubmitCallbackList$$ = [];
     this._refId$$ = 0;
     this._disableLevel$$ = 0;
-    let data = localStorage.getItem('history') || '[]';
-    this._historyFull$$ = JSON.parse(data);
+    this._historyFull$$ = [];
+    try {
+      let data = localStorage.getItem('history') || '[]';
+      this._historyFull$$ = JSON.parse(data);
+    } catch(err) {
+      console.error(err);
+    }
     this._history$$ = [''].concat(this._historyFull$$);
     this._historyIndex$$ = 0;
     this._keyHandler$$ = this.handleKeyDown$$;
@@ -148,7 +153,12 @@ export default class TerminalView extends View {
     }
     this._history$$ = [''].concat(this._historyFull$$);
     this._historyIndex$$ = 0;
-    localStorage.setItem('history', JSON.stringify(this._historyFull$$));
+    try {
+      localStorage.setItem('history', JSON.stringify(this._historyFull$$));
+    } catch(err) {
+      console.error(err);
+    }
+
     this.clearInput$$();
     this._onSubmitCallbackList$$.forEach((callback) => callback(command));
   }
