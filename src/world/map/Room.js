@@ -19,7 +19,7 @@ export default class Room {
   }
 
   hasLight$$() {
-    return this._lightService$$.isRunning$$();
+    return this._lightService$$.isRunning$$;
   }
 
   setType$$(t) {

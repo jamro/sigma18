@@ -32,7 +32,7 @@ export default class ServiceDirectory {
   }
 
   getService$$(name) {
-    let result = this._data$$.filter((s) => s.getName$$() == name);
+    let result = this._data$$.filter((s) => s.name$$ == name);
     return result.length ? result[0] : null;
   }
 
@@ -45,10 +45,10 @@ export default class ServiceDirectory {
     if(!service) {
       return `Service ${name} not found`;
     }
-    if(service.isRunning$$() == newState) {
-      return `Service ${name} (${service.getName$$()}) is already ${newState ? 'running' : 'stopped'}.`;
+    if(service.isRunning$$ == newState) {
+      return `Service ${name} (${service.name$$}) is already ${newState ? 'running' : 'stopped'}.`;
     }
-    let missingPower = this.getTotalPower$$() + service.getRequiredPower$$() - this.getPowerSupply$$();
+    let missingPower = this.getTotalPower$$() + service.powerRequirements$$ - this.getPowerSupply$$();
     if(newState && missingPower > 0) {
       return `Not enough power: s{${missingPower.toFixed(2)}kW}s is missing.<br/>\nTry to turn off some services.<br/>\nRun s{power list}s to review available services.`;
     }

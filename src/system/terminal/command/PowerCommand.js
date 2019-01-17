@@ -41,7 +41,7 @@ export default class PowerCommand extends Command {
       }
       let service = this._serviceDirectory$$.getService$$(name);
       let queue = [
-        `${service.getName$$()}: ${service.getIp$$()}`,
+        `${service.name$$}: ${service.ip$$}`,
         {c:'load'},
         `Service ${status ? "started" : "stopped"}`,
         {c:'sound',d:'ok'},
@@ -53,13 +53,13 @@ export default class PowerCommand extends Command {
           }
         }}
       ];
-      if(service.getName$$() == 'oxygen-generator' && !status) {
+      if(service.name$$ == 'oxygen-generator' && !status) {
         queue = queue.concat([
           {c:'ln', d:"r{WARNING: Oxygen Generator is down. Threat to the life of the crew!}r", t:300},
           {c:'chat', d:'Oxygen level is low. Putting on the masks.', f:'commander', t:1500}
         ]);
       }
-      if(service.getName$$() == 'power-manager' && !status) {
+      if(service.name$$ == 'power-manager' && !status) {
         queue = queue.concat([
           "",
           {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
@@ -115,10 +115,10 @@ export default class PowerCommand extends Command {
     let services = "<pre>Name             | Address       | Status | P.Consumption\n" +
                         "-----------------|---------------|--------|---------------\n";
     for(let service of data) {
-      if(service.isRunning$$()) {
-        services += `${left(service.getName$$(), 17)}| ${left(service.getIp$$(), 14)}|     on | ${right(service.getPower$$().toFixed(2) + "kW", 13)}\n`;
+      if(service.isRunning$$) {
+        services += `${left(service.name$$, 17)}| ${left(service.ip$$, 14)}|     on | ${right(service.getPower$$().toFixed(2) + "kW", 13)}\n`;
       } else {
-        services += `r{${left(service.getName$$(), 17)}}r| r{${left(service.getIp$$(), 14)}}r|    r{off}r |        r{0.00kW}r\n`;
+        services += `r{${left(service.name$$, 17)}}r| r{${left(service.ip$$, 14)}}r|    r{off}r |        r{0.00kW}r\n`;
       }
     }
     services += "</pre>";

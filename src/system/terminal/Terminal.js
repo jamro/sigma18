@@ -34,12 +34,12 @@ export default class Terminal {
         if(!service) {
           return handleErr('Cannot find service ' + serviceName);
         }
-        if(!service.isRunning$$()) {
-          return handleErr(`Service s{${service.getName$$()}}s is down.<br />\nTry turn it on by s{power up ${service.getName$$()}}s`);
+        if(!service.isRunning$$) {
+          return handleErr(`Service s{${service.name$$}}s is down.<br />\nTry turn it on by s{power up ${service.name$$}}s`);
         }
 
         let queue = [
-          `Service ${service.getName$$()} found at ${service.getIp$$()}`,
+          `Service ${service.name$$} found at ${service.ip$$}`,
           {c:'ln',d:'', t:300}
         ];
         queue = queue.concat(msg);
