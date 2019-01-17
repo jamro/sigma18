@@ -5,15 +5,11 @@ export default class ScreenRenderer {
   }
 
   attach$$(screenView) {
-    this._screenView$$ = screenView;
+    this.screenView$$ = screenView;
   }
 
   detach$$() {
-    this._screenView$$ = null;
-  }
-
-  getScreenView$$() {
-    return this._screenView$$;
+    this.screenView$$ = null;
   }
 
   render$$() {

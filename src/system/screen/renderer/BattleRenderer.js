@@ -62,16 +62,16 @@ export default class BattleRenderer extends ScreenRenderer {
   }
 
   render$$() {
-    if(!this.getScreenView$$()) {
+    if(!this.screenView$$) {
       return;
     }
-    let ctx = this.getScreenView$$().getContext$$();
-    let w = this.getScreenView$$().getWidth$$();
-    let h = this.getScreenView$$().getHeight$$();
-    let red = this.getScreenView$$().getDangerColor$$();
-    let color = this.getScreenView$$().getPrimaryColor$$();
-    let color2 = this.getScreenView$$().getPrimaryColor$$(0.5);
-    let bg = this.getScreenView$$().getBackgroundColor$$();
+    let ctx = this.screenView$$.context$$;
+    let w = this.screenView$$.getWidth$$();
+    let h = this.screenView$$.getHeight$$();
+    let red = this.screenView$$.dangerColor$$;
+    let color = this.screenView$$.getPrimaryColor$$();
+    let color2 = this.screenView$$.getPrimaryColor$$(0.5);
+    let bg = this.screenView$$.backgroundColor$$;
 
     let flipY = false;
     let flipX = false;
@@ -89,7 +89,7 @@ export default class BattleRenderer extends ScreenRenderer {
       flipX = true;
     }
 
-    this.getScreenView$$().clear$$();
+    this.screenView$$.clear$$();
 
     let roomSize = Math.round(Math.min(w, h)*0.7);
     let wallSize = 0.05;
@@ -157,7 +157,7 @@ export default class BattleRenderer extends ScreenRenderer {
       let size = 0.01;
       [x, y] = transform(p.x, p.y);
       ctx.beginPath();
-      ctx.fillStyle = this.getScreenView$$().getPrimaryColor$$(p.frame/p.life);
+      ctx.fillStyle = this.screenView$$.getPrimaryColor$$(p.frame/p.life);
       ctx.strokeStyle = null;
       ctx.rect(startX + roomSize*(x-size/2), startY + roomSize*(y-size/2), size*roomSize, size*roomSize);
       ctx.fill();
@@ -181,7 +181,7 @@ export default class BattleRenderer extends ScreenRenderer {
       } else {
         ctx.beginPath();
         ctx.strokeStyle = null;
-        ctx.fillStyle = this.getScreenView$$().getPrimaryColor$$((shot.frame-2)/4);
+        ctx.fillStyle = this.screenView$$.getPrimaryColor$$((shot.frame-2)/4);
         let ax = shot.to.x;
         let ay = shot.to.y;
         [ax, ay] = transform(ax, ay);

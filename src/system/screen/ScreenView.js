@@ -6,6 +6,9 @@ export default class ScreenView extends View {
   constructor(document) {
     super(document);
 
+    this.backgroundColor$$ = '#001100';
+    this.dangerColor$$ = '#ff0000';
+
     this._view$$ = this.createElement$$("DIV", {
       cssClass: "screen-root"
     });
@@ -18,7 +21,7 @@ export default class ScreenView extends View {
       parent: this._view$$
     });
 
-    this._context$$ = this._view$$.canvas.element.getContext("2d");
+    this.context$$ = this._view$$.canvas.element.getContext("2d");
     this.clear$$();
     window.addEventListener('resize', () => this.rescale$$());
     window.addEventListener('load', () => this.rescale$$());
@@ -37,18 +40,6 @@ export default class ScreenView extends View {
     return `rgba(136,255,34,${(1-opacity).toFixed(2)})`;
   }
 
-  getBackgroundColor$$() {
-    return '#001100';
-  }
-
-  getDangerColor$$() {
-    return '#ff0000';
-  }
-
-  getContext$$() {
-    return this._context$$;
-  }
-
   getWidth$$() {
     return this._view$$.canvas.element.width;
   }
@@ -58,11 +49,11 @@ export default class ScreenView extends View {
   }
 
   clear$$() {
-    let ctx = this.getContext$$();
+    let ctx = this.context$$;
     ctx.clearRect(0, 0, this.getWidth$$(), this.getHeight$$());
     ctx.beginPath();
     ctx.rect(0, 0, this.getWidth$$(), this.getHeight$$());
-    ctx.fillStyle = this.getBackgroundColor$$();
+    ctx.fillStyle = this.backgroundColor$$;
     ctx.fill();
   }
 
@@ -75,7 +66,7 @@ export default class ScreenView extends View {
     let frame = 0;
     let w = this.getWidth$$();
     let h = this.getHeight$$();
-    let ctx = this.getContext$$();
+    let ctx = this.context$$;
     let p;
     let loop = setInterval(() => {
       this.clear$$();

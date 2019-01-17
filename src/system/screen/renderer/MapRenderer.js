@@ -25,20 +25,20 @@ export default class MapRenderer extends ScreenRenderer {
   }
 
   render$$() {
-    if(!this.getScreenView$$()) {
+    if(!this.screenView$$) {
       return;
     }
-    let ctx = this.getScreenView$$().getContext$$();
-    let w = this.getScreenView$$().getWidth$$();
-    let h = this.getScreenView$$().getHeight$$();
-    let red = this.getScreenView$$().getDangerColor$$();
-    let color = this.getScreenView$$().getPrimaryColor$$();
-    let color2 = this.getScreenView$$().getPrimaryColor$$(0.7);
-    let bg = this.getScreenView$$().getBackgroundColor$$();
+    let ctx = this.screenView$$.context$$;
+    let w = this.screenView$$.getWidth$$();
+    let h = this.screenView$$.getHeight$$();
+    let red = this.screenView$$.dangerColor$$;
+    let color = this.screenView$$.getPrimaryColor$$();
+    let color2 = this.screenView$$.getPrimaryColor$$(0.7);
+    let bg = this.screenView$$.backgroundColor$$;
     let pos;
     let room;
 
-    this.getScreenView$$().clear$$();
+    this.screenView$$.clear$$();
 
     let segmentSize = Math.round(Math.min(w, h)/12);
     let startX = w/2 - (segmentSize*12)/2;
