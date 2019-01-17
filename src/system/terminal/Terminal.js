@@ -112,16 +112,16 @@ export default class Terminal {
     commandProcessor.setTerminal$$(this);
     this._commandProcessorList$$.push(commandProcessor);
     this._commandProcessorList$$.sort((a, b) => {
-      if(a.getName$$() == 'help') return -1;
-      if(b.getName$$() == 'help') return 1;
-      if(a.getName$$() > b.getName$$()) return 1;
-      if(a.getName$$() < b.getName$$()) return -1;
+      if(a.name$$ == 'help') return -1;
+      if(b.name$$ == 'help') return 1;
+      if(a.name$$ > b.name$$) return 1;
+      if(a.name$$ < b.name$$) return -1;
       return 0;
     });
   }
 
   hasCommand$$(name) {
-    return this._commandProcessorList$$.filter((c) => c.getName$$() == name).length > 0;
+    return this._commandProcessorList$$.filter((c) => c.name$$ == name).length > 0;
   }
 
   getCommandList$$() {
@@ -248,7 +248,7 @@ export default class Terminal {
 
   uploadSoftware$$(disks, done) {
     disks = disks || [];
-    let appNames = disks.map((d) => d.getCommand$$().getName$$());
+    let appNames = disks.map((d) => d.getCommand$$().name$$);
     this.sequence$$(
       {c: 'sound', d: 'ok', t: 100},
       "",

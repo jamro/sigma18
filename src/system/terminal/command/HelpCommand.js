@@ -2,12 +2,10 @@ import Command from '../Command.js';
 
 export default class HelpCommand extends Command {
 
-  getName$$() {
-    return 'help';
-  }
-
-  getHelp$$() {
-    return "List all available commands";
+  constructor() {
+    super();
+    this.name$$ = 'help';
+    this.help$$ = 'List all available commands';
   }
 
   exec$$(command) {
@@ -15,8 +13,8 @@ export default class HelpCommand extends Command {
     let commandList = this._terminal$$.getCommandList$$();
     for(let i=0; i < commandList.length; i++) {
       let command = commandList[i];
-      let help = command.getHelp$$();
-      let name = command.getName$$();
+      let help = command.help$$;
+      let name = command.name$$;
       if(help && name) {
         this._terminal$$.println$$(` * s{${name}}s - ${help}`);
       }

@@ -2,12 +2,10 @@ import Command from '../Command.js';
 
 export default class ProjCommand extends Command {
 
-  getName$$() {
-    return 'proj';
-  }
-
-  getHelp$$() {
-    return "Display SIG-18 project details";
+  constructor() {
+    super();
+    this.name$$ = 'proj';
+    this.help$$ = 'Display SIG-18 project details';
   }
 
   execLog() {

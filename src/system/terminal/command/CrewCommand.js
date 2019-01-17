@@ -18,14 +18,9 @@ export default class CrewCommand extends Command {
       ['mhahn',       'Mikey Hahn',       'Medical Doctor',       '2040-10-29', 'Balo University',    'm', 'looks after', 'health care in ISS Sigma-18',                      "doctor", "medical master's",         14,  5, "medicine",                  "Zralo Medical Center, Fafield Hospital and Osacaster Clinic", "regular health checks and tratments of the crew", "space adaptation syndrome"],
       ['rballard',    'Ritchie Ballard',  'Chief',                '2044-04-23', 'Blane School',       'm', 'supports the team by taking care of', 'food supply',              "cook", "bachelor's",                  8,  2, "gastronomy",                "ISA, Elcroy and Druburg Institute",                           "preparing meals and maintenance of food supplies ", "space logistic"],
     ];
-  }
 
-  getName$$() {
-    return 'crew';
-  }
-
-  getHelp$$() {
-    return "Show information about crew members of Sigma-18";
+    this.name$$ = 'crew';
+    this.help$$ = 'Show information about crew members of Sigma-18';
   }
 
   execList() {

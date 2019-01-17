@@ -6,14 +6,8 @@ export default class VirusCommand extends Command {
     super();
     this._virus = virus;
     this._header = `Virus Infector version 3.2.9`;
-  }
-
-  getName$$() {
-    return 'virus';
-  }
-
-  getHelp$$() {
-    return "Infect specified hosts and blocks communication in their newtwork";
+    this.name$$ = 'virus';
+    this.help$$ = 'Infect specified hosts and blocks communication in their newtwork';
   }
 
   execActivate() {

@@ -11,14 +11,9 @@ export default class DockCommand extends Command {
       DS002: 0,
       DS003: 8,
     };
-  }
 
-  getName$$() {
-    return 'dock';
-  }
-
-  getHelp$$() {
-    return 'Operate docking stations and rescue capsules';
+    this.name$$ = 'dock';
+    this.help$$ = 'Operate docking stations and rescue capsules';
   }
 
   execList() {

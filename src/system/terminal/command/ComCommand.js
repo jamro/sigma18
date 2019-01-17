@@ -13,14 +13,9 @@ export default class ComCommand extends Command {
       e: 'east',
       w: 'west',
     };
-  }
 
-  getName$$() {
-    return 'com';
-  }
-
-  getHelp$$() {
-    return "Communication with squad of marines in the field";
+    this.name$$ = 'com';
+    this.help$$ = 'Communication with squad of marines in the field';
   }
 
   execStatus() {

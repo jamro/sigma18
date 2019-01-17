@@ -5,14 +5,8 @@ export default class SfxCommand extends Command {
   constructor(soundPlayer) {
     super();
     this.soundPlayer$$ = soundPlayer;
-  }
-
-  getName$$() {
-    return 'sfx';
-  }
-
-  getHelp$$() {
-    return "Turn off/on terminal sound";
+    this.name$$ = 'sfx';
+    this.help$$ = 'Turn off/on terminal sound';
   }
 
   execHelp() {

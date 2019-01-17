@@ -3,17 +3,9 @@ export default class Command {
   setTerminal$$(terminal) {
     this._terminal$$ = terminal;
   }
-
-  getHelp$$() {
-    return "no help available";
-  }
-
-  getName$$() {
-    return null;
-  }
-
+  
   validate$$(command) {
-    return (command[0].toLowerCase() == this.getName$$().toLowerCase());
+    return (command[0].toLowerCase() == this.name$$.toLowerCase());
   }
 
   exec$$(command) {

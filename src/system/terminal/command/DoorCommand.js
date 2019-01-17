@@ -6,14 +6,9 @@ export default class DoorCommand extends Command {
     super();
     this._squad = squad;
     this._map = map;
-  }
 
-  getName$$() {
-    return 'door';
-  }
-
-  getHelp$$() {
-    return "Open/close doors";
+    this.name$$ = 'door';
+    this.help$$ = 'Open/close doors';
   }
 
   getDoorId(command) {

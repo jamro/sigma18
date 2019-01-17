@@ -16,7 +16,7 @@ export default class Disk extends Item {
   }
 
   getId$$() {
-    return 'disk-' + this._command$$.getName$$();
+    return 'disk-' + this._command$$.name$$;
   }
 
   toString() {

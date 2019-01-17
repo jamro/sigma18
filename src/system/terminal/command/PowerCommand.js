@@ -5,14 +5,8 @@ export default class PowerCommand extends Command {
   constructor(serviceDirectory) {
     super();
     this._serviceDirectory$$ = serviceDirectory;
-  }
-
-  getName$$() {
-    return 'power';
-  }
-
-  getHelp$$() {
-    return "Manage power supply for space station";
+    this.name$$ = 'power';
+    this.help$$ = 'Manage power supply for space station';
   }
 
   execUp(command) {
