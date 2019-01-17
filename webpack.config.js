@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -80,6 +81,11 @@ let config = {
 };
 
 module.exports = (env, argv) => {
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      'DEBUG_MODE': (argv.mode === 'development')
+    })
+  );
   if (argv.mode === 'development') {
     console.log('DEVELOPMENT MODE');
     config.devtool = 'source-map';
