@@ -28,11 +28,11 @@ export default class Command {
   }
 
   disableInput$$() {
-    this._terminal$$.getView$$().disable$$();
+    this._terminal$$.view$$.disable$$();
   }
 
   enableInput$$() {
-    this._terminal$$.getView$$().enable$$();
+    this._terminal$$.view$$.enable$$();
   }
 
 }

@@ -4,17 +4,13 @@ import BattleRenderer from './renderer/BattleRenderer.js';
 export default class Screen {
 
   constructor(view, soundPlayer) {
-    this._view$$ = view;
+    this.view$$ = view;
     this._soundPlayer$$ = soundPlayer;
     this._renderer$$ = null;
   }
 
   getSoundPlayer$$() {
     return this._soundPlayer$$;
-  }
-
-  getView$$() {
-    return this._view$$;
   }
 
   showMap$$(map) {
@@ -30,7 +26,7 @@ export default class Screen {
       this._renderer$$.detach$$();
     }
     this._renderer$$ = r;
-    this._renderer$$.attach$$(this._view$$);
+    this._renderer$$.attach$$(this.view$$);
     this._renderer$$.render$$();
   }
 

@@ -31,7 +31,7 @@ export default class PowerCommand extends Command {
       this._terminal$$.getSoundPlayer$$().play$$('err');
       return;
     }
-    this._terminal$$.getView$$().disable$$();
+    this._terminal$$.view$$.disable$$();
     let errorMessage = this._serviceDirectory$$.validateStateChange$$(name, status);
     this._terminal$$.connect$$('power-manager', [
       `${status ? "Starting" : "Stopping"} service ${name}...`
@@ -102,7 +102,7 @@ export default class PowerCommand extends Command {
   }
 
   execList() {
-    this._terminal$$.getView$$().disable$$();
+    this._terminal$$.view$$.disable$$();
     let left = (txt, len) => {
       txt = txt || "";
       while(txt.length < len) {
@@ -142,7 +142,7 @@ export default class PowerCommand extends Command {
   }
 
   execStatus() {
-    this._terminal$$.getView$$().disable$$();
+    this._terminal$$.view$$.disable$$();
 
     let generators = "<pre>Generator | Status  | Efficiency | Power Supply\n" +
                           "----------|---------|------------|--------------\n" +

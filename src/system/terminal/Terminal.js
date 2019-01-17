@@ -4,13 +4,13 @@ export default class Terminal {
 
   constructor(serviceDirectory, view, soundPlayer) {
     this._serviceDirectory$$ = serviceDirectory;
-    this._view$$ = view;
+    this.view$$ = view;
     this._soundPlayer$$ = soundPlayer;
     this._commandProcessorList$$ = [];
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
 
     document.addEventListener("keydown", (e) => {
-      if(!this.getView$$().isEnabled$$() && !e.ctrlKey) {
+      if(!this.view$$.isEnabled$$() && !e.ctrlKey) {
         this._soundPlayer$$.play$$('err');
       }
     });
@@ -132,17 +132,13 @@ export default class Terminal {
     return this._commandProcessorList$$;
   }
 
-  getView$$() {
-    return this._view$$;
-  }
-
   println$$(txt) {
-    this._view$$.print$$(txt + "<br/>\n");
+    this.view$$.print$$(txt + "<br/>\n");
   }
 
   printel$$() {
     let id = "ref-terminal-line-" + this._refId++;
-    this._view$$.print$$(`<span id=\"${id}\"></span><br/>\n`);
+    this.view$$.print$$(`<span id=\"${id}\"></span><br/>\n`);
     return document.getElementById(id);
   }
 

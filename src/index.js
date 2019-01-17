@@ -45,8 +45,8 @@ let map = builder.getMap$$();
 let sideSreen = new Screen(new ScreenView(document), player);
 let terminal = new Terminal(services, new TerminalView(document), player);
 
-terminal.getView$$().attachToDOM$$(document.querySelector('#screen-a'));
-sideSreen.getView$$().attachToDOM$$(document.querySelector('#screen-b'));
+terminal.view$$.attachToDOM$$(document.querySelector('#screen-a'));
+sideSreen.view$$.attachToDOM$$(document.querySelector('#screen-b'));
 
 let squad = new Squad(map, terminal, sideSreen, player);
 terminal.installCommand$$(new HelpCommand());
@@ -56,7 +56,7 @@ builder.placeItems$$(squad, map, map.getVirus$$());
 
 let chromeInfo = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
 
-terminal.getView$$().disable$$();
+terminal.view$$.disable$$();
 terminal.sequence$$(
   "",
   "-----------------------------",
@@ -98,7 +98,7 @@ terminal.sequence$$(
   "Buffering...",
   {c: 'sound', d: 'ok', t:0},
   {c: (done) => {
-    sideSreen.getView$$().turnOn$$(() => {
+    sideSreen.view$$.turnOn$$(() => {
       sideSreen.showMap$$(map);
       done();
     });
