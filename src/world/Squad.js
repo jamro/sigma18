@@ -2,7 +2,7 @@ export default class Squad {
 
   constructor(map, terminal, screen, soundPlayer) {
     this._hasLight$$ = true;
-    this._soundPlayer$$ = soundPlayer;
+    this.soundPlayer$ = soundPlayer;
     this._map$$ = map;
     this._screen$$ = screen;
     this._terminal$$ = terminal;

@@ -5,20 +5,16 @@ export default class Screen {
 
   constructor(view, soundPlayer) {
     this.view$$ = view;
-    this._soundPlayer$$ = soundPlayer;
+    this.soundPlayer$$ = soundPlayer;
     this._renderer$$ = null;
   }
 
-  getSoundPlayer$$() {
-    return this._soundPlayer$$;
-  }
-
   showMap$$(map) {
-    this._setRenderer$$(new MapRenderer(this._soundPlayer$$, map));
+    this._setRenderer$$(new MapRenderer(this.soundPlayer$, map));
   }
 
   showBattle$$(battle) {
-    this._setRenderer$$(new BattleRenderer(this._soundPlayer$$, battle));
+    this._setRenderer$$(new BattleRenderer(this.soundPlayer$, battle));
   }
 
   _setRenderer$$(r) {

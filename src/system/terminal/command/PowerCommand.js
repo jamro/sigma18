@@ -28,7 +28,7 @@ export default class PowerCommand extends Command {
   setStatus$$(name, status) {
     if(!name) {
       this._terminal$$.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
       return;
     }
     this._terminal$$.view$$.disable$$();

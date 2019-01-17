@@ -57,7 +57,7 @@ export default class BattleRenderer extends ScreenRenderer {
 
   detach$$() {
     clearInterval(this._loop$$);
-    this.getSoundPlayer$$().stop$$('gun');
+    this.soundPlayer$$.stop$$('gun');
     super.detach$$();
   }
 
@@ -207,7 +207,7 @@ export default class BattleRenderer extends ScreenRenderer {
     let droids;
     if(this._battle$$.isDroidsTurn$$()) {
       if(!this._shooting$$) {
-        this.getSoundPlayer$$().play$$('gun');
+        this.soundPlayer$$.play$$('gun');
         this._shooting$$ = true;
       }
       droids = this._battle$$.getDroids$$();
@@ -223,7 +223,7 @@ export default class BattleRenderer extends ScreenRenderer {
 
     } else if (this._battle$$.isMarinesTurn$$()) {
       if(!this._shooting$$) {
-        this.getSoundPlayer$$().play$$('gun');
+        this.soundPlayer$$.play$$('gun');
         this._shooting$$ = true;
       }
       droids = this._battle$$.getDroids$$();
@@ -241,7 +241,7 @@ export default class BattleRenderer extends ScreenRenderer {
         shoot(x1, y1, x2, y2);
       }
     } else {
-      this.getSoundPlayer$$().stop$$('gun');
+      this.soundPlayer$$.stop$$('gun');
       this._shooting$$ = false;
     }
     this._shotList$$.forEach((s) => renderShot(s));

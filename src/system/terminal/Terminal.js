@@ -5,19 +5,15 @@ export default class Terminal {
   constructor(serviceDirectory, view, soundPlayer) {
     this._serviceDirectory$$ = serviceDirectory;
     this.view$$ = view;
-    this._soundPlayer$$ = soundPlayer;
+    this.soundPlayer$$ = soundPlayer;
     this._commandProcessorList$$ = [];
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
 
     document.addEventListener("keydown", (e) => {
       if(!this.view$$.isEnabled$$() && !e.ctrlKey) {
-        this._soundPlayer$$.play$$('err');
+        this.soundPlayer$$.play$$('err');
       }
     });
-  }
-
-  getSoundPlayer$$() {
-    return this._soundPlayer$$;
   }
 
   connect$$(serviceName, msg, done) {
@@ -54,7 +50,7 @@ export default class Terminal {
   }
 
   commandReceived$$(command) {
-    this._view$$.print$$(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
+    this.view$$.print$$(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
     //clean command up
     command = command.split(" ");
     command = command.map((cmd) => cmd.trim());
@@ -67,49 +63,49 @@ export default class Terminal {
     }
     this.println$$(`Error: Command s{${command[0]}}s not found!`);
     this.println$$(`Run s{help}s to list all available commands`);
-    this.getSoundPlayer$$().play$$('err');
+    this.soundPlayer$$.play$$('err');
   }
 
   pause$$(done) {
-    let initState = this._view$$.isEnabled$$();
-    this._view$$.enable$$();
-    this._view$$.setKeyHandler$$((event) => {
+    let initState = this.view$$.isEnabled$$();
+    this.view$$.enable$$();
+    this.view$$.setKeyHandler$$((event) => {
       event.stopImmediatePropagation();
       event.preventDefault();
-      this._view$$.clearInput$$();
+      this.view$$.clearInput$$();
       if(event.keyCode != 13 && !event.ctrlKey) {
-        this._soundPlayer$$.play$$('err');
+        this.soundPlayer$$.play$$('err');
         return;
       }
-      this._view$$.setKeyHandler$$();
+      this.view$$.setKeyHandler$$();
       if(!initState) {
-        this._view$$.disable$$();
+        this.view$$.disable$$();
       }
       done();
     });
-    this._view$$.setPromptText$$("Press ENTER to continue");
+    this.view$$.setPromptText$$("Press ENTER to continue");
   }
 
   prompt$$(label, done) {
-    let initState = this._view$$.isEnabled$$();
-    this._view$$.enable$$();
-    this._view$$.setKeyHandler$$((event, txt) => {
+    let initState = this.view$$.isEnabled$$();
+    this.view$$.enable$$();
+    this.view$$.setKeyHandler$$((event, txt) => {
       if(event.keyCode != 13 && !event.ctrlKey) {
         return;
       }
       event.stopImmediatePropagation();
       event.preventDefault();
-      this._view$$.clearInput$$();
+      this.view$$.clearInput$$();
       if(!initState) {
-        this._view$$.disable$$();
+        this.view$$.disable$$();
       } else {
-        this._view$$.setPromptText$$();
+        this.view$$.setPromptText$$();
       }
 
-      this._view$$.setKeyHandler$$();
+      this.view$$.setKeyHandler$$();
       done(txt);
     });
-    this._view$$.setPromptText$$(label);
+    this.view$$.setPromptText$$(label);
   }
 
   installCommand$$(commandProcessor) {
@@ -168,22 +164,22 @@ export default class Terminal {
         msgPointer++;
       }
 
-      this._view$$.clearInput$$();
-      this._view$$.disable$$();
-      this._view$$.setKeyHandler$$();
+      this.view$$.clearInput$$();
+      this.view$$.disable$$();
+      this.view$$.setKeyHandler$$();
     };
 
-    let isDisabled = !this._view$$.isEnabled$$();
+    let isDisabled = !this.view$$.isEnabled$$();
 
     if(isDisabled && done) {
-      this._view$$.enable$$();
-      this._view$$.setPromptText$$("Press any key to skip...");
-      this._view$$.setKeyHandler$$((event) => {
+      this.view$$.enable$$();
+      this.view$$.setPromptText$$("Press any key to skip...");
+      this.view$$.setKeyHandler$$((event) => {
         event.stopImmediatePropagation();
         event.preventDefault();
-        this._view$$.setEventBuffer$$(event);
+        this.view$$.setEventBuffer$$(event);
 
-        this._soundPlayer$$.shutUp$$();
+        this.soundPlayer$$.shutUp$$();
         cleanUp();
         if(finished) return;
         finished = true;
@@ -205,34 +201,34 @@ export default class Terminal {
 
   _printSingleChat$$(from, msg, done) {
       this._printSingleChatSilent$$(from, msg);
-      this._soundPlayer$$.speak$$(msg, from != 'hacker', () => {
+      this.soundPlayer$$.speak$$(msg, from != 'hacker', () => {
         done();
       });
   }
 
   _printSingleChatSilent$$(from, msg) {
       let side = (from == 'hacker') ? 'terminal-chat-left' : 'terminal-chat-right';
-      this._view$$.print$$(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
+      this.view$$.print$$(`<div class="terminal-chat ${side}"><small>${from}</small><p>${msg}</p></div>`);
   }
 
   passCrack$$(time, label, done) {
-    this.getSoundPlayer$$().play$$('beep');
-    let el = this._view$$.printel$$();
+    this.soundPlayer$$.play$$('beep');
+    let el = this.view$$.printel$$();
     let loop = setInterval(() => {
       el.innerHTML = label + ': ' + Math.round(Math.random()*1000000000).toString(16);
       time--;
       if(time <= 0) {
         clearInterval(loop);
         el.innerHTML = label + ': ********';
-        this.getSoundPlayer$$().stop$$('beep');
+        this.soundPlayer$$.stop$$('beep');
         done();
       }
     }, 30);
   }
 
   showProgress$$(done) {
-    this.getSoundPlayer$$().play$$('beep');
-    let el = this._view$$.printel$$();
+    this.soundPlayer$$.play$$('beep');
+    let el = this.view$$.printel$$();
     let p = 0;
     let loop = setInterval(() => {
       let fillCount = Math.round((p/100)*40);
@@ -244,7 +240,7 @@ export default class Terminal {
       if(p >= 100) {
         clearInterval(loop);
         el.innerHTML = '[======================================] 100%';
-        this.getSoundPlayer$$().stop$$('beep');
+        this.soundPlayer$$.stop$$('beep');
         done();
       }
     }, 30);
@@ -321,7 +317,7 @@ export default class Terminal {
             }
             break;
           case 'sound':
-            cmd.c = () => { this.getSoundPlayer$$().play$$(cmd.d); };
+            cmd.c = () => { this.soundPlayer$$.play$$(cmd.d); };
             break;
           case 'pass':
             cmd.c = (done) => { this.passCrack$$(cmd.d, cmd.l || 'Password', done); };
@@ -330,10 +326,10 @@ export default class Terminal {
             cmd.c = (done) => { this.showProgress$$(done); };
             break;
           case 'on':
-            cmd.c = () => { this._view$$.enable$$(); };
+            cmd.c = () => { this.view$$.enable$$(); };
             break;
           case 'off':
-            cmd.c = () => { this._view$$.disable$$(); };
+            cmd.c = () => { this.view$$.disable$$(); };
             break;
           case 'pause':
             cmd.c = (done) => { this.pause$$(done); };

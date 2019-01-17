@@ -1,11 +1,7 @@
 export default class ScreenRenderer {
 
   constructor(soundPlayer) {
-    this._soundPlayer$$ = soundPlayer;
-  }
-
-  getSoundPlayer$$() {
-    return this._soundPlayer$$;
+    this.soundPlayer$$ = soundPlayer;
   }
 
   attach$$(screenView) {

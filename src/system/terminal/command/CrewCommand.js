@@ -43,7 +43,7 @@ export default class CrewCommand extends Command {
 
       this._terminal$$.println$$(msg);
       this.enableInput$$();
-      this._terminal$$.getSoundPlayer$$().play$$('ok');
+      this._terminal$$.soundPlayer$$.play$$('ok');
     });
   }
 
@@ -51,7 +51,7 @@ export default class CrewCommand extends Command {
     let name = command.length >= 3 ? command[2] : '';
     if(!name) {
       this._terminal$$.println$$(`Error: username argument is required. Run s{crew help}s for more info.`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
       return;
     }
     let record = this._data.filter((r) => r[0] == name);
@@ -65,7 +65,7 @@ export default class CrewCommand extends Command {
     ], () => {
       if(!record) {
         this._terminal$$.println$$(`Error: no record matching the criteria`);
-        this._terminal$$.getSoundPlayer$$().play$$('err');
+        this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
         return;
       }
@@ -85,7 +85,7 @@ export default class CrewCommand extends Command {
         {c: 'sound', d: 'ok'},
         {c: 'on'}
       );
-      this._terminal$$.getSoundPlayer$$().play$$('ok');
+      this._terminal$$.soundPlayer$$.play$$('ok');
       this.enableInput$$();
 
     });

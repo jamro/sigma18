@@ -4,7 +4,7 @@ export default class SfxCommand extends Command {
 
   constructor(soundPlayer) {
     super();
-    this._soundPlayer$$ = soundPlayer;
+    this.soundPlayer$ = soundPlayer;
   }
 
   getName$$() {
@@ -29,15 +29,15 @@ export default class SfxCommand extends Command {
   }
 
   execOn() {
-    this._soundPlayer$$.mute$$(false);
+    this.soundPlayer$.mute$$(false);
     this._terminal$$.println$$("Sound enabled");
-    this._soundPlayer$$.play$$('ok');
+    this.soundPlayer$.play$$('ok');
   }
 
   execOff() {
-    this._soundPlayer$$.mute$$(true);
+    this.soundPlayer$.mute$$(true);
     this._terminal$$.println$$("Sound disabled");
-    this._soundPlayer$$.play$$('ok');
+    this.soundPlayer$.play$$('ok');
   }
 
 

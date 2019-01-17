@@ -23,7 +23,7 @@ export default class Command {
       this[method](command);
     } else {
       this._terminal$$.println$$(`Command not found! Run s{${command[0]} help}s for more info.`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
     }
   }
 

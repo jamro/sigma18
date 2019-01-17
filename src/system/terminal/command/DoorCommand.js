@@ -25,11 +25,11 @@ export default class DoorCommand extends Command {
     let door = this._map.getDoorById$$(id);
     if(id == "") {
       this._terminal$$.println$$(`Error: door ID is missing!`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
     } else if(!door) {
       this._terminal$$.println$$(`Error: Door (ID: ${id}) not found!`);
       this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
     }
     return door;
   }
@@ -48,28 +48,28 @@ export default class DoorCommand extends Command {
     if(!id) {
       this._terminal$$.println$$(`Error: DoorID argument is required. Run s{door help}s for more info.`);
       this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
-      this._terminal$$.getSoundPlayer$$().play$$('err');
+      this._terminal$$.soundPlayer$$.play$$('err');
       return;
     }
     this.disableInput$$();
     this._terminal$$.connect$$('doors', [`Door look up: ${id}...`], () => {
       let door = this.findDoor(command);
       if(!door) {
-        this._terminal$$.getSoundPlayer$$().play$$('err');
+        this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isClosed$$() == doClose) {
         this._terminal$$.println$$(`Door found`);
         this._terminal$$.println$$(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
-        this._terminal$$.getSoundPlayer$$().play$$('err');
+        this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isDamaged$$()) {
         this._terminal$$.println$$(`Door found`);
         this._terminal$$.println$$(`Error: Door damaged! Cannot ${doClose ? 'close' : 'open'}!`);
-        this._terminal$$.getSoundPlayer$$().play$$('err');
+        this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
         return;
       }
