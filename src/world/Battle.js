@@ -33,7 +33,7 @@ export default class Battle {
     this._loop_droidsTurn$$ = false;
     this._marinesTurn$$ = false;
     this._shootCounter$$ = 0;
-    let enemies = this._room$$.getEnemy$$();
+    let enemies = this._room$$.enemy$$;
     for(let i=0; i < enemies; i++) {
       this._addDroid$$();
     }
@@ -81,7 +81,7 @@ export default class Battle {
   _step$$() {
     if(this._droids$$.length == 0) {
       this.stop$$();
-      this._room$$.setEnemy$$(0);
+      this._room$$.enemy$$ = 0;
       return this._onFinish$$();
     }
     if(this._backupTime$$ > 70 && this._droids$$.length < 100) {

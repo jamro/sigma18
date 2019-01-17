@@ -11,7 +11,7 @@ export default class Room {
     this._itemList$$ = [];
     this._description$$ = "";
     this._type$$ = "room";
-    this._enemy$$ = 0;
+    this.enemy$$ = 0;
     this._doorCount$$ = 0;
     this._doorMap$$ = {
       n: null, e: null, s: null, w: null
@@ -20,14 +20,6 @@ export default class Room {
 
   hasLight$$() {
     return this._lightService$$.isRunning$$();
-  }
-
-  setEnemy$$(v) {
-    this._enemy$$ = v;
-  }
-
-  getEnemy$$() {
-    return this._enemy$$;
   }
 
   setType$$(t) {

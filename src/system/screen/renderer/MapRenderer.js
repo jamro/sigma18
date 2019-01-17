@@ -176,7 +176,7 @@ export default class MapRenderer extends ScreenRenderer {
         }
 
         // render enemy
-        if(this._map$$.getRoom$$(x, y).getEnemy$$() > 0) {
+        if(this._map$$.getRoom$$(x, y).enemy$$ > 0) {
           renderSquad(x, y, red);
         }
       }

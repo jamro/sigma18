@@ -10,11 +10,11 @@ export default class Screen {
   }
 
   showMap$$(map) {
-    this._setRenderer$$(new MapRenderer(this.soundPlayer$, map));
+    this._setRenderer$$(new MapRenderer(this.soundPlayer$$, map));
   }
 
   showBattle$$(battle) {
-    this._setRenderer$$(new BattleRenderer(this.soundPlayer$, battle));
+    this._setRenderer$$(new BattleRenderer(this.soundPlayer$$, battle));
   }
 
   _setRenderer$$(r) {

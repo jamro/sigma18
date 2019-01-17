@@ -2,7 +2,7 @@ export default class Squad {
 
   constructor(map, terminal, screen, soundPlayer) {
     this._hasLight$$ = true;
-    this.soundPlayer$ = soundPlayer;
+    this.soundPlayer$$ = soundPlayer;
     this._map$$ = map;
     this._screen$$ = screen;
     this._terminal$$ = terminal;
@@ -176,7 +176,7 @@ export default class Squad {
       let newY = pos.y + dy;
 
       let battleRoom = this._map$$.getRoom$$(newX, newY);
-      if(battleRoom.getEnemy$$() > 0) {
+      if(battleRoom.enemy$$ > 0) {
         this.startBattle$$(battleRoom, door, () => done(items));
         return;
       }
