@@ -1,7 +1,8 @@
 export default class Virus {
 
   constructor() {
-    this._isActive$$ = false;
+    this.isActive$$ = false;
+    this.unitZero$$ = '20.110.231.18';
     this._infectLoop$$ = null;
     this._activateLoop$$ = null;
     this._hostList$$ = [];
@@ -14,16 +15,8 @@ export default class Virus {
     this._onActivatedList$$.push(callback);
   }
 
-  isActive$$() {
-    return this._isActive$$;
-  }
-
-  getUnitZero$$() {
-    return '20.110.231.18';
-  }
-
   validateInfection$$(ip) {
-    if(ip != this.getUnitZero$$()) {
+    if(ip != this.unitZero$$) {
       return 'Unable to establish connection with the host!';
     }
     if(this.isInfected$$(ip)) {
@@ -40,7 +33,7 @@ export default class Virus {
       }
       return msg;
     }
-    if(this._isActive$$) {
+    if(this.isActive$$) {
       return "Already activated";
     }
     return null;
@@ -51,7 +44,7 @@ export default class Virus {
   }
 
   infect$$(host) {
-    let ip = this.getUnitZero$$();
+    let ip = this.unitZero$$;
     if(host != ip) {
       return false;
     }
@@ -94,7 +87,7 @@ export default class Virus {
     this._activateLoop$$ = setInterval(() => {
       this._hostList$$[Math.floor(Math.random()*this._hostList$$.length)].active = true;
     }, 500);
-    this._isActive$$ = true;
+    this.isActive$$ = true;
     this._onActivatedList$$.forEach((c) => c());
     return true;
   }

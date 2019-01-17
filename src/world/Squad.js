@@ -32,7 +32,7 @@ export default class Squad {
 
     this._map$$.stopBattle$$();
     let pos = this._map$$.getSquadPosition$$();
-    let virusActive = this._map$$.getVirus$$().isActive$$();
+    let virusActive = this._map$$.getVirus$$().isActive$$;
     let queue = [
       {c:'off', t:0},
       {c: () => {this._screen$$.showMap$$(this._map$$); }}
@@ -68,7 +68,7 @@ export default class Squad {
     this._battleLoop$$ = setInterval(() => {
       let doorId = door.getId$$();
       let items;
-      let virusActive = this._map$$.getVirus$$().isActive$$();
+      let virusActive = this._map$$.getVirus$$().isActive$$;
       if(virusActive) {
         items = [
           `Virus is active, we are pushing them back!`,
