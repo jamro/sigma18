@@ -28,7 +28,8 @@ export default class Squad {
     if(this._battleLoop$$) {
       clearInterval(this._battleLoop$$);
     }
-    let winner = this._map$$.getBattle$$().getDroids$$().length == 0;
+    let droidsCount = this._map$$.getBattle$$().getDroids$$().length;
+    let winner = (droidsCount == 0);
 
     this._map$$.stopBattle$$();
     let pos = this._map$$.getSquadPosition$$();
@@ -43,8 +44,12 @@ export default class Squad {
     } else {
       msgQueue.push(['commander' ,`Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`]);
     }
-    if(!winner && !virusActive) {
-      msgQueue.push(['commander' ,`They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`]);
+    if(!winner) {
+      if(droidsCount > 10) {
+        msgQueue.push(['commander' ,`They are too many of them. We need another way to defeat them.`]);
+      } else if(!virusActive) {
+        msgQueue.push(['commander' ,`They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`]);
+      }
     }
     queue.push({c: 'chat', d: msgQueue});
     queue.push({c:'on'});
@@ -53,8 +58,9 @@ export default class Squad {
   }
 
   startBattle$$(room, door, done) {
-    this._map$$.startBattle$$(room, door, () => this.stopBattle$$());
+    this._map$$.startBattle$$(room, door);
     let battle = this._map$$.getBattle$$();
+    battle.onFinish$$(() => this.stopBattle$$());
     let enemy = battle.getDroids$$().length;
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
     this._screen$$.showBattle$$(battle);
@@ -69,7 +75,18 @@ export default class Squad {
       let doorId = door.id$$;
       let items;
       let virusActive = this._map$$.getVirus$$().isActive$$;
-      if(virusActive) {
+      let hint = `s{close the door (${doorId})}s`;
+      if(room.gun$$) {
+        hint = 'use s{sentry gun m{BER-84}m}s or ' + hint;
+      }
+      if(enemy > 10) {
+        items = [
+          `We cannot push them back! ${hint}`,
+          `There are too many of them! ${hint}`,
+          `They are too strong! ${hint}`,
+          `Heavy fire! ${hint}! We cannot push them back!`
+        ];
+      } else if (virusActive) {
         items = [
           `Virus is active, we are pushing them back!`,
           `They cannot get backups anymore!`,
@@ -87,6 +104,9 @@ export default class Squad {
         ];
       }
       if(!virusActive || Math.random() > 0.6) {
+        if(room.gun$$ && room.gun$$.online$$) {
+          return;
+        }
         this._terminal$$.printChat$$([[
           'commander',
           items[Math.floor(Math.random()*items.length)]
@@ -181,8 +201,8 @@ export default class Squad {
         return;
       }
 
+      let trapSize = this._map$$.getRoom$$(pos.x, pos.y).validateTrap$$(newX, newY);
       this._map$$.getRoom$$(newX, newY).visit$$();
-
       this._map$$.setSquadPosition$$(newX, newY);
       this._hasLight$$ = this._map$$.getRoom$$(newX, newY).hasLight$$();
       items = this._map$$.getRoom$$(newX, newY).flushItems$$();
@@ -196,6 +216,9 @@ export default class Squad {
         msg += "}m";
       }
       msgQueue.push(['commander', msg]);
+      if(trapSize) {
+        msgQueue.push(['commander', `It was a trap! There are ${trapSize} SIG-18 units blocking the entrance at ${pos.toString()}.`]);
+      }
 
       let disks = items.filter((i) => i.type$$ == 'disk');
       if(disks.length > 0) {

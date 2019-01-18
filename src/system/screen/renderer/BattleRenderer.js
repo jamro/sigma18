@@ -22,7 +22,8 @@ class Particle {
 }
 
 class Shot {
-  constructor(x1, y1, x2, y2) {
+  constructor(x1, y1, x2, y2, scale) {
+    this.scale = scale;
     this.frame = 0;
     this.from = {
       x: x1,
@@ -47,7 +48,9 @@ export default class BattleRenderer extends ScreenRenderer {
     this._loop$$ = null;
     this._shotList$$ = [];
     this._particleList$$ = [];
-    this._shooting$$ = false;
+    this._unitsShooting$$ = false;
+    this._gunShooting$$ = false;
+    this._time$$ = 0;
   }
 
   attach$$(screenView) {
@@ -73,21 +76,11 @@ export default class BattleRenderer extends ScreenRenderer {
     let color2 = this.screenView$$.getPrimaryColor$$(0.5);
     let bg = this.screenView$$.backgroundColor$$;
 
-    let flipY = false;
-    let flipX = false;
-    let rotate = false;
+    let flipY = this._battle$$.flipY$$;
+    let flipX  = this._battle$$.flipX$$;
+    let rotate = this._battle$$.rotate$$;
 
-    let allDoors = this._battle$$.getRoom$$().getDoors$$();
-    let door = this._battle$$.getDoor$$();
-
-    if(allDoors.n == door) {
-      flipY = true;
-    } else if (allDoors.e == door) {
-      rotate = true;
-    } else if (allDoors.w == door) {
-      rotate = true;
-      flipX = true;
-    }
+    let gun = this._battle$$.getRoom$$().gun$$;
 
     this.screenView$$.clear$$();
 
@@ -95,6 +88,8 @@ export default class BattleRenderer extends ScreenRenderer {
     let wallSize = 0.05;
     let startX = w/2 - roomSize/2;
     let startY = h/2 - roomSize/2;
+    let gunX = 1.5*wallSize;
+    let gunY = 1-1.5*wallSize;
 
     let transform = (x, y) => {
       if(rotate) {
@@ -122,6 +117,21 @@ export default class BattleRenderer extends ScreenRenderer {
       lineTo(x2, y2);
     };
 
+    let drawCircle = (x, y, r) => {
+      [x, y] = transform(x, y);
+      ctx.arc(startX + roomSize*x, startY + roomSize*y, roomSize*r, 0, 2 * Math.PI);
+    };
+
+    let drawRect = (x, y, w, h) => {
+      [x, y] = transform(x, y);
+      if(rotate) {
+        let a = w;
+        w = h;
+        h = a;
+      }
+      ctx.rect(startX + roomSize*(x-w/2), startY + roomSize*(y-h/2), w*roomSize, h*roomSize);
+    };
+
     let renderWalls = () => {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -143,23 +153,74 @@ export default class BattleRenderer extends ScreenRenderer {
       ctx.stroke();
     };
 
+    let renderGun = () => {
+      this._time$$++;
+      ctx.beginPath();
+      ctx.fillStyle = this.screenView$$.getPrimaryColor$$();
+      ctx.strokeStyle = null;
+      drawCircle(wallSize+0.04, 1-wallSize-0.04, 0.04);
+      drawRect(wallSize+0.02, 1-wallSize-0.04, 0.04, 0.08);
+      drawRect(wallSize+0.04, 1-wallSize-0.02, 0.08, 0.04);
+      ctx.fill();
+      let angle = Math.atan2(gunY-gun.target$$.y, gunX-gun.target$$.x);
+      let sin = -Math.sin(angle);
+      let cos = -Math.cos(angle);
+      ctx.beginPath();
+      ctx.fillStyle = null;
+      ctx.strokeStyle = this.screenView$$.getPrimaryColor$$();
+      ctx.lineWidth = 2;
+      drawLine(
+        gunX,
+        gunY,
+        gunX + cos*0.13,
+        gunY + sin*0.13
+      );
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.lineWidth = 4;
+      let len = gun.isShooting$$ ? 0.015*Math.sin(this._time$$*1.2) : 0;
+      drawLine(
+        gunX + cos*(len+0.1),
+        gunY + sin*(len+0.1),
+        gunX + cos*(len+0.14),
+        gunY + sin*(len+0.14)
+      );
+      ctx.stroke();
+      if(gun.online$$) {
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        drawRect(
+          gun.target$$.x,
+          gun.target$$.y,
+          0.12,
+          0.12
+        );
+        drawRect(
+          gun.target$$.x,
+          gun.target$$.y,
+          0.06,
+          0.06
+        );
+        drawLine(gun.target$$.x, gun.target$$.y-0.15, gun.target$$.x, gun.target$$.y+0.15);
+        drawLine(gun.target$$.x-0.15, gun.target$$.y, gun.target$$.x+0.15, gun.target$$.y);
+        ctx.stroke();
+      }
+    };
+
     let renderUnit = (x, y, w, h, c) => {
-      [x, y] = transform(x, y);
       ctx.beginPath();
       ctx.fillStyle = c;
       ctx.strokeStyle = null;
-      ctx.rect(startX + roomSize*(x-w/2), startY + roomSize*(y-h/2), w*roomSize, h*roomSize);
+      drawRect(x, y, w, h);
       ctx.fill();
     };
 
     let renderParticle = (p) => {
-      let x, y;
       let size = 0.01;
-      [x, y] = transform(p.x, p.y);
       ctx.beginPath();
       ctx.fillStyle = this.screenView$$.getPrimaryColor$$(p.frame/p.life);
       ctx.strokeStyle = null;
-      ctx.rect(startX + roomSize*(x-size/2), startY + roomSize*(y-size/2), size*roomSize, size*roomSize);
+      drawRect(p.x, p.y, size, size);
       ctx.fill();
       p.step$$();
     };
@@ -169,7 +230,7 @@ export default class BattleRenderer extends ScreenRenderer {
         ctx.beginPath();
         ctx.fillStyle = null;
         ctx.strokeStyle = color2;
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2*shot.scale;
         let midX = (shot.from.x + shot.to.x)/2;
         let midY = (shot.from.y + shot.to.y)/2;
         if(shot.frame == 0) {
@@ -184,20 +245,20 @@ export default class BattleRenderer extends ScreenRenderer {
         ctx.fillStyle = this.screenView$$.getPrimaryColor$$((shot.frame-2)/4);
         let ax = shot.to.x;
         let ay = shot.to.y;
-        [ax, ay] = transform(ax, ay);
-        ctx.arc(startX + roomSize*ax, startY + roomSize*ay, wallSize*roomSize*(shot.frame-2)/4, 0, 2 * Math.PI);
+        drawCircle(ax, ay, shot.scale*wallSize*(shot.frame-2)/4);
         ctx.fill();
       }
       shot.frame++;
     };
 
-    let shoot = (x1, y1, x2, y2) => {
-      this._shotList$$.push(new Shot(x1, y1, x2, y2));
-      for(let i=0; i < 5; i++) {
+    let shoot = (x1, y1, x2, y2, scale) => {
+      this._shotList$$.push(new Shot(x1, y1, x2, y2, scale));
+      for(let i=0; i < 5*scale; i++) {
         this._particleList$$.push(new Particle(x2, y2));
       }
     };
     renderWalls();
+
 
     this._battle$$.getDroids$$().forEach((d) => renderUnit(d.x, d.y, 0.05, 0.05, red));
     this._battle$$.getMarines$$().forEach((m) => renderUnit(m.x, m.y, 0.05, 0.05, color));
@@ -206,9 +267,9 @@ export default class BattleRenderer extends ScreenRenderer {
     let threshold = 8;
     let droids;
     if(this._battle$$.isDroidsTurn$$()) {
-      if(!this._shooting$$) {
+      if(!this._unitsShooting$$) {
         this.soundPlayer$$.play$$('gun');
-        this._shooting$$ = true;
+        this._unitsShooting$$ = true;
       }
       droids = this._battle$$.getDroids$$();
       if(droids.length > 0) {
@@ -218,13 +279,13 @@ export default class BattleRenderer extends ScreenRenderer {
         if(x > 0.4 && x < 0.6) {
           y += wallSize*Math.random();
         }
-        shoot(droid.x, droid.y, x, y);
+        shoot(droid.x, droid.y, x, y, 1);
       }
 
     } else if (this._battle$$.isMarinesTurn$$()) {
-      if(!this._shooting$$) {
+      if(!this._unitsShooting$$) {
         this.soundPlayer$$.play$$('gun');
-        this._shooting$$ = true;
+        this._unitsShooting$$ = true;
       }
       droids = this._battle$$.getDroids$$();
       if(droids.length > 0) {
@@ -238,12 +299,26 @@ export default class BattleRenderer extends ScreenRenderer {
 
         x2 = Math.max(wallSize, Math.min(1-wallSize, x2));
         y2 = Math.max(wallSize, Math.min(1-wallSize, y2));
-        shoot(x1, y1, x2, y2);
+        shoot(x1, y1, x2, y2, 1);
       }
     } else {
       this.soundPlayer$$.stop$$('gun');
-      this._shooting$$ = false;
+      this._unitsShooting$$ = false;
     }
+    if(gun) {
+      if(gun.isShooting$$ && Math.random() > 0.5) {
+        shoot(gunX, gunY, gun.target$$.x+Math.random()*0.1-0.05, gun.target$$.y+Math.random()*0.1-0.05, 1.5);
+      }
+      renderGun();
+      if(!this._gunShooting$$ && gun.isShooting$$) {
+        this._gunShooting$$ = true;
+        this.soundPlayer$$.play$$('gun2');
+      } else if(this._gunShooting$$ && !gun.isShooting$$) {
+        this._gunShooting$$ = false;
+        this.soundPlayer$$.stop$$('gun2');
+      }
+    }
+
     this._shotList$$.forEach((s) => renderShot(s));
     this._shotList$$ = this._shotList$$.filter((s) => !s.isCompleted$$());
     this._particleList$$.forEach((p) => renderParticle(p));

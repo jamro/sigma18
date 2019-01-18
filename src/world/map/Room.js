@@ -12,10 +12,30 @@ export default class Room {
     this._description$$ = "";
     this._type$$ = "room";
     this.enemy$$ = 0;
+    this.gun$$ = null;
     this._doorCount$$ = 0;
     this._doorMap$$ = {
       n: null, e: null, s: null, w: null
     };
+    this._trap$$ = 0;
+    this._trapExitDirection$$ = new Position(0, 0);
+  }
+
+  setTrap$$(count, x, y) {
+    this._trap$$ = count;
+    this._trapExitDirection$$.x = x;
+    this._trapExitDirection$$.y = y;
+  }
+
+  validateTrap$$(newX, newY) {
+    let result = 0;
+    if(this._trap$$ && newX == this._trapExitDirection$$.x && newY == this._trapExitDirection$$.y) {
+      result = this._trap$$;
+      this.enemy$$ = this._trap$$;
+      this._onChangeList$$.forEach((c) => c());
+      this._trap$$ = 0;
+    }
+    return result;
   }
 
   hasLight$$() {
@@ -53,7 +73,6 @@ export default class Room {
       this._isVisited$$ = true;
       this._onChangeList$$.forEach((c) => c());
     }
-
   }
 
   isVisited$$() {

@@ -4,8 +4,10 @@ import VirusCommand from '../../system/terminal/command/VirusCommand.js';
 import CrewCommand from '../../system/terminal/command/CrewCommand.js';
 import PowerCommand from '../../system/terminal/command/PowerCommand.js';
 import ProjCommand from '../../system/terminal/command/ProjCommand.js';
+import GunCommand from '../../system/terminal/command/GunCommand.js';
 import StaticItem from '../item/StaticItem.js';
 import KeyCard from '../item/KeyCard.js';
+import Gun from './Gun.js';
 import Note from '../item/Note.js';
 import Disk from '../item/Disk.js';
 import WorldMap from './WorldMap.js';
@@ -37,12 +39,14 @@ export default class MapBuilder {
     this.virusCommand$$ = new VirusCommand(map.getVirus$$());
     this.doorCommand$$ = new DoorCommand(map, squad);
     this.dockCommand$$ = new DockCommand(map, this._capsuleDoor$$);
+    this.gunCommand$$ = new GunCommand(map);
 
     this._map$$.getRoom$$(3, 3).addItem$$(new Disk(this.projCommand$$));
     this._map$$.getRoom$$(4, 0).addItem$$(new Disk(this.powerCommand$$));
     this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
     this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map$$.getRoom$$(1, 3).addItem$$(new Disk(this.crewCommand$$));
+    this._map$$.getRoom$$(7, 4).addItem$$(new Disk(this.gunCommand$$));
     this._map$$.getRoom$$(7, 4).addItem$$(new KeyCard('blue'));
     this._map$$.getRoom$$(0, 5).addItem$$(new Disk(this.virusCommand$$));
     this._map$$.getRoom$$(1, 6).addItem$$(new KeyCard('red'));
@@ -59,6 +63,10 @@ export default class MapBuilder {
     this._map$$.getRoom$$(2, 8).enemy$$ = 5;
     this._map$$.getRoom$$(3, 1).enemy$$ = 4;
     this._map$$.getRoom$$(2, 2).enemy$$ = 4;
+
+    this._map$$.getRoom$$(6, 3).setTrap$$(87, 7, 3);
+    this._map$$.getRoom$$(6, 3).gun$$ = new Gun();
+
   }
 
   _layoutRooms$$() {
@@ -88,7 +96,7 @@ export default class MapBuilder {
     _describe$$(6, 6, 'We are in a long, empty s{corridor}s. There are bloodstains on the walls.', 'corridor');
     _describe$$(6, 5, 'That is a back s{corridor}s, there are some pieces of furniture laying on the floor what makes crossing difficult. A few bullet holes in the wall are signs of a battle that took place here.', 'corridor');
     _describe$$(6, 4, 'We are in a long s{corridor}s that leads to the laboratory section.', 'corridor');
-    _describe$$(6, 3, 'The room was a s{security checkpoint}s. It has signs of a heavy fight - bullet holes, blood stains, the furniture are broken into pieces. There is a destroyed battle droid (model SIG-18) in the corner.');
+    _describe$$(6, 3, 'The room was a s{security checkpoint}s. It has signs of a heavy fight - bullet holes, blood stains, the furniture are broken into pieces. There is a destroyed battle droid (model SIG-18) in the corner. The room is enquiped with a sentry gun BER-84 but it seems to be off-line.');
     _describe$$(4, 3, "It's a s{corridor}s that leads to the lobby. We see parts of droid's body lying down on the floor and signs of explosions.", 'corridor');
     _describe$$(5, 3, 'The s{corridor}s joins the laboratory section with the lobby. There are several bullet shells on the floor.', 'corridor');
     _describe$$(7, 3, 'We are inside the s{laboratory}s. It seems that researches on improving SIG-18 droids took place over here. They have schemas of that model on the walls and lots of spare parts. There is no production machines, just computers. I bet they were working on improving software of its artificial intelligence.');

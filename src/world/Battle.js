@@ -8,12 +8,12 @@ class Unit {
 
 export default class Battle {
 
-  constructor(room, door, virus, onFinish) {
+  constructor(room, door, virus) {
     this._room$$ = room;
     this._door$$ = door;
     this._virus$$ = virus;
     this._droids$$ = [];
-    this._onFinish$$ = onFinish;
+    this._onFinishList$$ = [];
     this._marinesDefense$$ = [
       new Unit(0.39, 1.04),
       new Unit(0.6, 1.05),
@@ -37,6 +37,21 @@ export default class Battle {
     for(let i=0; i < enemies; i++) {
       this._addDroid$$();
     }
+
+    let allDoors = this.getRoom$$().getDoors$$();
+
+    if(allDoors.n == door) {
+      this.flipY$$ = true;
+    } else if (allDoors.e == door) {
+      this.rotate$$ = true;
+    } else if (allDoors.w == door) {
+      this.rotate$$ = true;
+      this.flipX$$ = true;
+    }
+  }
+
+  onFinish$$(callback) {
+    this._onFinishList$$.push(callback);
   }
 
   isDroidsTurn$$() {
@@ -75,14 +90,15 @@ export default class Battle {
   }
 
   _addDroid$$() {
-    this._droids$$.push(new Unit(0.1 + 0.8*Math.random(), 0.1 + 0.7*Math.random()));
+    this._droids$$.push(new Unit(0.1 + 0.8*Math.random(), 0.1 + 0.3*Math.random() + 0.4*Math.random()*Math.random()));
   }
 
   _step$$() {
     if(this._droids$$.length == 0) {
       this.stop$$();
       this._room$$.enemy$$ = 0;
-      return this._onFinish$$();
+      this._onFinishList$$.forEach((c) => c());
+      return;
     }
     if(this._backupTime$$ > 70 && this._droids$$.length < 100) {
       this._backupTime$$ = 0;
@@ -92,7 +108,7 @@ export default class Battle {
     }
     if(this._shootCounter$$ == 0 && this._backupTime$$ >= 0) {
       this._shootCounter$$ = (Math.random() > 0.5) ? 30 + 30*Math.random() : -15 - 15*Math.random();
-      if(this._shootCounter$$ < 0 && Math.random() > 0.5 && this._droids$$.length > 0) {
+      if(this._shootCounter$$ < 0 && Math.random() > 0.5 && this._droids$$.length > 0 && this._droids$$.length <= 10) {
         this._droids$$.shift();
       }
       this._shootCounter$$ = Math.round(this._shootCounter$$);
@@ -112,6 +128,22 @@ export default class Battle {
       this._shootCounter$$ --;
     } else if (this._shootCounter$$ < 0) {
       this._shootCounter$$++;
+    }
+
+    if(this._room$$.gun$$) {
+      this._room$$.gun$$.step();
+      if(this._room$$.gun$$.isShooting$$) {
+        let newDroids = [];
+        for(let i=0; i < this._droids$$.length; i++) {
+          let dx = this._droids$$[i].x - this._room$$.gun$$.target$$.x;
+          let dy = this._droids$$[i].y - this._room$$.gun$$.target$$.y;
+          let r = Math.sqrt(dx*dx + dy*dy);
+          if(r > 0.08 || Math.random() < 0.9) {
+            newDroids.push(this._droids$$[i]);
+          }
+        }
+        this._droids$$ = newDroids;
+      }
     }
   }
 

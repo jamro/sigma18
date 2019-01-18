@@ -1,13 +1,22 @@
 import Command from '../Command.js';
+import KeyCard from '../../../world/item/KeyCard.js';
 
 export default class DebugCommand extends Command {
 
-  constructor(builder) {
+  constructor(builder, squad) {
     super();
+    this._squad = squad;
     this._map = builder.getMap$$();
     this._builder = builder;
     this.name$$ = DEBUG_MODE ? 'debug' : null;
     this.help$$ = 'For debuging only';
+  }
+
+  execGod() {
+    this.execView([]);
+    this.execOpen([]);
+    this.execKeys([]);
+    this.execApps([]);
   }
 
   execView(command) {
@@ -39,10 +48,19 @@ export default class DebugCommand extends Command {
       this._builder.crewCommand$$,
       this._builder.virusCommand$$,
       this._builder.doorCommand$$,
-      this._builder.dockCommand$$
+      this._builder.dockCommand$$,
+      this._builder.gunCommand$$
     ];
 
     apps.forEach((c) => this._terminal$$.installCommand$$(c));
+  }
+
+  execKeys() {
+    this._squad.addToInventory$$([
+      new KeyCard('yellow'),
+      new KeyCard('blue'),
+      new KeyCard('red')
+    ]);
   }
 
   execGo(command) {
@@ -64,8 +82,10 @@ export default class DebugCommand extends Command {
     this._terminal$$.sequence$$(
       "Available commands are:",
       '',
+      's{debug god}s',
       's{debug view [all|none|light]}s',
       's{debug apps}s',
+      's{debug keys}s',
       's{debug open}s',
       's{debug go [X] [Y]}s',
       '',

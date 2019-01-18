@@ -18,7 +18,6 @@ import Squad from './world/Squad.js';
 import MapBuilder from './world/map/MapBuilder.js';
 import Container from './Container.js';
 
-
 let screenAElement, screenBElement, overlayElement;
 screenAElement = document.createElement('DIV');
 screenAElement.id = "screen-a";
@@ -54,7 +53,7 @@ terminal.installCommand$$(new HelpCommand());
 terminal.installCommand$$(new SfxCommand(player));
 terminal.installCommand$$(new ComCommand(squad, map, terminal));
 if(DEBUG_MODE) {
-  terminal.installCommand$$(new DebugCommand(builder));
+  terminal.installCommand$$(new DebugCommand(builder, squad));
 }
 builder.placeItems$$(squad, map, map.getVirus$$());
 

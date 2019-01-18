@@ -10,7 +10,7 @@ export default class KeyCard extends Item {
   }
 
   toString() {
-    let color = this._color$$[0].toUpperCase() + this._color$$.slice(1);
+    let color = this.color$$[0].toUpperCase() + this.color$$.slice(1);
     return `${color} key card`;
   }
 }

@@ -60,9 +60,9 @@ export default class WorldMap {
     return this._battle$$;
   }
 
-  startBattle$$(room, door, onWin) {
+  startBattle$$(room, door) {
     this._walkthrough$$.handleEvent$$('battle-start');
-    this._battle$$ = new Battle(room, door, this._virus$$, onWin);
+    this._battle$$ = new Battle(room, door, this._virus$$);
     this._battle$$.start$$();
   }
 

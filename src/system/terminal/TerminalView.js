@@ -17,7 +17,8 @@ export default class TerminalView extends View {
     }
     this._history$$ = [''].concat(this._historyFull$$);
     this._historyIndex$$ = 0;
-    this._keyHandler$$ = this.handleKeyDown$$;
+    this._keyDownHandler$$ = this.handleKeyDown$$;
+    this._keyUpHandler$$ = this.handleKeyUp$$;
 
     this._eventBuffer$$ = null;
     this._eventBuffer$$Time$$ = 0;
@@ -70,7 +71,11 @@ export default class TerminalView extends View {
     this.setPromptText$$();
 
     this._view$$.input.textField.element.addEventListener("keydown", (e) => {
-      this._keyHandler$$(e, this._view$$.input.textField.element.value);
+      this._keyDownHandler$$(e, this._view$$.input.textField.element.value);
+      this._noise$$.prevent$$();
+    });
+    this._view$$.input.textField.element.addEventListener("keyup", (e) => {
+      this._keyUpHandler$$(e, this._view$$.input.textField.element.value);
       this._noise$$.prevent$$();
     });
   }
@@ -83,25 +88,30 @@ export default class TerminalView extends View {
   flushEventBuffer$$() {
     if(!this._eventBuffer$$) return;
     if((new Date()).getTime() - this._eventBuffer$$Time$$ > 500) return;
-    if(this._keyHandler$$ != this.handleKeyDown$$) return;
+    if(this._keyDownHandler$$ != this.handleKeyDown$$) return;
     if(!this.isEnabled$$()) return;
     let event = this._eventBuffer$$;
     this._eventBuffer$$ = null;
-    if(this._keyHandler$$) {
-      this._keyHandler$$(event);
+    if(this._keyDownHandler$$) {
+      this._keyDownHandler$$(event);
     }
     if(this.isEnabled$$() && event.key.toString().length == 1) {
       this._view$$.input.textField.element.value += event.key;
     }
   }
 
-  setKeyHandler$$(callback) {
-    this._keyHandler$$ = callback ? callback : this.handleKeyDown$$;
+  setKeyHandler$$(downCallback, upCallback) {
+    this._keyDownHandler$$ = downCallback ? downCallback : this.handleKeyDown$$;
+    this._keyUpHandler$$ = upCallback ? upCallback : this.handleKeyUp$$;
     this.flushEventBuffer$$();
   }
 
   setInputText$$(txt) {
     this._view$$.input.textField.element.value = txt;
+  }
+
+  handleKeyUp$$(event, txt) {
+
   }
 
   handleKeyDown$$(event, txt) {

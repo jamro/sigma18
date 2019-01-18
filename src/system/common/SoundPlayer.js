@@ -32,8 +32,10 @@ export default class SoundPlayer {
       this._sounds$$.chat = new Audio('audio/com.mp3');
       this._sounds$$.beep = new Audio('audio/beep.mp3');
       this._sounds$$.gun = new Audio('audio/gun.mp3');
+      this._sounds$$.gun2 = new Audio('audio/gun.mp3');
       this._sounds$$.beep.loop = true;
       this._sounds$$.gun.loop = true;
+      this._sounds$$.gun2.loop = true;
     } catch(err) {
       console.log(err);
     }
