@@ -45,9 +45,9 @@ export default class MapBuilder {
     this._map$$.getRoom$$(4, 0).addItem$$(new Disk(this.powerCommand$$));
     this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
     this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
+    this._map$$.getRoom$$(7, 2).addItem$$(new KeyCard('blue'));
     this._map$$.getRoom$$(1, 3).addItem$$(new Disk(this.crewCommand$$));
     this._map$$.getRoom$$(7, 4).addItem$$(new Disk(this.gunCommand$$));
-    this._map$$.getRoom$$(7, 4).addItem$$(new KeyCard('blue'));
     this._map$$.getRoom$$(0, 5).addItem$$(new Disk(this.virusCommand$$));
     this._map$$.getRoom$$(1, 6).addItem$$(new KeyCard('red'));
     this._map$$.getRoom$$(2, 6).addItem$$(new Disk(this.doorCommand$$));

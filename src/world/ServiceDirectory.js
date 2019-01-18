@@ -4,21 +4,22 @@ export default class ServiceDirectory {
 
   constructor() {
     this._data$$ = [];
+    this.totalPowerSuply$$ = 75.480;
     this.addService$$('power-manager', '40.32.125.1', 3).on$$();
     this.addService$$('docker', '40.32.125.120', 10).on$$();
-    this.addService$$('lights-east', '40.32.125.231', 6);
-    this.addService$$('lights-west', '40.32.125.232', 8).on$$();
-    this.addService$$('security', '40.32.125.12', 5).on$$();
-    this.addService$$('oxygen-generator', '40.32.125.193', 13).on$$();
+    this.addService$$('lights-east', '40.32.125.231', 13);
+    this.addService$$('lights-west', '40.32.125.232', 11).on$$();
+    this.addService$$('monitoring', '40.32.125.12', 5).on$$();
+    this.addService$$('oxygen-generator', '40.32.125.193', 23).on$$();
     this.addService$$('pump-station', '40.32.125.43', 20);
     this.addService$$('data-warehouse', '40.32.125.73', 14).on$$();
     this.addService$$('lab-services', '40.32.125.100', 50);
-    this.addService$$('hvac', '40.32.125.87', 45);
-    this.addService$$('doors', '40.32.125.133', 19).on$$();
+    this.addService$$('security', '40.32.125.87', 35);
+    this.addService$$('doors', '40.32.125.133', 9).on$$();
   }
 
   getPowerSupply$$() {
-    return 75.480;
+    return this.totalPowerSuply$$;
   }
 
   addService$$(name, ip, power) {

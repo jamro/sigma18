@@ -43,7 +43,7 @@ export default class ProjCommand extends Command {
       "s{2080-07-20 09:27:57.025}s",
       ln, // ----------
       "",
-      "We are during tests of SIG-18, team behaviour and cooperation modes. Today one of our power generators went down. We do not have enough power to continue research as planned. The scope of the project will be narrowed since we have to power down part of SIG-18 droids.",
+      "We are during tests of SIG-18, team behaviour and cooperation modes. Today two of our power generators went down. We do not have enough power to continue research as planned. The scope of the project will be narrowed since we have to power down part of SIG-18 droids.",
       {c:'sound', d: 'ok', t:0},
       {c:'pause'},
       "",

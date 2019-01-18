@@ -17,6 +17,12 @@ export default class DebugCommand extends Command {
     this.execOpen([]);
     this.execKeys([]);
     this.execApps([]);
+    this.execPower([]);
+  }
+
+  execPower() {
+    this._map._services$$.totalPowerSuply$$ = 150;
+    this._map._services$$.getAllServices$$().forEach((s) => s.on$$());
   }
 
   execView(command) {
@@ -87,6 +93,7 @@ export default class DebugCommand extends Command {
       's{debug apps}s',
       's{debug keys}s',
       's{debug open}s',
+      's{debug power}s',
       's{debug go [X] [Y]}s',
       '',
       {c: 'sound', d: 'ok', t:0}

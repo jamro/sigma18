@@ -142,12 +142,13 @@ export default class PowerCommand extends Command {
                           "----------|---------|------------|--------------\n" +
                           "Alpha     | ok      |        97% |      48.51kW\n" +
                           "r{Beta}r      | r{damaged}r |         r{0%}r |       r{0.00kW}r\n" +
-                          "Gamma     | ok      |        54% |      26.97kW</pre>";
+                          "Gamma     | ok      |        54% |      26.97kW\n" +
+                          "r{Delta}r     | r{damaged}r |         r{0%}r |       r{0.00kW}r</pre>";
 
 
     this._terminal$$.connect$$('power-manager', [
       generators,
-      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 150.00kW`,
+      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 200.00kW`,
       {c:'sound', d: 'ok', t:0},
       {c:'on'}
     ], () => {
