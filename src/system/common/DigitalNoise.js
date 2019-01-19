@@ -37,6 +37,11 @@ export default class DigitalNoise extends View {
     this._timer$$ = 0;
   }
 
+  boost$$(time) {
+    this._enabled$$ = true;
+    this._timer$$ = -time;
+  }
+
   prevent$$() {
     this._timer$$ = 100;
   }
