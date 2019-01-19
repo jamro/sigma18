@@ -40,15 +40,15 @@ export default class SniffCommand extends Command {
       this._terminal$$.soundPlayer$$.play$$('err');
       return;
     }
-    this.serviceName$$ = command.length >= 3 ? command[2] : 'unknown';
+    let name = command.length >= 3 ? command[2] : 'unknown';
     this.disableInput$$();
-    this._terminal$$.connect$$(this.serviceName$$, [
+    this._terminal$$.connect$$(name, [
       `Encryping log file`,
       {c:'pass',d:20,l:'Password'},
       '',
       `streaming /var/log/${this.serviceName$$}.log`,
     ], () => {
-
+      this.serviceName$$ = name;
       this._terminal$$.showPopup$$(true);
       this.loop$$ = setInterval(() => {
         let logs = this._services$$.getService$$(this.serviceName$$).logFile$$.join('<br/>\n');

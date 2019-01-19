@@ -19,6 +19,50 @@ export default class PowerCommand extends Command {
     this.setStatus$$(name, false);
   }
 
+  auth$$(service, done) {
+    if(!service.isSecured$$) {
+      return done();
+    }
+    this._terminal$$.sequence$$(
+      '',
+      `WARNING! s{${service.name$$}}s is a critial service.`,
+      `Multi factor authentication process is required`,
+      {c:'sound', d:'ok'},
+      '',
+      's{Auth Level 1}s',
+      's{============}s',
+      'login: ngallegos',
+      {c:'pass', d:100, l:'password'},
+      "Password correct",
+      {c:'sound', d:'ok'},
+      "",
+      's{Auth Level 2}s',
+      's{============}s',
+      'Sending auth code message to s{message-hub}s service...',
+      {c:'load'},
+      '',
+      'An text message has been sent to user s{ngallegos}s.',
+      'Enter the code to log in.',
+      {c:'sound', d:'ok'},
+      {c: () => {
+        let code = Math.floor(Math.random()*0xffff).toString(16).toUpperCase();
+        this._terminal$$.log$$('message-hub', 'MSG [to: ngallegos, authCode: ' + code + ']');
+        this._terminal$$.prompt$$('Auth code:', (txt) => {
+          txt = txt.toUpperCase();
+          if(txt == code) {
+            this._terminal$$.println$$('Auth code: ****** (correct)');
+            this._terminal$$.println$$('');
+            done();
+          } else {
+            this._terminal$$.println$$('Error: incorrect auth code');
+            this._terminal$$.soundPlayer$$.play$$('err');
+            this.enableInput$$();
+          }
+        });
+      }}
+    );
+  }
+
   setStatus$$(name, status) {
     if(!name) {
       this._terminal$$.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
@@ -27,9 +71,7 @@ export default class PowerCommand extends Command {
     }
     this._terminal$$.view$$.disable$$();
     let errorMessage = this._serviceDirectory$$.validateStateChange$$(name, status);
-    this._terminal$$.connect$$('power-manager', [
-      `${status ? "Starting" : "Stopping"} service ${name}...`
-    ], () => {
+    this._terminal$$.connect$$('power-manager', [`${status ? "Starting" : "Stopping"} service ${name}...`], () => {
       if(errorMessage) {
         this._terminal$$.sequence$$(
           "",
@@ -40,41 +82,44 @@ export default class PowerCommand extends Command {
         return;
       }
       let service = this._serviceDirectory$$.getService$$(name);
-      let queue = [
-        `${service.name$$}: ${service.ip$$}`,
-        {c:'load'},
-        {c:'ln', d:`Service ${name} ${status ? "started" : "stopped"}`,s:'power-manager'},
-        {c:'sound',d:'ok'},
-        {c: () => {
-          if(status) {
-            this._serviceDirectory$$.on$$(name);
-          } else {
-            this._serviceDirectory$$.off$$(name);
-          }
-        }}
-      ];
-      if(service.name$$ == 'oxygen-generator' && !status) {
-        queue = queue.concat([
-          {c:'ln', d:"r{WARNING: Oxygen Generator is down. Threat to the life of the crew!}r", t:300},
-          {c:'chat', d:'Oxygen level is low. Putting on the masks.', f:'commander', t:1500}
-        ]);
-      }
-      if(service.name$$ == 'power-manager' && !status) {
-        queue = queue.concat([
-          "",
-          {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
-          {c:'sound',d:'err', t:500},
-          `Restoring service ${name}...`,
+      this.auth$$(service, () => {
+        let queue = [
+          `${service.name$$}: ${service.ip$$}`,
           {c:'load'},
+          {c:'ln', d:`Service ${name} ${status ? "started" : "stopped"}`,s:'power-manager'},
+          {c:'sound',d:'ok'},
           {c: () => {
-            this._serviceDirectory$$.on$$(name);
-          }},
-          `Service restored`,
-          {c:'sound',d:'ok'}
-        ]);
-      }
-      queue.push({c:'on'});
-      this._terminal$$.sequence$$(queue);
+            if(status) {
+              this._serviceDirectory$$.on$$(name);
+            } else {
+              this._serviceDirectory$$.off$$(name);
+            }
+          }}
+        ];
+        if(service.name$$ == 'oxygen-generator' && !status) {
+          queue = queue.concat([
+            {c:'ln', d:"r{WARNING: Oxygen Generator is down. Threat to the life of the crew!}r", t:300},
+            {c:'chat', d:'Oxygen level is low. Putting on the masks.', f:'commander', t:1500}
+          ]);
+        }
+        if(service.name$$ == 'power-manager' && !status) {
+          queue = queue.concat([
+            "",
+            {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
+            {c:'sound',d:'err', t:500},
+            `Restoring service ${name}...`,
+            {c:'load'},
+            {c: () => {
+              this._serviceDirectory$$.on$$(name);
+            }},
+            `Service restored`,
+            {c:'sound',d:'ok'}
+          ]);
+        }
+        queue.push({c:'on'});
+        this._terminal$$.sequence$$(queue);
+      });
+
     });
   }
 
@@ -142,13 +187,12 @@ export default class PowerCommand extends Command {
                           "----------|---------|------------|--------------\n" +
                           "Alpha     | ok      |        97% |      48.51kW\n" +
                           "r{Beta}r      | r{damaged}r |         r{0%}r |       r{0.00kW}r\n" +
-                          "Gamma     | ok      |        54% |      26.97kW\n" +
-                          "r{Delta}r     | r{damaged}r |         r{0%}r |       r{0.00kW}r</pre>";
+                          "Gamma     | ok      |        54% |      26.97kW</pre>";
 
 
     this._terminal$$.connect$$('power-manager', [
       generators,
-      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 200.00kW`,
+      `Total power supply: s{${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW}s / 150.00kW`,
       {c:'sound', d: 'ok', t:0},
       {c:'on'}
     ], () => {

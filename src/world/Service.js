@@ -5,6 +5,7 @@ class Service {
     this.logFile$$ = [];
     this.log$$(`Service ${name} started at ${ip}`);
     this.isRunning$$ = false;
+    this.isSecured$$ = false;
     this.powerRequirements$$ = power;
     this._onStatusChangeList$$ = [];
   }
@@ -13,12 +14,18 @@ class Service {
     return this.isRunning$$ ? this.powerRequirements$$ : 0;
   }
 
+  secure$$() {
+    this.isSecured$$ = true;
+    return this;
+  }
+
   on$$() {
     if(!this.isRunning$$) {
       this.isRunning$$ = true;
       this.log$$(`Power up ${this.name$$} service`);
       this._onStatusChangeList$$.forEach((c) => c(true));
     }
+    return this;
   }
 
   off$$() {
@@ -27,6 +34,7 @@ class Service {
       this.log$$(`Power down ${this.name$$} service`);
       this._onStatusChangeList$$.forEach((c) => c(false));
     }
+    return this;
   }
 
   onStatusChange$$(callback) {
