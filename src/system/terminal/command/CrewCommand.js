@@ -29,16 +29,19 @@ export default class CrewCommand extends Command {
       return t;
     };
     this.disableInput$$();
-    this._terminal$$.connect$$('data-warehouse', ['Query crew data...', this._data.length + " records received"], () => {
-      let msg = "<pre>User Name   |Full Name          |Role\n" +
-                     "------------|-------------------|------------------------\n" ;
-      this._data.forEach((r) => {
-        msg += pad(r[0],12) + "|" + pad(r[1],19) + "|" + r[2] + "\n";
-      });
-
-      this._terminal$$.println$$(msg);
-      this.enableInput$$();
-      this._terminal$$.soundPlayer$$.play$$('ok');
+    this._terminal$$.connect$$('data-warehouse', [
+        {c:'ln', d:'Query: /crew/*',s:'data-warehouse'},
+        `${this._data.length} records found`
+      ],
+      () => {
+        let msg = "<pre>User Name   |Full Name          |Role\n" +
+                       "------------|-------------------|------------------------\n" ;
+        this._data.forEach((r) => {
+          msg += pad(r[0],12) + "|" + pad(r[1],19) + "|" + r[2] + "\n";
+        });
+        this._terminal$$.println$$(msg);
+        this.enableInput$$();
+        this._terminal$$.soundPlayer$$.play$$('ok');
     });
   }
 
@@ -54,7 +57,7 @@ export default class CrewCommand extends Command {
 
     this.disableInput$$();
     this._terminal$$.connect$$('data-warehouse', [
-      'Search Criteria: username=' + name,
+      {c:'ln', d:'Query: /crew/' + name, s:'data-warehouse'},
       record ? '1 record found' : '',
       {c:'ln', d:"", t: 500}
     ], () => {

@@ -18,16 +18,19 @@ export default class DockCommand extends Command {
 
   execList() {
     this.disableInput$$();
-    this._terminal$$.connect$$('docker', ['Query station list...'], () => {
-      // @TODO update location of dock stations
-      this._terminal$$.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
-                        "-----------|----------|---------|-----------------\n" +
-                        "DS001      | [C:9]    | Empty   | - \n" +
-                        "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
-                        "r{DS003}r      | r{[E:9]}r    | r{Damaged}r | r{ISS Sierra-23}r</pre>");
-      this.enableInput$$();
-      this._terminal$$.soundPlayer$$.play$$('ok');
-    });
+    this._terminal$$.connect$$('docker', [
+        {c:'ln',d:'Query station list...',s:'docker'}
+      ],
+      () => {
+        // @TODO update location of dock stations
+        this._terminal$$.println$$("<pre>Station ID | Location | Status  | Docked Unit\n" +
+                          "-----------|----------|---------|-----------------\n" +
+                          "DS001      | [C:9]    | Empty   | - \n" +
+                          "DS002      | [D:10]   | Ready   | Rescue Capsule\n" +
+                          "r{DS003}r      | r{[E:9]}r    | r{Damaged}r | r{ISS Sierra-23}r</pre>");
+        this.enableInput$$();
+        this._terminal$$.soundPlayer$$.play$$('ok');
+      });
   }
 
   execLaunch(command) {
@@ -79,9 +82,9 @@ export default class DockCommand extends Command {
           this._terminal$$.soundPlayer$$.play$$('err');
           return;
         }
-
+        this._terminal$$.showPopup$$(false);
         this._terminal$$.sequence$$(
-          `Starting launching sequence at ${id}`,
+          {c:'ln',d:`Starting launching sequence at ${id}`,s:'docker'},
           `Modules health check:`,
           {c: 'load'},
           `All systems up and running`,
@@ -114,7 +117,7 @@ export default class DockCommand extends Command {
     let msg;
     if(id == 'DS002' || id == 'DS003') {
       msg = [
-        `Fueling spaceship at ${id}...`,
+        {c:'ln',d:`Fueling spaceship at ${id}...`,s:'docker'},
         {c: 'load'},
         ``,
         `Done. Fuel level: 100%`,

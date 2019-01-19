@@ -78,7 +78,7 @@ export default class DoorCommand extends Command {
         "Password authorization is required.",
         {c: 'pass', d: 60},
         doClose ? `Closing...` : `Opening...`,
-        {c:'ln', d:`Done. Door ${door.id$$} ${doClose ? 'closed' : 'opened'}.`, t:500},
+        {c:'ln', d:`Done. Door ${door.id$$} ${doClose ? 'closed' : 'opened'}.`, s:'doors',t:500},
         {c: 'sound', d: 'ok', t: 0},
         {c: 'on'},
         {c: () => {

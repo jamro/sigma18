@@ -42,6 +42,11 @@ export default class TerminalView extends View {
       parent: this._view$$
     });
 
+    this._view$$.popup = this.createElement$$("DIV", {
+      cssClass: "terminal-popup",
+      parent: this._view$$
+    });
+
     this._view$$.input = this.createElement$$("DIV", {
       cssClass: "terminal-input",
       parent: this._view$$
@@ -78,6 +83,10 @@ export default class TerminalView extends View {
       this._keyUpHandler$$(e, this._view$$.input.textField.element.value);
       this._noise$$.prevent$$();
     });
+  }
+
+  showPopup$$(value) {
+    this._view$$.popup.element.style.display = value ? 'block' : 'none';
   }
 
   setEventBuffer$$(event) {
@@ -201,6 +210,10 @@ export default class TerminalView extends View {
     inputElement.innerHTML = content;
     inputElement.scrollTop = inputElement.scrollHeight;
     this._noise$$.prevent$$();
+  }
+
+  printPopup$$(title, txt) {
+    this._view$$.popup.element.innerHTML = `<h1>${title}</h1>${txt}`;
   }
 
   printel$$() {

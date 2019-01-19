@@ -22,10 +22,10 @@ export default class GunCommand extends Command {
       }
       let target = droids[Math.floor(Math.random() * droids.length)];
       this._terminal$$.sequence$$(
-        'Searching for target...',
+        {c:'ln',d:'Searching for target...', s:'security'},
         `Enemy found at [${target.x.toFixed(2)}; ${target.y.toFixed(2)}]`,
         {c:'sound', d:'beep'},
-        'Aiming...',
+        {c:'ln',d:'Aiming...', s:'security'},
         {c:() => {
           gun.online$$ = true;
           let loop = setInterval(() => {
@@ -36,7 +36,7 @@ export default class GunCommand extends Command {
             if(r < 0.01) {
               this._terminal$$.soundPlayer$$.stop$$('beep');
               this._terminal$$.println$$(`Target aimed at [${target.x.toFixed(2)}; ${target.y.toFixed(2)}]`);
-              this._terminal$$.println$$(`Open fire!`);
+              this._terminal$$.println$$(`Open fire!`, 'security');
               clearInterval(loop);
               gun.isShooting$$ = true;
               gun.setMove$$(0, 0);
@@ -151,12 +151,13 @@ export default class GunCommand extends Command {
         {c:'pass', d: 100, l:'Security token'},
         '',
         'Enabling manual mode',
-        'Manual controller online',
+        {c:'ln',d:'Manual controller online', s:'security'},
         '',
         {c: (done) => {
           action(pos, battle, gun, done);
         }},
         'Power down manual controller',
+        {c:'ln',d:'Manual controller offline', s:'security'},
         'Disconnecting from BER-84...',
         'Connection closed',
         {c:'sound', d:'ok'},

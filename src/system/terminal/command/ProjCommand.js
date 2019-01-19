@@ -12,7 +12,7 @@ export default class ProjCommand extends Command {
     let ln = "s{=======================}s";
     this.disableInput$$();
     this._terminal$$.connect$$('data-warehouse', [
-      'Query project data...',
+      {c:'ln', d:'Query: /projects/sig18/log/*', s:'data-warehouse'},
       'Response received',
       {c:'pass', d:60, l:"Decrypting"},
       "Done. 6 records received",
@@ -68,7 +68,7 @@ export default class ProjCommand extends Command {
   execInfo() {
     this.disableInput$$();
     this._terminal$$.connect$$('data-warehouse', [
-      'Query project data...',
+      {c:'ln', d:'Query: /projects/sig18/info', s:'data-warehouse'},
       'Response received',
       {c:'pass', d:20, l:"Decrypting"},
       "Done. 1 record received",
@@ -85,7 +85,9 @@ export default class ProjCommand extends Command {
       "Improve artificial intelligence of SIG-18 battle droids to achieve reasoning level of Z class units.",
       {c:'sound', d: 'ok', t:0},
       {c:'on'}
-    ], () => {});
+    ], () => {
+
+    });
   }
 
   execHelp() {

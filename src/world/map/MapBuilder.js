@@ -5,6 +5,7 @@ import CrewCommand from '../../system/terminal/command/CrewCommand.js';
 import PowerCommand from '../../system/terminal/command/PowerCommand.js';
 import ProjCommand from '../../system/terminal/command/ProjCommand.js';
 import GunCommand from '../../system/terminal/command/GunCommand.js';
+import SniffCommand from '../../system/terminal/command/SniffCommand.js';
 import StaticItem from '../item/StaticItem.js';
 import KeyCard from '../item/KeyCard.js';
 import Gun from './Gun.js';
@@ -40,12 +41,14 @@ export default class MapBuilder {
     this.doorCommand$$ = new DoorCommand(map, squad);
     this.dockCommand$$ = new DockCommand(map, this._capsuleDoor$$);
     this.gunCommand$$ = new GunCommand(map);
+    this.sniffCommand$$ = new SniffCommand(this._services$$);
 
     this._map$$.getRoom$$(3, 3).addItem$$(new Disk(this.projCommand$$));
     this._map$$.getRoom$$(4, 0).addItem$$(new Disk(this.powerCommand$$));
     this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
     this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
     this._map$$.getRoom$$(7, 2).addItem$$(new KeyCard('blue'));
+    this._map$$.getRoom$$(8, 3).addItem$$(new Disk(this.sniffCommand$$));
     this._map$$.getRoom$$(1, 3).addItem$$(new Disk(this.crewCommand$$));
     this._map$$.getRoom$$(7, 4).addItem$$(new Disk(this.gunCommand$$));
     this._map$$.getRoom$$(0, 5).addItem$$(new Disk(this.virusCommand$$));
@@ -99,6 +102,7 @@ export default class MapBuilder {
     _describe$$(4, 3, "It's a s{corridor}s that leads to the lobby. We see parts of droid's body lying down on the floor and signs of explosions.", 'corridor');
     _describe$$(5, 3, 'The s{corridor}s joins the laboratory section with the lobby. There are several bullet shells on the floor.', 'corridor');
     _describe$$(7, 3, 'We are inside the s{laboratory}s. It seems that researches on improving SIG-18 droids took place over here. They have schemas of that model on the walls and lots of spare parts. There is no production machines, just computers. I bet they were working on improving software of its artificial intelligence.');
+    _describe$$(8, 3, 'We are in the laboratory\'s s{meeting room}s. There is a huge table in the middle with some software architecture diagrams. It seems that engineers have left it in a hurry.');
     _describe$$(7, 2, "It's a dedicated s{warehouse}s for the lab. They keep spare parts of SIG-18 and some backup computers here.");
     _describe$$(7, 4, 'We have entered the s{server room}s of the lab. Lots of servers are here. Everything is up and running. They are separate to core systems of the space station so they must run services dedicated for researches of the lab.');
     _describe$$(2, 5, 'It is a s{corridor}s to quarters of the crew.', 'corridor');
@@ -147,6 +151,7 @@ export default class MapBuilder {
     addDoor$$(3, 3, 4, 3).close$$(); // lobby -> corridor
     addDoor$$(6, 3, 7, 3).close$$().label$$('yellow').requireKey$$('yellow'); // security -> lab
     addDoor$$(7, 3, 7, 2).close$$(); // lab -> warehouse
+    addDoor$$(7, 3, 8, 3).close$$(); // lab -> conference room
     addDoor$$(7, 3, 7, 4).close$$().label$$('lab-server').lock$$('wirving', 'First name of an engineer who has red hair', /duncan/i); // lab -> server room
     addDoor$$(2, 5, 3, 5).damage$$(); // corridor -> corridor
     addDoor$$(1, 5, 2, 5).damage$$(); // corridor -> corridor

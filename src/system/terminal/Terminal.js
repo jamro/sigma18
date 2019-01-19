@@ -17,6 +17,10 @@ export default class Terminal {
     });
   }
 
+  log$$(serviceName, msg) {
+    this._serviceDirectory$$.getService$$(serviceName).log$$(msg);
+  }
+
   connect$$(serviceName, msg, done) {
     let handleErr = (err) => {
       this.sequence$$(
@@ -65,6 +69,11 @@ export default class Terminal {
     this.println$$(`Error: Command s{${command[0]}}s not found!`);
     this.println$$(`Run s{help}s to list all available commands`);
     this.soundPlayer$$.play$$('err');
+  }
+
+  showPopup$$(value) {
+    this.view$$.showPopup$$(value);
+    this.soundPlayer$$.play$$('ok');
   }
 
   pause$$(done) {
@@ -129,8 +138,11 @@ export default class Terminal {
     return this._commandProcessorList$$;
   }
 
-  println$$(txt) {
+  println$$(txt, service) {
     this.view$$.print$$(txt + "<br/>\n");
+    if(service) {
+      this.log$$(service, txt);
+    }
   }
 
   printel$$() {
@@ -284,7 +296,7 @@ export default class Terminal {
     - function
     - {c: callback}
     - {c: callback, t: delay}
-    - {c: 'ln', d: 'text', t: delay}
+    - {c: 'ln', d: 'text', t: delay, s:logService}
     - {c: 'chat', d: [['from','text'], ...], t: delay}
     - {c: 'sound', d: 'soundId', t: delay}
     - {c: 'pass', d: duration(def=100), l:label(def=Password) t: delay}
@@ -314,7 +326,7 @@ export default class Terminal {
       if(typeof(cmd.c) == 'string') {
         switch(cmd.c) {
           case 'ln':
-            cmd.c = () => { this.println$$(cmd.d); };
+            cmd.c = () => { this.println$$(cmd.d, cmd.s); };
             break;
           case 'chat':
             if(Array.isArray(cmd.d)) {

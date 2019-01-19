@@ -3,7 +3,7 @@ export default class Command {
   setTerminal$$(terminal) {
     this._terminal$$ = terminal;
   }
-  
+
   validate$$(command) {
     return (command[0].toLowerCase() == this.name$$.toLowerCase());
   }

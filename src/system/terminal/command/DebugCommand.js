@@ -55,7 +55,8 @@ export default class DebugCommand extends Command {
       this._builder.virusCommand$$,
       this._builder.doorCommand$$,
       this._builder.dockCommand$$,
-      this._builder.gunCommand$$
+      this._builder.gunCommand$$,
+      this._builder.sniffCommand$$
     ];
 
     apps.forEach((c) => this._terminal$$.installCommand$$(c));

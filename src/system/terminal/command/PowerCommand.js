@@ -43,7 +43,7 @@ export default class PowerCommand extends Command {
       let queue = [
         `${service.name$$}: ${service.ip$$}`,
         {c:'load'},
-        `Service ${status ? "started" : "stopped"}`,
+        {c:'ln', d:`Service ${name} ${status ? "started" : "stopped"}`,s:'power-manager'},
         {c:'sound',d:'ok'},
         {c: () => {
           if(status) {

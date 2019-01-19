@@ -6,6 +6,7 @@ export default class ServiceDirectory {
     this._data$$ = [];
     this.totalPowerSuply$$ = 75.480;
     this.addService$$('power-manager', '40.32.125.1', 3).on$$();
+    this.addService$$('message-hub', '40.32.125.68', 10);
     this.addService$$('docker', '40.32.125.120', 10).on$$();
     this.addService$$('lights-east', '40.32.125.231', 13);
     this.addService$$('lights-west', '40.32.125.232', 11).on$$();
@@ -13,7 +14,7 @@ export default class ServiceDirectory {
     this.addService$$('oxygen-generator', '40.32.125.193', 23).on$$();
     this.addService$$('pump-station', '40.32.125.43', 20);
     this.addService$$('data-warehouse', '40.32.125.73', 14).on$$();
-    this.addService$$('lab-services', '40.32.125.100', 50);
+    this.addService$$('lab-services', '40.32.125.100', 40);
     this.addService$$('security', '40.32.125.87', 35);
     this.addService$$('doors', '40.32.125.133', 9).on$$();
   }
