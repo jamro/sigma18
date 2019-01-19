@@ -33,6 +33,9 @@ module.exports = function compressNames(code) {
     }
   }
 
+
+  tokenList.sort((a, b) => b.length - a.length)
+
   for(let i = 0; i < tokenList.length; i++) {
     let h = hash(i);
     if(h.length < tokenList[i].length) {
