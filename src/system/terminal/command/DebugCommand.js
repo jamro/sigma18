@@ -69,6 +69,22 @@ export default class DebugCommand extends Command {
     ]);
   }
 
+  execHint(command) {
+    let level = command.length >= 3 ? Number(command[2]) : -1;
+    level = isNaN(level) ? -1 : level;
+    let validators = this._map.getWalthrough$$()._validators$$;
+    if(level < 0) {
+      console.log(validators);
+      return;
+    }
+
+
+    for(let i=0; i < validators.length; i++) {
+      validators[i].passed$$ = (i < level);
+    }
+    this._map.getWalthrough$$().updateLevel();
+  }
+
   execGo(command) {
     let letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     if(command.length < 4) {
@@ -94,6 +110,7 @@ export default class DebugCommand extends Command {
       's{debug keys}s',
       's{debug open}s',
       's{debug power}s',
+      's{debug hint [level]}s',
       's{debug go [X] [Y]}s',
       '',
       {c: 'sound', d: 'ok', t:0}

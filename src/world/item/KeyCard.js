@@ -6,7 +6,7 @@ export default class KeyCard extends Item {
     super();
     this.color$$ = color;
     this.type$$ = 'key';
-    this.id$$ = 'key-' + this._color$$;
+    this.id$$ = 'key-' + this.color$$;
   }
 
   toString() {

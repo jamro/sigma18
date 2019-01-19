@@ -96,7 +96,7 @@ export default class MapBuilder {
     _describe$$(6, 6, 'We are in a long, empty s{corridor}s. There are bloodstains on the walls.', 'corridor');
     _describe$$(6, 5, 'That is a back s{corridor}s, there are some pieces of furniture laying on the floor what makes crossing difficult. A few bullet holes in the wall are signs of a battle that took place here.', 'corridor');
     _describe$$(6, 4, 'We are in a long s{corridor}s that leads to the laboratory section.', 'corridor');
-    _describe$$(6, 3, 'The room was a s{security checkpoint}s. It has signs of a heavy fight - bullet holes, blood stains, the furniture are broken into pieces. There is a destroyed battle droid (model SIG-18) in the corner. The room is enquiped with a sentry gun BER-84 but it seems to be off-line.');
+    _describe$$(6, 3, 'The room was a s{security checkpoint}s. It has signs of a heavy fight - bullet holes, blood stains, the furniture are broken into pieces. The room is equipped with a sentry gun BER-84 but it seems to be off-line.');
     _describe$$(4, 3, "It's a s{corridor}s that leads to the lobby. We see parts of droid's body lying down on the floor and signs of explosions.", 'corridor');
     _describe$$(5, 3, 'The s{corridor}s joins the laboratory section with the lobby. There are several bullet shells on the floor.', 'corridor');
     _describe$$(7, 3, 'We are inside the s{laboratory}s. It seems that researches on improving SIG-18 droids took place over here. They have schemas of that model on the walls and lots of spare parts. There is no production machines, just computers. I bet they were working on improving software of its artificial intelligence.');

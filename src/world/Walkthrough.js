@@ -12,7 +12,6 @@ class Validator {
   }
 }
 
-
 export default class Walkthrough {
 
   constructor() {
@@ -34,21 +33,24 @@ export default class Walkthrough {
       new Validator('item-key-yellow', "Find a yellow key card in the kitchen located in the eastern part of the station m{([F:7])}m"),
       new Validator('door-open-yellow', "Use yellow key card to access lab area on the east m{([H:4])}m"),
       new Validator('door-open-lab-server', "Go to server room of the lab m{([H:5])}m. To unlock the account and open the door you need to answer a security question. The answer can be found in the crew directory. Find names of all engineers by running s{crew list}s and try them all as the answer. First name of one of them will unlock the account."),
-      new Validator('item-key-blue', "Find a blue key card in the server room of the lab m{([H:5])}m"),
+      new Validator('item-disk-gun', "Search the server room of the lab m{([H:5])}m for software required to control BER-84 sentry gun."),
+      new Validator('battle-won-6-3', "Go to security checkpoint m{[G:4]}m and attack SIG-18s that are awaiting there. During the battle run s{gun control}s to use BER-84 sentry gun and defeat SIG-18's forces"),
+      new Validator('item-key-blue', "Find a blue key card in the server room of the lab m{([H:3])}m"),
       new Validator('door-open-blue', "Use blue key card to access the main warehouse on the south m{([E:8])}m."),
       new Validator('item-disk-dock', "Find application to manage docks in the warehouse m{([A:6])}m."),
       new Validator('item-note', "Find rescue capsule auth code in the warehouse of the lab area on the east m{([H:3])}m."),
       new Validator('com-pump-station-on', "Turn pump station to fuel rescue capsule by running s{power up pump-station}s. Powering down of some services may be required to have enough power. Check the list of services by running s{power list}s and turn selected services off by s{power down X}s."),
       new Validator('', "Enter rescue capsule m{([D:10])}m. Close its door by running s{door close DXX}s. Next, fuel the capsule by s{dock fuel DS002}s command and launch it running s{dock launch DS002}s")
     ];
-    this._validators$$.push();
-    this._validators$$.push(new Validator('item-disk-crew'));
-
   }
 
   handleEvent$$(event) {
-    this._level$$ = 0;
     this._validators$$.forEach((v) => v.validate$$(event));
+    this.updateLevel();
+  }
+
+  updateLevel() {
+    this._level$$ = 0;
     for(let i=0; i < this._validators$$.length; i++) {
       if(!this._validators$$[i].passed$$) {
         break;

@@ -64,6 +64,10 @@ export default class WorldMap {
     this._walkthrough$$.handleEvent$$('battle-start');
     this._battle$$ = new Battle(room, door, this._virus$$);
     this._battle$$.start$$();
+    this._battle$$.onFinish$$(() => {
+      let pos = this._battle$$.getRoom$$().getPosition$$();
+      this._walkthrough$$.handleEvent$$('battle-won-' + pos.x + '-' +pos.y);
+    });
   }
 
   stopBattle$$() {
