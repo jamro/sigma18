@@ -27,16 +27,7 @@ class Door {
     this._damaged$$ = false;
     this._requiredKey$$ = null;
     this._securityQuestion$$ = null;
-    this._label$$ = 'standard';
-  }
-
-  getLabel$$() {
-    return this._label$$;
-  }
-
-  label$$(l) {
-    this._label$$ = l;
-    return this;
+    this.label$$ = 'standard';
   }
 
   assignRooms$$(room1, room2) {

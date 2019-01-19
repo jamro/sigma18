@@ -14,10 +14,13 @@ export default class Container {
 
   rescale$$() {
     let scale = this._ref$$.width/1920;
-    this._element$$.style.width = Math.round(scale*this._w)+ "px";
-    this._element$$.style.height = Math.round(scale*this._h) + "px";
-    this._element$$.style.left = Math.round(scale*this._x) + "px";
-    this._element$$.style.top = Math.round(scale*this._y) + "px";
+    let css = (name, value) => {
+      this._element$$.style[name] = Math.round(scale*value)+ "px";
+    };
+    css('width', this._w);
+    css('height', this._h);
+    css('left', this._x);
+    css('top', this._y);
     this._element$$.style.fontSize = scale + "em";
   }
 

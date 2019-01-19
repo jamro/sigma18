@@ -130,7 +130,7 @@ export default class WorldMap {
     door.onChange$$(() => {
       let event = 'door-';
       event += door.isClosed$$() ? 'close' : 'open';
-      event += "-" + door.getLabel$$();
+      event += "-" + door.label$$;
       this._walkthrough$$.handleEvent$$(event);
     });
     return door;

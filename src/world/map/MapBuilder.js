@@ -43,29 +43,36 @@ export default class MapBuilder {
     this.gunCommand$$ = new GunCommand(map);
     this.sniffCommand$$ = new SniffCommand(this._services$$);
 
-    this._map$$.getRoom$$(3, 3).addItem$$(new Disk(this.projCommand$$));
-    this._map$$.getRoom$$(4, 0).addItem$$(new Disk(this.powerCommand$$));
-    this._map$$.getRoom$$(2, 3).addItem$$(new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
-    this._map$$.getRoom$$(7, 2).addItem$$(new Note('Rescue Capsule Auth Code: U317AB'));
-    this._map$$.getRoom$$(7, 2).addItem$$(new KeyCard('blue'));
-    this._map$$.getRoom$$(8, 3).addItem$$(new Disk(this.sniffCommand$$));
-    this._map$$.getRoom$$(1, 3).addItem$$(new Disk(this.crewCommand$$));
-    this._map$$.getRoom$$(7, 4).addItem$$(new Disk(this.gunCommand$$));
-    this._map$$.getRoom$$(0, 5).addItem$$(new Disk(this.virusCommand$$));
-    this._map$$.getRoom$$(1, 6).addItem$$(new KeyCard('red'));
-    this._map$$.getRoom$$(2, 6).addItem$$(new Disk(this.doorCommand$$));
-    this._map$$.getRoom$$(5, 6).addItem$$(new KeyCard('yellow'));
-    this._map$$.getRoom$$(4, 7).addItem$$(new Disk(this.dockCommand$$));
+    let config = (x, y, i) => {
+      this._map$$.getRoom$$(x, y).addItem$$(i);
+    };
+
+    config(3, 3, new Disk(this.projCommand$$));
+    config(4, 0, new Disk(this.powerCommand$$));
+    config(2, 3, new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
+    config(7, 2, new Note('Rescue Capsule Auth Code: U317AB'));
+    config(7, 2, new KeyCard('blue'));
+    config(8, 3, new Disk(this.sniffCommand$$));
+    config(1, 3, new Disk(this.crewCommand$$));
+    config(7, 4, new Disk(this.gunCommand$$));
+    config(0, 5, new Disk(this.virusCommand$$));
+    config(1, 6, new KeyCard('red'));
+    config(2, 6, new Disk(this.doorCommand$$));
+    config(5, 6, new KeyCard('yellow'));
+    config(4, 7, new Disk(this.dockCommand$$));
   }
 
   _layoutEnemies$$() {
-    this._map$$.getRoom$$(7, 3).enemy$$ = 6;
-    this._map$$.getRoom$$(6, 6).enemy$$ = 4;
-    this._map$$.getRoom$$(5, 6).enemy$$ = 2;
-    this._map$$.getRoom$$(1, 6).enemy$$ = 4;
-    this._map$$.getRoom$$(2, 8).enemy$$ = 5;
-    this._map$$.getRoom$$(3, 1).enemy$$ = 4;
-    this._map$$.getRoom$$(2, 2).enemy$$ = 4;
+    let config = (x, y, e) => {
+      this._map$$.getRoom$$(x, y).enemy$$ = e;
+    };
+    config(7, 3, 6);
+    config(6, 6, 4);
+    config(5, 6, 2);
+    config(1, 6, 4);
+    config(2, 8, 5);
+    config(3, 1, 4);
+    config(2, 2, 4);
 
     this._map$$.getRoom$$(6, 3).setTrap$$(87, 7, 3);
     this._map$$.getRoom$$(6, 3).gun$$ = new Gun();
@@ -123,51 +130,61 @@ export default class MapBuilder {
   }
 
   _layoutDoors$$() {
-    let addDoor$$ = (x1, y1, x2, y2) => {
-      return this._map$$.addDoor$$(x1, y1, x2, y2);
+    let addDoor$$ = (x1, y1, x2, y2, close, label, key) => {
+      let door = this._map$$.addDoor$$(x1, y1, x2, y2);
+      if(close) {
+        door.close$$();
+      }
+      if(label) {
+        door.label$$ = label;
+      }
+      if(key) {
+        door.requireKey$$(key);
+      }
+      return door;
     };
-    this._capsuleDoor$$ = addDoor$$(3, 8, 3, 9).label$$('capsule').close$$(); // dock -> rescue
+    this._capsuleDoor$$ = addDoor$$(3, 8, 3, 9, true, 'capsule'); // dock -> rescue
     addDoor$$(4, 8, 3, 8); // sierra -> dock
-    addDoor$$(2, 8, 3, 8).close$$().damage$$(); // empty -> dock
+    addDoor$$(2, 8, 3, 8, true).damage$$(); // empty -> dock
     addDoor$$(3, 8, 3, 7); // dock -> corridor
     addDoor$$(3, 7, 3, 6); // corridor -> corridor
-    addDoor$$(3, 6, 3, 5).damage$$().close$$(); // corridor -> corridor
+    addDoor$$(3, 6, 3, 5, true).damage$$(); // corridor -> corridor
     addDoor$$(3, 5, 3, 4); // corridor -> corridor
     addDoor$$(3, 4, 3, 3); // corridor -> lobby
-    addDoor$$(3, 6, 4, 6).close$$().label$$('blue').requireKey$$('blue'); // corridor -> warehouse
-    addDoor$$(4, 6, 4, 7).close$$().label$$('blue').requireKey$$('blue'); // warehouse -> warehouse
-    addDoor$$(4, 7, 5, 7).close$$().label$$('blue').requireKey$$('blue'); // warehouse -> warehouse
-    addDoor$$(4, 6, 5, 6).close$$().label$$('blue').requireKey$$('blue'); // warehouse -> kitchen
+    addDoor$$(3, 6, 4, 6, true, 'blue', 'blue'); // corridor -> warehouse
+    addDoor$$(4, 6, 4, 7, true, 'blue', 'blue'); // warehouse -> warehouse
+    addDoor$$(4, 7, 5, 7, true, 'blue', 'blue'); // warehouse -> warehouse
+    addDoor$$(4, 6, 5, 6, true, 'blue', 'blue'); // warehouse -> kitchen
     addDoor$$(3, 5, 4, 5); // corridor -> canteen
     addDoor$$(4, 5, 5, 5); // canteen -> canteen
-    addDoor$$(5, 5, 5, 6).close$$(); // canteen -> kitchen
-    addDoor$$(5, 7, 6, 7).close$$().label$$('blue').requireKey$$('blue'); // warehouse -> corridor
+    addDoor$$(5, 5, 5, 6, true); // canteen -> kitchen
+    addDoor$$(5, 7, 6, 7, true, 'blue', 'blue'); // warehouse -> corridor
     addDoor$$(6, 7, 6, 6); // corridor -> corridor
     addDoor$$(6, 6, 6, 5).damage$$(); // corridor -> corridor
     addDoor$$(6, 5, 6, 4).damage$$(); // corridor -> corridor
-    addDoor$$(6, 4, 6, 3).close$$(); // corridor -> security check
-    addDoor$$(5, 3, 6, 3).close$$(); // corridor -> security check
+    addDoor$$(6, 4, 6, 3, true); // corridor -> security check
+    addDoor$$(5, 3, 6, 3, true); // corridor -> security check
     addDoor$$(4, 3, 5, 3); // corridor -> corridor
-    addDoor$$(3, 3, 4, 3).close$$(); // lobby -> corridor
-    addDoor$$(6, 3, 7, 3).close$$().label$$('yellow').requireKey$$('yellow'); // security -> lab
-    addDoor$$(7, 3, 7, 2).close$$(); // lab -> warehouse
-    addDoor$$(7, 3, 8, 3).close$$(); // lab -> conference room
-    addDoor$$(7, 3, 7, 4).close$$().label$$('lab-server').lock$$('wirving', 'First name of an engineer who has red hair', /duncan/i); // lab -> server room
+    addDoor$$(3, 3, 4, 3, true); // lobby -> corridor
+    addDoor$$(6, 3, 7, 3, true, 'yellow', 'yellow'); // security -> lab
+    addDoor$$(7, 3, 7, 2, true); // lab -> warehouse
+    addDoor$$(7, 3, 8, 3, true); // lab -> conference room
+    addDoor$$(7, 3, 7, 4, true, 'lab-server').lock$$('wirving', 'First name of an engineer who has red hair', /duncan/i); // lab -> server room
     addDoor$$(2, 5, 3, 5).damage$$(); // corridor -> corridor
     addDoor$$(1, 5, 2, 5).damage$$(); // corridor -> corridor
     addDoor$$(3, 6, 2, 6); // corridor -> crew quarter
-    addDoor$$(2, 5, 2, 6).close$$(); // corridor -> crew quarter
-    addDoor$$(1, 5, 1, 6).close$$(); // corridor -> crew quarter
-    addDoor$$(1, 5, 0, 5).close$$().label$$('commander').lock$$('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // corridor -> captain quarter
-    addDoor$$(3, 3, 2, 3).close$$(); // lobby -> corridor
-    addDoor$$(2, 3, 1, 3).close$$(); // corridor -> office
-    addDoor$$(2, 3, 2, 2).close$$(); // corridor -> office
+    addDoor$$(2, 5, 2, 6, true); // corridor -> crew quarter
+    addDoor$$(1, 5, 1, 6, true); // corridor -> crew quarter
+    addDoor$$(1, 5, 0, 5, true, 'commander').lock$$('swoodley', 'What year have you joined Sigma-18 crew?', /2070/); // corridor -> captain quarter
+    addDoor$$(3, 3, 2, 3, true); // lobby -> corridor
+    addDoor$$(2, 3, 1, 3, true); // corridor -> office
+    addDoor$$(2, 3, 2, 2, true); // corridor -> office
     addDoor$$(3, 3, 3, 2); // lobby -> corridor
     addDoor$$(3, 2, 3, 1); // corridor -> corridor
-    addDoor$$(3, 1, 3, 0).close$$().label$$('red').requireKey$$('red'); // corridor -> oxy gen
-    addDoor$$(3, 0, 4, 0).close$$().label$$('core-comp').lock$$('ngallegos', 'What company have most of engineers worked for before?', /elcroy/i); // oxy gen -> comp core
-    addDoor$$(3, 0, 2, 0).close$$(); // oxy gen -> power gen
-    addDoor$$(6, 6, 5, 6).close$$(); // back corridor -> kitchen
+    addDoor$$(3, 1, 3, 0, true, 'red', 'red'); // corridor -> oxy gen
+    addDoor$$(3, 0, 4, 0, true, 'core-comp').lock$$('ngallegos', 'What company have most of engineers worked for before?', /elcroy/i); // oxy gen -> comp core
+    addDoor$$(3, 0, 2, 0, true); // oxy gen -> power gen
+    addDoor$$(6, 6, 5, 6, true); // back corridor -> kitchen
 
   }
 
