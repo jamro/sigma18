@@ -8,7 +8,6 @@ export default class GunCommand extends Command {
 
     this.name$$ = 'gun';
     this.help$$ = 'Manual control of sentry guns BER-84';
-    super();
   }
 
   execShoot() {

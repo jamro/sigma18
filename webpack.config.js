@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -29,7 +28,15 @@ let config = {
         test: /\.js$/,
         loader: 'babel-loader',
         query: {
-          presets: ['@babel/preset-env']
+          presets: [["@babel/preset-env", {
+            targets: {
+              chrome: "56",
+              firefox: "51",
+              edge: "15",
+              safari: "10",
+              opera: "42"
+            }
+          }]]
         }
       },
       {
@@ -60,7 +67,7 @@ let config = {
     }),
     new HtmlWebpackPlugin({
       title: "Sigma-18 Game",
-      filename: "index.htm",
+      filename: "index.html",
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -91,47 +98,6 @@ module.exports = (env, argv) => {
     config.devtool = 'source-map';
   } else if (argv.mode === 'production') {
     console.log('PRODUCTION MODE');
-    config.optimization = {
-      minimizer: [new UglifyJsPlugin({
-        uglifyOptions: {
-          mangle: {
-            toplevel: true
-          },
-          toplevel: true,
-          compress: {
-            arguments: true,
-            booleans: true,
-            collapse_vars: true,
-            comparisons: true,
-            conditionals: true,
-            dead_code: true,
-            directives: true,
-            drop_console: true, // changed
-            drop_debugger: true,
-            evaluate: true,
-            expression: true,
-            if_return: true,
-            inline: true,
-            join_vars: true,
-            keep_fargs: false,
-            keep_fnames: false,
-            keep_infinity: true,
-            loops: true,
-            negate_iife: true,
-            passes: 3,
-            properties: true,
-            reduce_funcs: true,
-            reduce_vars: true,
-            sequences: true,
-            side_effects: true,
-            switches: true,
-            toplevel: true, // changed
-            typeofs: true,
-            unused: true
-          }
-        }
-      })],
-    }
   }
 
   return config;

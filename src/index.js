@@ -18,6 +18,11 @@ import Squad from './world/Squad.js';
 import MapBuilder from './world/map/MapBuilder.js';
 import Container from './Container.js';
 
+let hasCorrectBrowser = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor));
+if(!hasCorrectBrowser) {
+  alert("This game was created for Gynvael's Winter GameDev Challenge 2018/19 and should be played in latest Chrome! Browser support was limited to reduce file size and fit 125KB limit (see the challenge rules for more info). It may not work properly in your browser!");
+}
+
 let screenAElement, screenBElement, overlayElement;
 screenAElement = document.createElement('DIV');
 screenAElement.id = "screen-a";
@@ -57,7 +62,7 @@ if(DEBUG_MODE) {
 }
 builder.placeItems$$(squad, map, map.getVirus$$());
 
-let chromeInfo = (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
+let chromeInfo = hasCorrectBrowser ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
 
 if(!DEBUG_MODE) {
   terminal.view$$.disable$$();
