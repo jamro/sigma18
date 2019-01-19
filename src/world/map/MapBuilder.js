@@ -66,7 +66,6 @@ export default class MapBuilder {
 
     this._map$$.getRoom$$(6, 3).setTrap$$(87, 7, 3);
     this._map$$.getRoom$$(6, 3).gun$$ = new Gun();
-
   }
 
   _layoutRooms$$() {

@@ -8,6 +8,7 @@ export default class Terminal {
     this.soundPlayer$$ = soundPlayer;
     this._commandProcessorList$$ = [];
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
+    this._loopRef$$ = null;
 
     document.addEventListener("keydown", (e) => {
       if(!this.view$$.isEnabled$$() && !e.ctrlKey) {
@@ -214,7 +215,9 @@ export default class Terminal {
   passCrack$$(time, label, done) {
     this.soundPlayer$$.play$$('beep');
     let el = this.view$$.printel$$();
+    let id = el.id;
     let loop = setInterval(() => {
+      el = document.getElementById(id);
       el.innerHTML = label + ': ' + Math.round(Math.random()*1000000000).toString(16);
       time--;
       if(time <= 0) {
@@ -224,13 +227,16 @@ export default class Terminal {
         done();
       }
     }, 30);
+    this._loopRef$$ = el;
   }
 
   showProgress$$(done) {
     this.soundPlayer$$.play$$('beep');
     let el = this.view$$.printel$$();
+    let id = el.id;
     let p = 0;
     let loop = setInterval(() => {
+      el = document.getElementById(id);
       let fillCount = Math.round((p/100)*40);
       let fill = Array(fillCount).join('=');
       let empty = Array(40 - fillCount).join('&nbsp;');
@@ -244,6 +250,7 @@ export default class Terminal {
         done();
       }
     }, 30);
+    this._loopRef$$ = el;
   }
 
   uploadSoftware$$(disks, done) {

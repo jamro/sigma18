@@ -11,34 +11,53 @@ export default class GunCommand extends Command {
     super();
   }
 
-
-  execControl() {
-    let pos = this._map$$.getSquadPosition$$();
-    let battle = this._map$$.getBattle$$();
-    let gun = null;
-    if(battle) {
-      gun = battle.getRoom$$().gun$$;
-    }
-
-    this.disableInput$$();
-    this._terminal$$.connect$$('security', [`BER-84 look up at ${pos.toString()}...`], () => {
-      if(!gun) {
-        this._terminal$$.println$$('Error: Cannot connect to BER-84 in the room');
+  execShoot() {
+    this.handleAction((pos, battle, gun, done) => {
+      let droids = battle.getDroids$$();
+      if(droids.length <= 0) {
+        this._terminal$$.println$$('Error: Cannot find a target');
         this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
         return;
       }
+      let target = droids[Math.floor(Math.random() * droids.length)];
       this._terminal$$.sequence$$(
-        "Endpoint found.",
-        "Establishing the connection...",
-        'Connected',
-        '',
-        'Authorization',
-        {c:'pass', d: 100, l:'Security token'},
-        '',
-        'Enabling manual mode',
-        'Manual controller online',
-        '',
+        'Searching for target...',
+        `Enemy found at [${target.x.toFixed(2)}; ${target.y.toFixed(2)}]`,
+        {c:'sound', d:'beep'},
+        'Aiming...',
+        {c:() => {
+          gun.online$$ = true;
+          let loop = setInterval(() => {
+            let dx = (target.x - gun.target$$.x);
+            let dy = (target.y - gun.target$$.y);
+            let r = Math.sqrt(dx*dx + dy*dy);
+            gun.setMove$$(10 * dx, 10 * dy);
+            if(r < 0.01) {
+              this._terminal$$.soundPlayer$$.stop$$('beep');
+              this._terminal$$.println$$(`Target aimed at [${target.x.toFixed(2)}; ${target.y.toFixed(2)}]`);
+              this._terminal$$.println$$(`Open fire!`);
+              clearInterval(loop);
+              gun.isShooting$$ = true;
+              gun.setMove$$(0, 0);
+
+              setTimeout(() => {
+                this._terminal$$.println$$(`r{Target eliminated}r`);
+                this._terminal$$.println$$('');
+                gun.isShooting$$ = false;
+                gun.online$$ = false;
+                setTimeout(() => done(), 500);
+              }, 1500);
+            }
+          }, 30);
+        }}
+      );
+    });
+  }
+
+  execControl() {
+    this.handleAction((pos, battle, gun, done) => {
+      this._terminal$$.sequence$$(
         'Controls: ',
         ' - s{ARROW_KEYS}s: aiming',
         ' - s{SPACE}s: shooting',
@@ -83,14 +102,7 @@ export default class GunCommand extends Command {
                   break;
                 case 81: //Q
                   cleanUp();
-                  this._terminal$$.sequence$$(
-                    'Power down manual controller',
-                    'Disconnecting from BER-84...',
-                    'Connection closed',
-                    {c:'sound', d:'ok'},
-                    {c:'on'}
-                  );
-                  break;
+                  return done();
               }
             },
             (event) => {
@@ -114,6 +126,45 @@ export default class GunCommand extends Command {
     });
   }
 
+  handleAction(action) {
+    let pos = this._map$$.getSquadPosition$$();
+    let battle = this._map$$.getBattle$$();
+    let gun = null;
+    if(battle) {
+      gun = battle.getRoom$$().gun$$;
+    }
+
+    this.disableInput$$();
+    this._terminal$$.connect$$('security', [`BER-84 look up at ${pos.toString()}...`], () => {
+      if(!gun) {
+        this._terminal$$.println$$('Error: Cannot connect to BER-84 in the room');
+        this._terminal$$.soundPlayer$$.play$$('err');
+        this.enableInput$$();
+        return;
+      }
+      this._terminal$$.sequence$$(
+        "Endpoint found.",
+        "Establishing the connection...",
+        'Connected',
+        '',
+        'Authorization',
+        {c:'pass', d: 100, l:'Security token'},
+        '',
+        'Enabling manual mode',
+        'Manual controller online',
+        '',
+        {c: (done) => {
+          action(pos, battle, gun, done);
+        }},
+        'Power down manual controller',
+        'Disconnecting from BER-84...',
+        'Connection closed',
+        {c:'sound', d:'ok'},
+        {c:'on'}
+      );
+    });
+  }
+
   setMove$$(battle, gun, x, y) {
     if(battle.rotate$$) {
       let a = x;
@@ -129,10 +180,14 @@ export default class GunCommand extends Command {
   execHelp() {
     this._terminal$$.sequence$$(
       "Allow manual control of sentry gun BER-84 installed in security rooms",
+      "s{IMPORTANT: Marines squad must be close to BER-84 unit to establish the connection.}s",
       "Available commands are:",
       '',
+      "s{gun shoot}s",
+      "Attack an enemy in range",
+      '',
       "s{gun control}s",
-      "manually controls gun in the current room",
+      "manually controls gun",
       {c: 'sound', d: 'ok', t:0}
     );
   }
