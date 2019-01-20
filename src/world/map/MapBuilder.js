@@ -183,7 +183,7 @@ export default class MapBuilder {
     addDoor$$(3, 3, 3, 2); // lobby -> corridor
     addDoor$$(3, 2, 3, 1); // corridor -> corridor
     addDoor$$(3, 1, 3, 0, true, 'red', 'red'); // corridor -> oxy gen
-    addDoor$$(3, 0, 4, 0, true, 'core-comp').lock$$('ngallegos', 'What company have most of engineers worked for before?', /elcroy/i); // oxy gen -> comp core
+    addDoor$$(3, 0, 4, 0, true, 'core-comp').lock$$('ngallegos', 'What version of SIG-18 artificial intelligence module was most successful?', /19[^0-9]38[^0-9]2/i); // oxy gen -> comp core
     addDoor$$(3, 0, 2, 0, true); // oxy gen -> power gen
     addDoor$$(6, 6, 5, 6, true); // back corridor -> kitchen
 
