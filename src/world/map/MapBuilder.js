@@ -123,7 +123,7 @@ export default class MapBuilder {
     _describe$$(3, 2, "It's the north s{corridor}s. Some documents from the lobby are spread all over the floor.", 'corridor');
     _describe$$(3, 1, 'We are in a s{corridor}s. In the end, there is an entrance to the internal services area.', 'corridor');
     _describe$$(3, 0, 'There is the central s{oxygen generator}s in the room. It recycles oxygen from  CO2. Someone was trying to break in here but unsuccessfully. The door is slightly damaged.');
-    _describe$$(2, 0, 'We are in the s{power generator room}s. It supplies the whole station. It is very noisy here. Everything seems to be up and running.');
+    _describe$$(2, 0, 'We are in the s{power generator room}s. It supplies the whole station. It is very noisy here. Two of three power generators seems to be up and running. One is down.');
     _describe$$(4, 0, 'It is the s{computing core}s of the station. Servers here host core services of the station. Everything seems to be up and running.');
 
     this._map$$.getRoom$$(3,9).setType$$('capsule');

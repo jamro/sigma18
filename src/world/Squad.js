@@ -88,9 +88,9 @@ export default class Squad {
         ];
       } else if (virusActive) {
         items = [
-          `Virus is active, we are pushing them back!`,
+          `The virus is active, we are pushing them back!`,
           `They cannot get backups anymore!`,
-          'Virus is working! Good job!',
+          'The virus is working! Good job!',
           'They are losing!',
           'We will defeat them!'
         ];

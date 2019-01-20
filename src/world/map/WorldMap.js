@@ -26,6 +26,10 @@ export default class WorldMap {
       this._walkthrough$$.handleEvent$$('com-lights-east-' + (state ? 'on' : 'off'));
     });
 
+    this._services$$.getService$$('security').onStatusChange$$((state) => {
+      this._walkthrough$$.handleEvent$$('com-security-' + (state ? 'on' : 'off'));
+    });
+
     this._services$$.getService$$('pump-station').onStatusChange$$((state) => {
       this._walkthrough$$.handleEvent$$('com-pump-station-' + (state ? 'on' : 'off'));
     });

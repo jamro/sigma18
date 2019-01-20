@@ -50,7 +50,7 @@ export default class ProjCommand extends Command {
       "s{2080-07-25 14:41:10.652}s",
       ln, // ----------
       "",
-      "Disturbing behaviour was observed during tests of environment analysis algorithm. One of SIG-18, propose a solution to the inadequate power supply: Powering down oxygen generator instead of SIG-18s and elimination of humans. Further investigation is required.",
+      "Disturbing behaviour was observed during tests of environment analysis algorithm. One of SIG-18 propose a solution to the inadequate power supply: Powering down oxygen generator instead of SIG-18s and elimination of humans. Further investigation of the issue is required.",
       {c:'sound', d: 'ok', t:0},
       {c:'pause'},
       "",
