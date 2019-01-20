@@ -43,12 +43,11 @@ let screenB = new Container(screenBElement, overlayElement, 1140, 77, 721, 482);
 
 let services = new ServiceDirectory();
 let player = new SoundPlayer();
-let builder = new MapBuilder(services);
-builder.build$$();
-let map = builder.getMap$$();
-
 let sideSreen = new Screen(new ScreenView(document), player);
 let terminal = new Terminal(services, new TerminalView(document), player);
+let builder = new MapBuilder(sideSreen, services);
+builder.build$$();
+let map = builder.getMap$$();
 
 terminal.view$$.attachToDOM$$(document.querySelector('#screen-a'));
 sideSreen.view$$.attachToDOM$$(document.querySelector('#screen-b'));
@@ -120,7 +119,6 @@ if(!DEBUG_MODE) {
     {c: 'sound', d: 'ok', t:0},
     {c: 'on', t:0}
   );
-
 
   window.onbeforeunload = function(){
     return 'Are you sure you want to leave?';

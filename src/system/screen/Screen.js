@@ -1,5 +1,6 @@
 import MapRenderer from './renderer/MapRenderer.js';
 import BattleRenderer from './renderer/BattleRenderer.js';
+import RadarRenderer from './renderer/RadarRenderer.js';
 
 export default class Screen {
 
@@ -15,6 +16,10 @@ export default class Screen {
 
   showBattle$$(battle) {
     this._setRenderer$$(new BattleRenderer(this.soundPlayer$$, battle));
+  }
+
+  showRadar$$() {
+    this._setRenderer$$(new RadarRenderer(this.soundPlayer$$));
   }
 
   _setRenderer$$(r) {

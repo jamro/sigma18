@@ -15,7 +15,8 @@ import WorldMap from './WorldMap.js';
 
 export default class MapBuilder {
 
-  constructor(services) {
+  constructor(sideScreen, services) {
+    this._sideScreen = sideScreen;
     this._services$$ = services;
     this._map$$ = null;
     this._capsuleDoor$$ = null;
@@ -39,7 +40,7 @@ export default class MapBuilder {
     this.crewCommand$$ = new CrewCommand();
     this.virusCommand$$ = new VirusCommand(map.getVirus$$());
     this.doorCommand$$ = new DoorCommand(map, squad);
-    this.dockCommand$$ = new DockCommand(map, this._capsuleDoor$$);
+    this.dockCommand$$ = new DockCommand(map, this._sideScreen, this._capsuleDoor$$);
     this.gunCommand$$ = new GunCommand(map);
     this.sniffCommand$$ = new SniffCommand(this._services$$);
 

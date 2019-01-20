@@ -2,8 +2,9 @@ import Command from '../Command.js';
 
 export default class DockCommand extends Command {
 
-  constructor(map, capsuleDoor) {
+  constructor(map, sideScreen, capsuleDoor) {
     super();
+    this._sideScreen = sideScreen;
     this._map = map;
     this._capsuleDoor = capsuleDoor;
     this._fuel = {
@@ -94,13 +95,13 @@ export default class DockCommand extends Command {
           {c:'ln', d:`Disconnecting from docking port...`, t:750},
           {c: 'ln', d: ``, t: 2000},
           `Done... Unit launched successfully`,
+          {c: () => this._sideScreen.showRadar$$()},
           {c:'ln', d:`Closing docking gates`, t:1000},
           `Launching sequence completed`,
-          {c: 'sound', d: 'ok', t: 0},
           {c: 'chat', d: 's{GOOD JOB SOLDIER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
           {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker'},
-          {c: 'ln', d: '<div class="finito">THE END</div>', t: 1000},
-          {c: 'ln', d: 's{Special thanks}s: Monika Jamroz, Tomasz Stocki, Piotr Jamroz', t: 1000},
+          {c: 'ln', d: '<div class="finito"><h1>THE END</h1></div>', t: 1000},
+          {c: 'ln', d: 's{Special thanks}s: Monika Jamroz, Tomasz Stocki, Piotr Jamroz, Grzegorz P.', t: 1000},
           {c: 'sound', d: 'ok', t: 0},
           {c: () => this._terminal$$.view$$._noise$$.boost$$(10)}
         );

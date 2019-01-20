@@ -69,6 +69,12 @@ $terminal-font-family: "Courier New", Courier, monospace;
       border: 0.3em solid $terminal-primary-color;
       text-align: center;
       font-weight: bold;
+
+      h1 {
+        font-size: 2em;
+        font-weight: bold;
+      }
+
     }
 
     .terminal-command {
