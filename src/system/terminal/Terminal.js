@@ -145,12 +145,6 @@ export default class Terminal {
     }
   }
 
-  printel$$() {
-    let id = "ref-terminal-line-" + this._refId++;
-    this.view$$.print$$(`<span id=\"${id}\"></span><br/>\n`);
-    return document.getElementById(id);
-  }
-
   printChat$$(msgQueue, done) {
     let msgPointer = 0;
     let finished = false;
@@ -242,22 +236,32 @@ export default class Terminal {
     this._loopRef$$ = el;
   }
 
-  showProgress$$(done) {
+
+  showProgress$$(value, el) {
+    value = value || 0;
+    value = Math.max(0, Math.min(100, value));
+    value = Math.round(value);
+    el = el || this.view$$.printel$$();
+    el = document.getElementById(el.id);
+    let fillCount = Math.round((value/100)*40);
+    let fill = '='.repeat(fillCount);
+    let empty = '&nbsp;'.repeat(40 - fillCount);
+    el.innerHTML = `[${fill}${empty}]  ` + value + '%';
+    return el;
+  }
+
+  showProgressAnim$$(done) {
     this.soundPlayer$$.play$$('beep');
-    let el = this.view$$.printel$$();
+    let el = this.showProgress$$();
     let id = el.id;
     let p = 0;
     let loop = setInterval(() => {
       el = document.getElementById(id);
-      let fillCount = Math.round((p/100)*40);
-      let fill = Array(fillCount).join('=');
-      let empty = Array(40 - fillCount).join('&nbsp;');
-
-      el.innerHTML = `[${fill}${empty}]  ` + p + '%';
+      this.showProgress$$(p, el);
       p+=2;
       if(p >= 100) {
+        this.showProgress$$(100, el);
         clearInterval(loop);
-        el.innerHTML = '[======================================] 100%';
         this.soundPlayer$$.stop$$('beep');
         done();
       }
@@ -342,7 +346,7 @@ export default class Terminal {
             cmd.c = (done) => { this.passCrack$$(cmd.d, cmd.l || 'Password', done); };
             break;
           case 'load':
-            cmd.c = (done) => { this.showProgress$$(done); };
+            cmd.c = (done) => { this.showProgressAnim$$(done); };
             break;
           case 'on':
             cmd.c = () => { this.view$$.enable$$(); };

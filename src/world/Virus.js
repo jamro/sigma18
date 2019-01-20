@@ -6,8 +6,8 @@ export default class Virus {
     this._infectLoop$$ = null;
     this._activateLoop$$ = null;
     this._hostList$$ = [];
-    this._hostLimit$$ = 36;
-    this._activationThreshold$$ = 0.9;
+    this._hostLimit$$ = 250;
+    this._activationThreshold$$ = 0.8;
     this._onActivatedList$$ = [];
   }
 
@@ -62,7 +62,7 @@ export default class Virus {
         clearInterval(this._infectLoop$$);
         this._infectLoop$$ = null;
       }
-    }, 700);
+    }, 100);
     return true;
   }
 
@@ -86,7 +86,7 @@ export default class Virus {
     }
     this._activateLoop$$ = setInterval(() => {
       this._hostList$$[Math.floor(Math.random()*this._hostList$$.length)].active = true;
-    }, 500);
+    }, 30);
     this.isActive$$ = true;
     this._onActivatedList$$.forEach((c) => c());
     return true;

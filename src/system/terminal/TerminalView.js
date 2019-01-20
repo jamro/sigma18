@@ -216,9 +216,10 @@ export default class TerminalView extends View {
     this._view$$.popup.element.innerHTML = `<h1>${title}</h1>${txt}`;
   }
 
-  printel$$() {
+  printel$$(content) {
+    content = content || "";
     let id = "ref-terminal-line-" + this._refId$$++;
-    this.print$$(`<span id=\"${id}\"></span><br/>\n`);
+    this.print$$(`<span id=\"${id}\">${content}</span><br/>\n`);
     return document.getElementById(id);
   }
 
