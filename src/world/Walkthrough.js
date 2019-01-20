@@ -18,7 +18,7 @@ export default class Walkthrough {
     this._level$$ = 0;
     this._validators$$ = [
       new Validator('item-disk-door', "Explore available rooms of the station. Search for software tools that could open the doors. Run s{com help}s and read the description of s{com go}s command to learn how to navigate."),
-      new Validator('door-open-standard', "Explore locations behind closed doors. To open the door, enter the room and run s{com status}s to get the ID of a door that you are going to open. Next, run s{door open ID}s."),
+      new Validator('door-open-standard', "Explore locations behind closed doors. To open door on the north run s{door open n}s"),
       new Validator('item-disk-crew', "Go to office area m{([B:4])}m and search for crew records. It contains important information required in the exploration of the space station."),
       new Validator('door-open-commander', "Go to Commander's Quarter m{([A:6])}m. Opening the door requires answering a security question. Find the answer by running s{crew show swoodley}s."),
       new Validator('item-disk-virus', "Search Commander's Quarter m{([A:6])}m."),

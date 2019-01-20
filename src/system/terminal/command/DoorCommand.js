@@ -11,19 +11,23 @@ export default class DoorCommand extends Command {
     this.help$$ = 'Open/close doors';
   }
 
-  getDoorId(command) {
-    return command.length >= 3 ? command[2].toUpperCase() : "";
+  getDoorOnDirection(direction) {
+    if(['n', 's', 'e', 'w'].indexOf(direction) != -1) {
+      let pos = this._map.getSquadPosition$$();
+      let room = this._map.getRoom$$(pos.x, pos.y);
+      let door = room.getDoors$$()[direction.toLowerCase()];
+      if(door) {
+        return door;
+      }
+    }
+    return null;
   }
 
   findDoor(command) {
-    let id = this.getDoorId(command);
-    let door = this._map.getDoorById$$(id);
-    if(id == "") {
-      this._terminal$$.println$$(`Error: door ID is missing!`);
-      this._terminal$$.soundPlayer$$.play$$('err');
-    } else if(!door) {
-      this._terminal$$.println$$(`Error: Door (ID: ${id}) not found!`);
-      this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
+    let direction = command.length >= 3 ? command[2].toLowerCase() : "unknown";
+    let door = this.getDoorOnDirection(direction);
+    if(!door) {
+      this._terminal$$.println$$(`Error: door not found on direction ${direction}!`);
       this._terminal$$.soundPlayer$$.play$$('err');
     }
     return door;
@@ -37,18 +41,13 @@ export default class DoorCommand extends Command {
     this.doorSwitch(command, true);
   }
 
-
   doorSwitch(command, doClose) {
-    let id = this.getDoorId(command);
-    if(!id) {
-      this._terminal$$.println$$(`Error: DoorID argument is required. Run s{door help}s for more info.`);
-      this._terminal$$.println$$(`Get IDs of doors in current location by s{com status}s.`);
-      this._terminal$$.soundPlayer$$.play$$('err');
+    let door = this.findDoor(command);
+    if(!door) {
       return;
     }
     this.disableInput$$();
-    this._terminal$$.connect$$('doors', [`Door look up: ${id}...`], () => {
-      let door = this.findDoor(command);
+    this._terminal$$.connect$$('doors', [`Door look up...`], () => {
       if(!door) {
         this._terminal$$.soundPlayer$$.play$$('err');
         this.enableInput$$();
@@ -159,17 +158,18 @@ export default class DoorCommand extends Command {
 
   execHelp() {
     this._terminal$$.sequence$$(
-      "Use this command to open and close doors of the space station",
-      "It requires ID of door.",
-      "Run s{com status}s to get IDs of all doors in the room",
+      "Open/close doors in current location of the squad",
+      "(The operation requires of being near to the doors due to low range of manual transmitters)",
       "",
       "Available commands are:",
       '',
-      "s{door open [id]}s",
-      "Open the door. For example s{door open D12}s",
+      "s{door open [N/E/S/W]}s",
+      "Open the door on north (s{N}s), east (s{E}s), south (s{S}s) or west (s{W}s)",
+      "For example s{door open N}s",
       '',
-      "s{door close [id]}s",
-      "Close the door. For example s{door close D12}s",
+      "s{door close [N/E/S/W]}s",
+      "Close the door on north (s{N}s), east (s{E}s), south (s{S}s) or west (s{W}s)",
+      "For example s{door close N}s",
       {c: 'sound', d: 'ok', t:0}
     );
 

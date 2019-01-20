@@ -60,6 +60,7 @@ export default class Squad {
   startBattle$$(room, door, done) {
     this._map$$.startBattle$$(room, door);
     let battle = this._map$$.getBattle$$();
+    let squadPosition = this._map$$.getSquadPosition$$();
     battle.onFinish$$(() => this.stopBattle$$());
     let enemy = battle.getDroids$$().length;
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
@@ -72,10 +73,11 @@ export default class Squad {
       {c: done}
     ]);
     this._battleLoop$$ = setInterval(() => {
-      let doorId = door.id$$;
+      let doorDirection = this._map$$.getRoom$$(squadPosition.x, squadPosition.y).getDoorDirection$$(battle.getDoor$$());
+      doorDirection = this._directionMap$$[doorDirection];
       let items;
       let virusActive = this._map$$.getVirus$$().isActive$$;
-      let hint = `s{close the door (${doorId})}s`;
+      let hint = `s{close the door on the ${doorDirection}}s`;
       if(room.gun$$) {
         hint = 'use s{sentry gun m{BER-84}m}s or ' + hint;
       }
@@ -96,11 +98,11 @@ export default class Squad {
         ];
       } else {
         items = [
-          `We cannot push them back, they bring backups! s{close the door (${doorId})}s to secure our position!`,
-          `There are too many of them! s{Close the door (${doorId})}s to isolate them`,
-          `They are getting backups! s{Close the door (${doorId})}s to stop them!`,
-          `There is more of them! s{Close door (${doorId})}s!`,
-          `Heavy fire! Backups have arrived! s{Close that door (${doorId})}s! We cannot push them back!`
+          `We cannot push them back, they bring backups! s{close the door on the ${doorDirection}}s to secure our position!`,
+          `There are too many of them! s{Close the door on the ${doorDirection}}s to isolate them`,
+          `They are getting backups! s{Close the door on the ${doorDirection}}s to stop them!`,
+          `There is more of them! s{Close door on the ${doorDirection}}s!`,
+          `Heavy fire! Backups have arrived! s{Close that door on the ${doorDirection}}s! We cannot push them back!`
         ];
       }
       if(!virusActive || Math.random() > 0.6) {
@@ -238,19 +240,7 @@ export default class Squad {
     let msg = `m{Our current position is ${pos.toString()}.}m ${fire}${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}<br/>\n`;
     let doors = this._map$$.getRoom$$(pos.x, pos.y).getDoors$$();
 
-    msg += `m{`;
-    if(this._map$$.getRoom$$(pos.x, pos.y).hasLight$$()) {
-      msg += `<br/>\nPossible ways out:<br/>`;
-      for(let direction in doors) {
-        if(doors[direction]) {
-          let state = doors[direction].isClosed$$() ? 'Locked' : 'Opened';
-          msg += ` * ${state} door on the ${this._directionMap$$[direction]} (ID: ${doors[direction].id$$})<br/>`;
-        }
-      }
-    }
-
-
-    msg += "<br/>\nInventory:<br/>\n";
+    msg += "m{<br/>\nInventory:<br/>\n";
     if(this._inventory$$.length == 0) {
       msg += ' * nothing<br/>\n';
     }

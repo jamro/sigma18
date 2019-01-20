@@ -62,6 +62,15 @@ export default class Room {
     return this._doorMap$$;
   }
 
+  getDoorDirection$$(door) {
+    for(let direction in this._doorMap$$) {
+      if(this._doorMap$$[direction] == door) {
+        return direction;
+      }
+    }
+    return null;
+  }
+
   getPosition$$() {
     return this._position$$;
   }

@@ -146,7 +146,7 @@ export default class MapBuilder {
     };
     this._capsuleDoor$$ = addDoor$$(3, 8, 3, 9, true, 'capsule'); // dock -> rescue
     addDoor$$(4, 8, 3, 8); // sierra -> dock
-    addDoor$$(2, 8, 3, 8, true).damage$$(); // empty -> dock
+    addDoor$$(2, 8, 3, 8, true); // empty -> dock
     addDoor$$(3, 8, 3, 7); // dock -> corridor
     addDoor$$(3, 7, 3, 6); // corridor -> corridor
     addDoor$$(3, 6, 3, 5, true).damage$$(); // corridor -> corridor
