@@ -31,6 +31,7 @@ export default class SoundPlayer {
       this._sounds$$.err = new Audio('audio/err.mp3');
       this._sounds$$.chat = new Audio('audio/com.mp3');
       this._sounds$$.beep = new Audio('audio/beep.mp3');
+      this._sounds$$.beep2 = new Audio('audio/beep.mp3');
       this._sounds$$.radar = new Audio('audio/beep.mp3');
       this._sounds$$.gun = new Audio('audio/gun.mp3');
       this._sounds$$.gun2 = new Audio('audio/gun.mp3');

@@ -116,8 +116,14 @@ export default class VirusCommand extends Command {
         this._terminal$$.println$$("Activation progress:");
         let activationEl = this._terminal$$.showProgress$$();
         this._terminal$$.println$$("");
+        let prevHash = "";
         let loop = setInterval(() => {
           data = this._virus.getStatus$$();
+          let newHash = data.stats.infection.toFixed(2) + "_" + data.stats.activation.toFixed(2);
+          if(newHash != prevHash) {
+            prevHash = newHash;
+            this._system$$.getSoundPlayer$$().play$$('beep2'); 
+          }
           this._terminal$$.showProgress$$(data.stats.infection*100, infectionEl);
           this._terminal$$.showProgress$$(data.stats.activation*100, activationEl);
         }, 30);
