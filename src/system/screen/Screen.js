@@ -4,10 +4,17 @@ import RadarRenderer from './renderer/RadarRenderer.js';
 
 export default class Screen {
 
-  constructor(view, soundPlayer) {
+  constructor(view) {
     this.view$$ = view;
-    this.soundPlayer$$ = soundPlayer;
+    this.soundPlayer$$ = null;
+    this._system$$ = null;
     this._renderer$$ = null;
+  }
+
+  setSystem(system) {
+    this._system$$ = system;
+    this._serviceDirectory$$ = system.getMap$$().getServiceDirectory$$();
+    this.soundPlayer$$ = system.getSoundPlayer$$();
   }
 
   showMap$$(map) {

@@ -2,19 +2,23 @@ import Command from '../Command.js';
 
 export default class DoorCommand extends Command {
 
-  constructor(map) {
+  constructor() {
     super();
-    this._squad = map.getSquad$$();
-    this._map = map;
+    this._squad = null;
 
     this.name$$ = 'door';
     this.help$$ = 'Open/close doors';
   }
 
+  setSystem$$(system) {
+    super.setSystem$$(system);
+    this._squad = this._map$$.getSquad$$();
+  }
+
   getDoorOnDirection(direction) {
     if(['n', 's', 'e', 'w'].indexOf(direction) != -1) {
-      let pos = this._map.getSquadPosition$$();
-      let room = this._map.getRoom$$(pos.x, pos.y);
+      let pos = this._map$$.getSquadPosition$$();
+      let room = this._map$$.getRoom$$(pos.x, pos.y);
       let door = room.getDoors$$()[direction.toLowerCase()];
       if(door) {
         return door;

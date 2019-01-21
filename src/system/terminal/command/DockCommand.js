@@ -2,11 +2,9 @@ import Command from '../Command.js';
 
 export default class DockCommand extends Command {
 
-  constructor(map, sideScreen, capsuleDoor) {
+  constructor() {
     super();
-    this._sideScreen = sideScreen;
-    this._map = map;
-    this._capsuleDoor = capsuleDoor;
+    this._capsuleDoor = null;
     this._fuel = {
       DS001: 0,
       DS002: 0,
@@ -15,6 +13,11 @@ export default class DockCommand extends Command {
 
     this.name$$ = 'dock';
     this.help$$ = 'Operate docking stations and rescue capsules';
+  }
+
+  setSystem$$(system) {
+    super.setSystem$$(system);
+    this._capsuleDoor = this._map$$.getCapsuleDoor$$();
   }
 
   execList() {
@@ -67,7 +70,7 @@ export default class DockCommand extends Command {
           this._terminal$$.soundPlayer$$.play$$('err');
           return;
         }
-        let pos = this._map.getSquadPosition$$();
+        let pos = this._map$$.getSquadPosition$$();
         // @TODO: update capsule position
         if(pos.x != 3 || pos.y != 9) {
           this._terminal$$.println$$("");
@@ -95,7 +98,7 @@ export default class DockCommand extends Command {
           {c:'ln', d:`Disconnecting from docking port...`, t:750},
           {c: 'ln', d: ``, t: 2000},
           `Done... Unit launched successfully`,
-          {c: () => this._sideScreen.showRadar$$()},
+          {c: () => this._sideScreen$$.showRadar$$()},
           {c:'ln', d:`Closing docking gates`, t:1000},
           `Launching sequence completed`,
           {c: 'chat', d: 's{GOOD JOB SOLDIER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},

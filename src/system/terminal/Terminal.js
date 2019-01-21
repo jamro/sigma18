@@ -1,14 +1,13 @@
 
-
 export default class Terminal {
 
-  constructor(serviceDirectory, view, soundPlayer) {
-    this._serviceDirectory$$ = serviceDirectory;
+  constructor(view) {
+    this._serviceDirectory$$ = null;
     this.view$$ = view;
-    this.soundPlayer$$ = soundPlayer;
-    this._commandProcessorList$$ = [];
+    this.soundPlayer$$ = null;
     view.onSubmit$$((cmd) => this.commandReceived$$(cmd));
     this._loopRef$$ = null;
+    this._system$$ = null;
 
     document.addEventListener("keydown", (e) => {
       if(!this.view$$.isEnabled$$() && !e.ctrlKey) {
@@ -56,19 +55,20 @@ export default class Terminal {
 
   commandReceived$$(command) {
     this.view$$.print$$(`<div class="terminal-command">s{&gt;}s ${command}</div>`);
-    //clean command up
     command = command.split(" ");
     command = command.map((cmd) => cmd.trim());
     command = command.filter((cmd) => cmd != '');
-    for(let processor of this._commandProcessorList$$) {
-      if(processor.validate$$(command)) {
-        processor.exec$$(command);
-        return;
-      }
+    if(!this._system$$.processCommand$$(command)) {
+      this.println$$(`Error: Command s{${command[0]}}s not found!`);
+      this.println$$(`Run s{help}s to list all available commands`);
+      this.soundPlayer$$.play$$('err');
     }
-    this.println$$(`Error: Command s{${command[0]}}s not found!`);
-    this.println$$(`Run s{help}s to list all available commands`);
-    this.soundPlayer$$.play$$('err');
+  }
+
+  setSystem(system) {
+    this._system$$ = system;
+    this._serviceDirectory$$ = system.getMap$$().getServiceDirectory$$();
+    this.soundPlayer$$ = system.getSoundPlayer$$();
   }
 
   showPopup$$(value) {
@@ -116,26 +116,6 @@ export default class Terminal {
       done(txt);
     });
     this.view$$.setPromptText$$(label);
-  }
-
-  installCommand$$(commandProcessor) {
-    commandProcessor.setTerminal$$(this);
-    this._commandProcessorList$$.push(commandProcessor);
-    this._commandProcessorList$$.sort((a, b) => {
-      if(a.name$$ == 'help') return -1;
-      if(b.name$$ == 'help') return 1;
-      if(a.name$$ > b.name$$) return 1;
-      if(a.name$$ < b.name$$) return -1;
-      return 0;
-    });
-  }
-
-  hasCommand$$(name) {
-    return this._commandProcessorList$$.filter((c) => c.name$$ == name).length > 0;
-  }
-
-  getCommandList$$() {
-    return this._commandProcessorList$$;
   }
 
   println$$(txt, service) {
@@ -282,7 +262,7 @@ export default class Terminal {
       {c: 'ln', d: `Installing s{${appNames.join(', ')}}s app.`, t: 500},
       {c: 'load'},
       {c: () => {
-        disks.forEach((d) => this.installCommand$$(d.command$$));
+        disks.forEach((d) => this._system$$.installCommand$$(d.command$$));
       }},
       'Done.',
       '',

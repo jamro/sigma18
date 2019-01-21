@@ -1,12 +1,20 @@
 import Command from '../Command.js';
 import KeyCard from '../../../world/item/KeyCard.js';
 
+import DoorCommand from './DoorCommand.js';
+import DockCommand from './DockCommand.js';
+import VirusCommand from './VirusCommand.js';
+import CrewCommand from './CrewCommand.js';
+import PowerCommand from './PowerCommand.js';
+import ProjCommand from './ProjCommand.js';
+import GunCommand from './GunCommand.js';
+import SniffCommand from './SniffCommand.js';
+
 export default class DebugCommand extends Command {
 
   constructor(builder) {
     super();
     this._squad = builder._squad$$;
-    this._map = builder.getMap$$();
     this._builder = builder;
     this.name$$ = DEBUG_MODE ? 'debug' : null;
     this.help$$ = 'For debuging only';
@@ -21,45 +29,45 @@ export default class DebugCommand extends Command {
   }
 
   execPower() {
-    this._map._services$$.totalPowerSuply$$ = 150;
-    this._map._services$$.getAllServices$$().forEach((s) => s.on$$());
+    this._map$$.getServiceDirectory$$().totalPowerSuply$$ = 150;
+    this._map$$.getServiceDirectory$$().getAllServices$$().forEach((s) => s.on$$());
   }
 
   execView(command) {
     let type = command.length >= 3 ? command[2] : 'all';
 
-    for(let x=0; x < this._map._grid$$.length; x++) {
-      for(let y=0; y < this._map._grid$$[x].length; y++) {
-        if(type == 'light' && !this._map._grid$$[x][y].hasLight$$()) {
+    for(let x=0; x < this._map$$._grid$$.length; x++) {
+      for(let y=0; y < this._map$$._grid$$[x].length; y++) {
+        if(type == 'light' && !this._map$$._grid$$[x][y].hasLight$$()) {
           continue;
         }
-        this._map._grid$$[x][y]._isVisited$$ = (type != 'none');
+        this._map$$._grid$$[x][y]._isVisited$$ = (type != 'none');
       }
     }
-    this._map._notifyChange$$("room");
+    this._map$$._notifyChange$$("room");
 
   }
 
   execOpen() {
-    for(let i=0; i < this._map._doorList$$.length; i++) {
-      this._map._doorList$$[i]._isClosed$$ = false;
+    for(let i=0; i < this._map$$._doorList$$.length; i++) {
+      this._map$$._doorList$$[i]._isClosed$$ = false;
     }
-    this._map._notifyChange$$("door");
+    this._map$$._notifyChange$$("door");
   }
 
   execApps() {
     let apps = [
-      this._builder.projCommand$$,
-      this._builder.powerCommand$$,
-      this._builder.crewCommand$$,
-      this._builder.virusCommand$$,
-      this._builder.doorCommand$$,
-      this._builder.dockCommand$$,
-      this._builder.gunCommand$$,
-      this._builder.sniffCommand$$
+      new ProjCommand(),
+      new PowerCommand(),
+      new CrewCommand(),
+      new VirusCommand(),
+      new DoorCommand(),
+      new DockCommand(),
+      new GunCommand(),
+      new SniffCommand()
     ];
 
-    apps.forEach((c) => this._terminal$$.installCommand$$(c));
+    apps.forEach((c) => this._system$$.installCommand$$(c));
   }
 
   execKeys() {
@@ -73,17 +81,16 @@ export default class DebugCommand extends Command {
   execHint(command) {
     let level = command.length >= 3 ? Number(command[2]) : -1;
     level = isNaN(level) ? -1 : level;
-    let validators = this._map.getWalthrough$$()._validators$$;
+    let validators = this._map$$.getWalthrough$$()._validators$$;
     if(level < 0) {
       console.log(validators);
       return;
     }
 
-
     for(let i=0; i < validators.length; i++) {
       validators[i].passed$$ = (i < level);
     }
-    this._map.getWalthrough$$().updateLevel();
+    this._map$$.getWalthrough$$().updateLevel();
   }
 
   execGo(command) {
@@ -97,8 +104,8 @@ export default class DebugCommand extends Command {
       return this._terminal$$.println$$('Error: invalid arguments');
     }
 
-    this._map.setSquadPosition$$(x, y);
-    this._map.getRoom$$(x, y).visit$$();
+    this._map$$.setSquadPosition$$(x, y);
+    this._map$$.getRoom$$(x, y).visit$$();
   }
 
   execHelp() {

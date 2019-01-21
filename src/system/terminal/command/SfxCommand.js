@@ -2,11 +2,16 @@ import Command from '../Command.js';
 
 export default class SfxCommand extends Command {
 
-  constructor(soundPlayer) {
+  constructor() {
     super();
-    this.soundPlayer$$ = soundPlayer;
+    this.soundPlayer$$ = null;
     this.name$$ = 'sfx';
     this.help$$ = 'Turn off/on terminal sound';
+  }
+
+  setSystem$$(system) {
+    super.setSystem$$(system);
+    this.soundPlayer$$ = system.getSoundPlayer$$();
   }
 
   execHelp() {

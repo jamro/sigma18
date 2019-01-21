@@ -2,9 +2,8 @@ import Command from '../Command.js';
 
 export default class GunCommand extends Command {
 
-  constructor(map) {
+  constructor() {
     super();
-    this._map$$ = map;
 
     this.name$$ = 'gun';
     this.help$$ = 'Manual control of sentry guns BER-84';

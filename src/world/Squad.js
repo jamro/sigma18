@@ -1,11 +1,12 @@
 export default class Squad {
 
-  constructor(terminal, screen, soundPlayer) {
+  constructor(system) {
+    this._system$$ = system;
     this._hasLight$$ = true;
-    this.soundPlayer$$ = soundPlayer;
+    this.soundPlayer$$ = system.getSoundPlayer$$();
     this._map$$ = null;
-    this._screen$$ = screen;
-    this._terminal$$ = terminal;
+    this._screen$$ = system.getSideScreen$$();
+    this._terminal$$ = system.getTerminal$$();
     this._inventory$$ = [];
     this._battleLoop$$ = null;
     this._directionMap$$ = {
@@ -170,7 +171,7 @@ export default class Squad {
       invalidReason = 'No doors on that side.';
     } else if(door.isClosed$$()) {
       invalidReason = 'The door is closed. ';
-      invalidReason += this._terminal$$.hasCommand$$('door') ? "Use s{door}s app to open them." : "Explore other locations and find a way to open them.";
+      invalidReason += this._system$$.hasCommand$$('door') ? "Use s{door}s app to open them." : "Explore other locations and find a way to open them.";
     }
 
     msgQueue.push(['hacker', `Commander, check the door on the ${this._directionMap$$[direction]}.`]);

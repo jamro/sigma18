@@ -2,10 +2,9 @@ import Command from '../Command.js';
 
 export default class ComCommand extends Command {
 
-  constructor(map) {
+  constructor() {
     super();
-    this._squad = map.getSquad$$();
-    this._map = map;
+    this._squad = null;
     this._directionMap = {
       n: 'north',
       s: 'south',
@@ -17,11 +16,17 @@ export default class ComCommand extends Command {
     this.help$$ = 'Communication with squad of marines in the field';
   }
 
+  setSystem$$(system) {
+    super.setSystem$$(system);
+    this._squad = this._map$$.getSquad$$();
+  }
+
   execStatus() {
     this.disableInput$$();
     this._squad.requestStatus$$(() => {
       this.enableInput$$();
     });
+    this._squad = this._map$$.getSquad$$();
   }
 
   execGo(command) {
@@ -52,7 +57,7 @@ export default class ComCommand extends Command {
   }
 
   execHint() {
-    let hint = this._map.getWalthrough$$().getHint$$();
+    let hint = this._map$$.getWalthrough$$().getHint$$();
     this._terminal$$.sequence$$(
       {c:'off'},
       {c:'chat', d:[

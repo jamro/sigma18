@@ -3,7 +3,6 @@ import '../styles/page.scss';
 import '../styles/terminal.scss';
 import '../styles/screen.scss';
 
-
 import HelpCommand from './system/terminal/command/HelpCommand.js';
 import ComCommand from './system/terminal/command/ComCommand.js';
 import SfxCommand from './system/terminal/command/SfxCommand.js';
@@ -31,24 +30,24 @@ overlayElement.id = "overlay";
 overlayElement.src = '../img/gwgc201819_overlay.png';
 document.body.appendChild(overlayElement);
 
-
 let screenA = new Container(screenAElement, overlayElement, 64, 185, 1025, 770);
 let screenB = new Container(screenBElement, overlayElement, 1140, 77, 721, 482);
 
 let builder = new MapBuilder();
 builder.build$$(document);
 let map = builder.getMap$$();
-let sideSreen = builder.getSideScreen$$();
-let terminal = builder.getTerminal$$();
+let system = builder.getSystem$$();
+let sideScreen = builder.getSystem$$().getSideScreen$$();
+let terminal = builder.getSystem$$().getTerminal$$();
 
 terminal.view$$.attachToDOM$$(document.querySelector('#screen-a'));
-sideSreen.view$$.attachToDOM$$(document.querySelector('#screen-b'));
+sideScreen.view$$.attachToDOM$$(document.querySelector('#screen-b'));
 
-terminal.installCommand$$(new HelpCommand());
-terminal.installCommand$$(new SfxCommand(builder.getSoundPlayer$$()));
-terminal.installCommand$$(new ComCommand(map));
+system.installCommand$$(new HelpCommand());
+system.installCommand$$(new SfxCommand());
+system.installCommand$$(new ComCommand());
 if(DEBUG_MODE) {
-  terminal.installCommand$$(new DebugCommand(builder));
+  system.installCommand$$(new DebugCommand(builder));
 }
 
 let chromeInfo = hasCorrectBrowser ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
@@ -96,8 +95,8 @@ if(!DEBUG_MODE) {
     "Buffering...",
     {c: 'sound', d: 'ok', t:0},
     {c: (done) => {
-      sideSreen.view$$.turnOn$$(() => {
-        sideSreen.showMap$$(map);
+      sideScreen.view$$.turnOn$$(() => {
+        sideScreen.showMap$$(map);
         done();
       });
     }},
@@ -114,7 +113,7 @@ if(!DEBUG_MODE) {
     return 'Are you sure you want to leave?';
   };
 } else {
-  sideSreen.view$$.turnOn$$(() => {
-    sideSreen.showMap$$(map);
+  sideScreen.view$$.turnOn$$(() => {
+    sideScreen.showMap$$(map);
   });
 }

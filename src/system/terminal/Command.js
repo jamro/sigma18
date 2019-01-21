@@ -1,7 +1,10 @@
 export default class Command {
 
-  setTerminal$$(terminal) {
-    this._terminal$$ = terminal;
+  setSystem$$(system) {
+    this._system$$ = system;
+    this._terminal$$ = system.getTerminal$$();
+    this._map$$ = system.getMap$$();
+    this._sideScreen$$ = system.getSideScreen$$();
   }
 
   validate$$(command) {

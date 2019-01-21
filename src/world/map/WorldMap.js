@@ -4,12 +4,13 @@ import Door from './Door.js';
 import Virus from '../Virus.js';
 import Battle from '../Battle.js';
 import Walkthrough from '../Walkthrough.js';
+import ServiceDirectory from '../ServiceDirectory.js';
 
 export default class WorldMap {
 
-  constructor(services, width, height) {
+  constructor(width, height) {
     this._walkthrough$$ = new Walkthrough();
-    this._services$$ = services;
+    this._services$$ = new ServiceDirectory();
     this._squadPosition$$ = null;
     this._virus$$ = new Virus();
     this._battle$$ = null;
@@ -17,6 +18,7 @@ export default class WorldMap {
     this._doorMap$$ = {};
     this._grid$$ = [];
     this._onChangeList$$ = [];
+    this.capsuleDoor$$ = null;
 
     this._virus$$.onActivated$$(() => {
       this._walkthrough$$.handleEvent$$('com-virus-activate');
@@ -54,6 +56,11 @@ export default class WorldMap {
         this._grid$$[x][y].onChange$$(() => this._notifyChange$$("room"));
       }
     }
+  }
+
+  getCapsuleDoor$$() {
+    let result = this._doorList$$.filter((d) => d.label$$ == 'capsule');
+    return (result.length == 0) ? null : result[0];
   }
 
   getServiceDirectory$$() {
