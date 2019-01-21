@@ -32,13 +32,13 @@ export default class ComCommand extends Command {
   execGo(command) {
     let direction = command.length >= 3 ? command[2] : '';
     if(!direction) {
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       this._terminal$$.println$$(`Error: Direction argument is required. Run s{com help}s for more info.`);
       return;
     }
     direction = direction.toLowerCase();
     if(!this._directionMap[direction]) {
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       this._terminal$$.println$$(`Error: unknown direction ${direction}`);
       return;
     }

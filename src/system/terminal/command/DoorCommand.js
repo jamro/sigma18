@@ -32,7 +32,7 @@ export default class DoorCommand extends Command {
     let door = this.getDoorOnDirection(direction);
     if(!door) {
       this._terminal$$.println$$(`Error: door not found on direction ${direction}!`);
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
     }
     return door;
   }
@@ -53,21 +53,21 @@ export default class DoorCommand extends Command {
     this.disableInput$$();
     this._terminal$$.connect$$('doors', [`Door look up...`], () => {
       if(!door) {
-        this._terminal$$.soundPlayer$$.play$$('err');
+        this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isClosed$$() == doClose) {
         this._terminal$$.println$$(`Door found`);
         this._terminal$$.println$$(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
-        this._terminal$$.soundPlayer$$.play$$('err');
+        this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
       if(door.isDamaged$$()) {
         this._terminal$$.println$$(`Door found`);
         this._terminal$$.println$$(`Error: Door damaged! Cannot ${doClose ? 'close' : 'open'}!`);
-        this._terminal$$.soundPlayer$$.play$$('err');
+        this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }

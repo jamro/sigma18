@@ -42,7 +42,7 @@ export default class SniffCommand extends Command {
   execOn(command) {
     if(this.serviceName$$) {
       this._terminal$$.println$$('Error: Sniffer already connected. Disconnect at first!');
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       return;
     }
     let name = command.length >= 3 ? command[2] : 'unknown';
@@ -69,7 +69,7 @@ export default class SniffCommand extends Command {
   execOff() {
     if(!this.serviceName$$) {
       this._terminal$$.println$$('Error: Sniffer is disabled');
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       return;
     }
     if(this.loop$$) {

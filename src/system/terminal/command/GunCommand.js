@@ -14,7 +14,7 @@ export default class GunCommand extends Command {
       let droids = battle.getDroids$$();
       if(droids.length <= 0) {
         this._terminal$$.println$$('Error: Cannot find a target');
-        this._terminal$$.soundPlayer$$.play$$('err');
+        this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }
@@ -32,7 +32,7 @@ export default class GunCommand extends Command {
             let r = Math.sqrt(dx*dx + dy*dy);
             gun.setMove$$(10 * dx, 10 * dy);
             if(r < 0.01) {
-              this._terminal$$.soundPlayer$$.stop$$('beep');
+              this._system$$.getSoundPlayer$$().stop$$('beep');
               this._terminal$$.println$$(`Target aimed at [${target.x.toFixed(2)}; ${target.y.toFixed(2)}]`);
               this._terminal$$.println$$(`Open fire!`, 'security');
               clearInterval(loop);
@@ -63,7 +63,7 @@ export default class GunCommand extends Command {
         {c:() => {
           this._terminal$$.view$$.enable$$();
           this._terminal$$.view$$.setPromptText$$('[...]');
-          this._terminal$$.soundPlayer$$.play$$('ok');
+          this._system$$.getSoundPlayer$$().play$$('ok');
           gun.online$$ = true;
 
           let cleanUp = () => {
@@ -136,7 +136,7 @@ export default class GunCommand extends Command {
     this._terminal$$.connect$$('security', [`BER-84 look up at ${pos.toString()}...`], () => {
       if(!gun) {
         this._terminal$$.println$$('Error: Cannot connect to BER-84 in the room');
-        this._terminal$$.soundPlayer$$.play$$('err');
+        this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
       }

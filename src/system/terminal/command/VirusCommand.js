@@ -54,7 +54,7 @@ export default class VirusCommand extends Command {
     let ip = command.length >= 3 ? command[2] : '';
     if(!ip) {
       this._terminal$$.println$$(`Error: Host argument is required. Run s{virus help}s for more info.`);
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       return;
     }
     let queue = [

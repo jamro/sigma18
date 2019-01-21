@@ -60,7 +60,7 @@ export default class PowerCommand extends Command {
             done();
           } else {
             this._terminal$$.println$$('Error: incorrect auth code');
-            this._terminal$$.soundPlayer$$.play$$('err');
+            this._system$$.getSoundPlayer$$().play$$('err');
             this.enableInput$$();
           }
         });
@@ -71,7 +71,7 @@ export default class PowerCommand extends Command {
   setStatus$$(name, status) {
     if(!name) {
       this._terminal$$.println$$(`Error: ServiceName argument is required. Run s{power help}s for more info.`);
-      this._terminal$$.soundPlayer$$.play$$('err');
+      this._system$$.getSoundPlayer$$().play$$('err');
       return;
     }
     this._terminal$$.view$$.disable$$();
