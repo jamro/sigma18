@@ -1,6 +1,7 @@
 {
   "name": "sigma18",
   "version": "1.0.0",
+  "private": true,
   "description": "Game for Gynvael's Winter GameDev Challenge 2018/19",
   "main": "index.js",
   "scripts": {
@@ -13,11 +14,13 @@
     "compress": "./build/compress.js dist/sigma18.js",
     "test": "./build/size.js",
     "ci": "npm run-script clean && npm run-script lint && npm run-script build && npm run-script compress && npm run-script test",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "release:dry": "semantic-release -d",
+    "release": "semantic-release --no-ci"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://jamro@bitbucket.org/jamro/sigma18.git"
+    "url": "https://github.com/jamro/sigma18.git"
   },
   "author": "Krzysztof Jamroz <jamro@jamro.net>",
   "license": "MIT",
@@ -26,6 +29,11 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "@semantic-release/changelog": "^3.0.2",
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/github": "^5.2.9",
+    "@semantic-release/npm": "^5.1.4",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "babel-loader": "^8.0.4",
     "babel-preset-minify": "^0.5.0-alpha.2e0de171",
     "commitizen": "^3.0.5",
@@ -41,6 +49,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.1.0",
+    "semantic-release": "^15.13.3",
     "style-loader": "^0.23.1",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.1.2",
