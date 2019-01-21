@@ -20,6 +20,11 @@ $terminal-font-family: "Courier New", Courier, monospace;
   font-size: 1.4em;
   line-height: 1.4em;
 
+  .red {
+    color: #ff0000;
+    font-weight: bold;
+  }
+
 
   .terminal-popup {
     background-color: $terminal-background-color;
@@ -29,7 +34,7 @@ $terminal-font-family: "Courier New", Courier, monospace;
     top: 0px;
     left: 0px;
     right: 0px;
-    bottom: 70%;
+    bottom: 50%;
     margin: 0.6em 1.2em;
     display: none;
 
@@ -58,10 +63,7 @@ $terminal-font-family: "Courier New", Courier, monospace;
 
 
 
-    .red {
-      color: #ff0000;
-      font-weight: bold;
-    }
+
 
     .finito {
       margin: 1.2em;

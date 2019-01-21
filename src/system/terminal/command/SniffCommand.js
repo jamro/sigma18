@@ -52,6 +52,7 @@ export default class SniffCommand extends Command {
       {c:'pass',d:20,l:'Password'},
       '',
       `streaming /var/log/${this.serviceName$$}.log`,
+      'run s{sniff off}s to close sniffer window',
     ], () => {
       this.serviceName$$ = name;
       this._terminal$$.showPopup$$(true);

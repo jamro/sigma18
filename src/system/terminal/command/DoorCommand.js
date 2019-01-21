@@ -59,7 +59,7 @@ export default class DoorCommand extends Command {
       }
       if(door.isClosed$$() == doClose) {
         this._terminal$$.println$$(`Door found`);
-        this._terminal$$.println$$(`Error: Door already ${doClose ? 'closed' : 'opened'}!`);
+        this._terminal$$.println$$(`Error: Door already ${doClose ? 'closed' : 'open'}!`);
         this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;
@@ -81,7 +81,7 @@ export default class DoorCommand extends Command {
         "Password authorization is required.",
         {c: 'pass', d: 60},
         doClose ? `Closing...` : `Opening...`,
-        {c:'ln', d:`Done. Door ${door.id$$} ${doClose ? 'closed' : 'opened'}.`, s:'doors',t:500},
+        {c:'ln', d:`Done. Door ${door.id$$} ${doClose ? 'closed' : 'open'}.`, s:'doors',t:500},
         {c: 'sound', d: 'ok', t: 0},
         {c: 'on'},
         {c: () => {
@@ -95,7 +95,7 @@ export default class DoorCommand extends Command {
       if(lock) {
         this._terminal$$.sequence$$([
           {c:'sound', d: 'ok', t:300},
-          `Your account (s{${lock.user}}s) has been locked.`,
+          {c:'ln', d:`Account (s{${lock.user}}s) has been locked.`,s:'doors'},
           "There were 3 unsuccessful attempts of login.",
           "Answer security question to unlock:",
           `s{${lock.question}}s`,
@@ -106,13 +106,13 @@ export default class DoorCommand extends Command {
                 door.unlock$$();
                 this._terminal$$.sequence$$([
                   {c:'sound', d: 'ok'},
-                  "The answer is correct. Account unlocked.",
+                  {c:'ln', d:"The answer is correct. Account unlocked.",s:'doors'},
                   "",
                 ].concat(openSequence));
                 done();
               } else {
                 this._terminal$$.sequence$$(
-                  "Error: Incorrect Answer! The account remains locked",
+                  {c:'ln', d:"Error: Incorrect Answer! The account remains locked",s:'doors'},
                   {c:'sound', d: 'err'},
                   {c:'on'}
                 );
@@ -135,9 +135,9 @@ export default class DoorCommand extends Command {
               ['commander', `The key card is in the reader. Done!`]
             ], t: 800},
             "",
-            {c:'ln', d:`Verification of key card...`, t: 1000},
+            {c:'ln', d:`Verification of key card...`, s:'doors',t: 1000},
             {c:'sound', d:'ok', t:0},
-            {c:'ln', d:`Access to s{${requiredKey} restricted area}s granted.`, t: 500},
+            {c:'ln', d:`Access to s{${requiredKey} restricted area}s granted.`, s:'doors', t: 500},
             "Proceeding to next authorization step",
             ""
           ].concat(openSequence));
@@ -149,7 +149,7 @@ export default class DoorCommand extends Command {
               ['commander', `We do not have required key card!`]
             ], t: 800},
             "",
-            {c:'ln', d:`Timeout... access to s{${requiredKey} restricted area}s denied.`, t: 1700},
+            {c:'ln', d:`Timeout... access to s{${requiredKey} restricted area}s denied.`, s:'doors', t: 1700},
             {c:'sound', d:'err', t:0},
             {c: 'on'}
           ]);

@@ -62,7 +62,7 @@ export default class CrewCommand extends Command {
       {c:'ln', d:"", t: 500}
     ], () => {
       if(!record) {
-        this._terminal$$.println$$(`Error: no record matching the criteria`);
+        this._terminal$$.println$$(`Error: no record matching the criteria`, 'data-warehouse');
         this._system$$.getSoundPlayer$$().play$$('err');
         this.enableInput$$();
         return;

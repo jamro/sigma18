@@ -50,7 +50,7 @@ export default class PowerCommand extends Command {
       'Enter the code to log in.',
       {c:'sound', d:'ok'},
       {c: () => {
-        let code = Math.floor(Math.random()*0xffff).toString(16).toUpperCase();
+        let code = Math.floor(Math.random()*0xffff).toString(16).toUpperCase().replace(/0/g, "X");
         this._terminal$$.log$$('message-hub', 'MSG [to: ngallegos, authCode: ' + code + ']');
         this._terminal$$.prompt$$('Auth code:', (txt) => {
           txt = txt.toUpperCase();

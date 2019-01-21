@@ -50,6 +50,37 @@ if(DEBUG_MODE) {
   system.installCommand$$(new DebugCommand(builder));
 }
 
+[
+  [543299, 'Security breach detected at [G:4]'],
+  [542904, 'r{Unauthorized access to yellow restricted area}r'],
+  [483843, 'Security breach detected at [F:8]'],
+  [481275, 'r{Unauthorized access to blue restricted area}r'],
+  [359939, 'Security breach detected at [F:8]'],
+  [341905, 'The gateway not compromised.'],
+  [340320, 'Red restricted area secured']
+].forEach((row) => map.getServiceDirectory$$().getService$$('monitoring').log$$(row[1], row[0]));
+
+[
+  [692313, 'Starting launching sequence at DS001'],
+  [687240, `Launching sequence completed`],
+  [323955, `s{Sierra-23}s is approaching DS003`],
+  [314980, `Error: docking station damaged during landing`],
+].forEach((row) => map.getServiceDirectory$$().getService$$('docker').log$$(row[1], row[0]));
+
+
+[
+  [594312, 'r{WARNING! Power outage detected}r'],
+  [582733, 'Reducing power consumption...'],
+  [578269, 'Non critical services stopped']
+].forEach((row) => map.getServiceDirectory$$().getService$$('oxygen-generator').log$$(row[1], row[0]));
+
+[
+  [594396, 'r{WARNING! Power outage detected}r'],
+  [582734, 'Reducing power consumption...'],
+  [581191, 'Power down lights-east service']
+].forEach((row) => map.getServiceDirectory$$().getService$$('lights-east').log$$(row[1], row[0]));
+
+
 let chromeInfo = hasCorrectBrowser ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
 
 if(!DEBUG_MODE) {

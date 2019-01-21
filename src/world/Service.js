@@ -3,8 +3,10 @@ class Service {
     this.name$$ = name;
     this.ip$$ = ip;
     this.logFile$$ = [];
-    this.log$$(`Service ${name} started at ${ip}`);
-    this.isRunning$$ = false;
+    this.log$$(`Reading /etc/${name}.conf`, 976601);
+    this.log$$(`Configuration file loaded`, 870323);
+    this.log$$(`Service ${name} started at ${ip}`, 732875);
+    this.isRunning$$ = true;
     this.isSecured$$ = false;
     this.powerRequirements$$ = power;
     this._onStatusChangeList$$ = [];
@@ -41,9 +43,10 @@ class Service {
     this._onStatusChangeList$$.push(callback);
   }
 
-  log$$(msg) {
-    this.logFile$$.push(((new Date()).getTime() % (24*60*60*1000)) + " | " + msg);
-    while(this.logFile$$.length > 4) this.logFile$$.shift();
+  log$$(msg, timeOffset) {
+    timeOffset = timeOffset || 0;
+    this.logFile$$.push((((new Date()).getTime() % (24*60*60*1000))-timeOffset+1000000) + " | " + msg);
+    while(this.logFile$$.length > 8) this.logFile$$.shift();
   }
 
 }

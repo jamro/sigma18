@@ -123,10 +123,10 @@ export default class DockCommand extends Command {
     let msg;
     if(id == 'DS002' || id == 'DS003') {
       msg = [
-        {c:'ln',d:`Fueling spaceship at ${id}...`,s:'docker'},
+        {c:'ln',d:`Fueling spaceship at ${id}...`,s:'pump-station'},
         {c: 'load'},
         ``,
-        `Done. Fuel level: 100%`,
+        {c:'ln', d:`Done. Fuel level: 100%`,s:'pump-station'},
         {c: 'sound', d:'ok'},
         {c: 'on'}
       ];

@@ -9,6 +9,7 @@ class Unit {
 export default class Battle {
 
   constructor(room, door, virus) {
+    this._log$$ = () => {};
     this._room$$ = room;
     this._door$$ = door;
     this._virus$$ = virus;
@@ -48,6 +49,10 @@ export default class Battle {
       this.rotate$$ = true;
       this.flipX$$ = true;
     }
+  }
+
+  setLogger$$(callback) {
+    this._log$$ = callback;
   }
 
   onFinish$$(callback) {
@@ -104,6 +109,14 @@ export default class Battle {
       this._backupTime$$ = 0;
       if(Math.random() > this._virus$$.getStatus$$().stats.activation) {
         this._addDroid$$();
+        this._log$$(`MSG [to: sig18/${Math.floor(Math.random()*0x8888).toString(16)}, body: "Backups to ${this._room$$.getPosition$$().toString()}"]`);
+      } else if(Math.random() > 0.5) {
+        const chars = ['&amp;', '&lt;', '&gt;', '	&iexcl;', '&cent;', '&pound;', '&curren;', '&yen;', '&sect;', '&copy;', '&laquo;', '&reg;', '&plusmn;', '&micro;', '&para;', '&raquo;', '	&Oslash;', '&Uuml;', '&aelig;', '&ntilde;', '&thorn;', '&frac12;', '&iquest;', '&divide;', '&deg;', '^', '!', '@', '#', '$', '%', '^', '*', '_', '=', '+', '1', '2', '3', '4', '5', '6', 'X', 'o', 'T', 'I', 'q', ':', ':', "|", "\\", "/", ".", ",", "[", "}", "{", "]"];
+        let trash = Array(10+Math.floor(Math.random()*10))
+                      .fill(0)
+                      .map(() => chars[Math.floor(Math.random()*chars.length)])
+                      .join('');
+        this._log$$(`MSG [to: sig18/*, body: "${trash}"]`);
       }
     }
     if(this._shootCounter$$ == 0 && this._backupTime$$ >= 0) {

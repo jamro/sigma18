@@ -194,14 +194,18 @@ export default class TerminalView extends View {
     this._view$$.input.textField.element.focus();
   }
 
-  print$$(txt) {
-    txt = txt
+  format$$(txt) {
+    return txt
       .replace(/m{/g, '') // mute
       .replace(/}m/g, '') // mute
       .replace(/s{/g, '<strong>')
       .replace(/}s/g, '</strong>')
       .replace(/r{/g, '<span class="red">')
       .replace(/}r/g, '</span>');
+  }
+
+  print$$(txt) {
+    txt = this.format$$(txt);
     let lengthLimit = 20000;
     let inputElement = this._view$$.output.element;
     let content = inputElement.innerHTML;
@@ -213,6 +217,7 @@ export default class TerminalView extends View {
   }
 
   printPopup$$(title, txt) {
+    txt = this.format$$(txt);
     this._view$$.popup.element.innerHTML = `<h1>${title}</h1>${txt}`;
   }
 
