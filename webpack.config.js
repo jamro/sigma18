@@ -90,7 +90,8 @@ let config = {
 module.exports = (env, argv) => {
   config.plugins.push(
     new webpack.DefinePlugin({
-      'DEBUG_MODE': (argv.mode === 'development')
+      'DEBUG_MODE': (argv.mode === 'development'),
+      'VERSION': JSON.stringify(require("./package.json").version)
     })
   );
   if (argv.mode === 'development') {

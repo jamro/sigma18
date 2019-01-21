@@ -90,7 +90,7 @@ if(!DEBUG_MODE) {
     "-----------------------------",
     "SIGMA-18 GAME" + (DEBUG_MODE ? " (DEBUG MODE)" : ""),
     "-----------------------------",
-    "Version of terminal: 1.1.0",
+    `Version of the terminal: ${VERSION}`,
     "Have fun :)",
     "",
     chromeInfo,
