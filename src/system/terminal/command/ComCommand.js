@@ -2,10 +2,9 @@ import Command from '../Command.js';
 
 export default class ComCommand extends Command {
 
-  constructor(squad, map, terminal) {
+  constructor(map) {
     super();
-    this._terminal$$ = terminal;
-    this._squad = squad;
+    this._squad = map.getSquad$$();
     this._map = map;
     this._directionMap = {
       n: 'north',

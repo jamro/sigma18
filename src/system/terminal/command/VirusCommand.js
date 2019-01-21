@@ -2,9 +2,9 @@ import Command from '../Command.js';
 
 export default class VirusCommand extends Command {
 
-  constructor(virus) {
+  constructor(map) {
     super();
-    this._virus = virus;
+    this._virus = map.getVirus$$();
     this._header = `Virus Infector version 3.2.9`;
     this.name$$ = 'virus';
     this.help$$ = 'Infect specified hosts and blocks communication in their newtwork';

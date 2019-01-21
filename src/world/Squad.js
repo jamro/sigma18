@@ -1,9 +1,9 @@
 export default class Squad {
 
-  constructor(map, terminal, screen, soundPlayer) {
+  constructor(terminal, screen, soundPlayer) {
     this._hasLight$$ = true;
     this.soundPlayer$$ = soundPlayer;
-    this._map$$ = map;
+    this._map$$ = null;
     this._screen$$ = screen;
     this._terminal$$ = terminal;
     this._inventory$$ = [];
@@ -14,6 +14,10 @@ export default class Squad {
       e: 'east',
       w: 'west',
     };
+  }
+
+  setMap$$(map) {
+    this._map$$ = map;
     this._map$$.onChange$$((type) => {
       if(type != 'light' || this._hasLight$$) return;
       let pos = this._map$$.getSquadPosition$$();

@@ -2,9 +2,9 @@ import Command from '../Command.js';
 
 export default class PowerCommand extends Command {
 
-  constructor(serviceDirectory) {
+  constructor(map) {
     super();
-    this._serviceDirectory$$ = serviceDirectory;
+    this._serviceDirectory$$ = map.getServiceDirectory$$();
     this.name$$ = 'power';
     this.help$$ = 'Manage power supply for space station';
   }

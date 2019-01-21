@@ -3,18 +3,12 @@ import '../styles/page.scss';
 import '../styles/terminal.scss';
 import '../styles/screen.scss';
 
-import TerminalView from './system/terminal/TerminalView.js';
-import Terminal from './system/terminal/Terminal.js';
-import ScreenView from './system/screen/ScreenView.js';
-import Screen from './system/screen/Screen.js';
-import ServiceDirectory from './world/ServiceDirectory.js';
+
 import HelpCommand from './system/terminal/command/HelpCommand.js';
 import ComCommand from './system/terminal/command/ComCommand.js';
 import SfxCommand from './system/terminal/command/SfxCommand.js';
 import DebugCommand from './system/terminal/command/DebugCommand.js';
-import SoundPlayer from './system/common/SoundPlayer.js';
 
-import Squad from './world/Squad.js';
 import MapBuilder from './world/map/MapBuilder.js';
 import Container from './Container.js';
 
@@ -41,25 +35,21 @@ document.body.appendChild(overlayElement);
 let screenA = new Container(screenAElement, overlayElement, 64, 185, 1025, 770);
 let screenB = new Container(screenBElement, overlayElement, 1140, 77, 721, 482);
 
-let services = new ServiceDirectory();
-let player = new SoundPlayer();
-let sideSreen = new Screen(new ScreenView(document), player);
-let terminal = new Terminal(services, new TerminalView(document), player);
-let builder = new MapBuilder(sideSreen, services);
-builder.build$$();
+let builder = new MapBuilder();
+builder.build$$(document);
 let map = builder.getMap$$();
+let sideSreen = builder.getSideScreen$$();
+let terminal = builder.getTerminal$$();
 
 terminal.view$$.attachToDOM$$(document.querySelector('#screen-a'));
 sideSreen.view$$.attachToDOM$$(document.querySelector('#screen-b'));
 
-let squad = new Squad(map, terminal, sideSreen, player);
 terminal.installCommand$$(new HelpCommand());
-terminal.installCommand$$(new SfxCommand(player));
-terminal.installCommand$$(new ComCommand(squad, map, terminal));
+terminal.installCommand$$(new SfxCommand(builder.getSoundPlayer$$()));
+terminal.installCommand$$(new ComCommand(map));
 if(DEBUG_MODE) {
-  terminal.installCommand$$(new DebugCommand(builder, squad));
+  terminal.installCommand$$(new DebugCommand(builder));
 }
-builder.placeItems$$(squad, map, map.getVirus$$());
 
 let chromeInfo = hasCorrectBrowser ? '' : 'r{WARNING! Use Chrome web browser for the best gaming experience!}r';
 

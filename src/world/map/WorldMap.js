@@ -56,6 +56,18 @@ export default class WorldMap {
     }
   }
 
+  getServiceDirectory$$() {
+    return this._services$$;
+  }
+
+  deploySquad$$(squad) {
+    this._squad$$ = squad;
+  }
+
+  getSquad$$() {
+    return this._squad$$;
+  }
+
   getWalthrough$$() {
     return this._walkthrough$$;
   }

@@ -12,37 +12,58 @@ import Gun from './Gun.js';
 import Note from '../item/Note.js';
 import Disk from '../item/Disk.js';
 import WorldMap from './WorldMap.js';
+import Squad from '../Squad.js';
+
+import TerminalView from '../../system/terminal/TerminalView.js';
+import Terminal from '../../system/terminal/Terminal.js';
+import ScreenView from '../../system/screen/ScreenView.js';
+import Screen from '../../system/screen/Screen.js';
+import SoundPlayer from '../../system/common/SoundPlayer.js';
+import ServiceDirectory from '../ServiceDirectory.js';
 
 export default class MapBuilder {
 
-  constructor(sideScreen, services) {
-    this._sideScreen = sideScreen;
-    this._services$$ = services;
-    this._map$$ = null;
-    this._capsuleDoor$$ = null;
-  }
-
-  build$$() {
+  build$$(document) {
+    this._services$$ = new ServiceDirectory();
+    this._soundPlayer$$ = new SoundPlayer();
+    this._sideScreen$$ = new Screen(new ScreenView(document), this._soundPlayer$$);
+    this._terminal$$ = new Terminal(this._services$$, new TerminalView(document), this._soundPlayer$$);
     this._map$$ = new WorldMap(this._services$$, 10, 10);
+    this._squad$$ = new Squad(this._terminal$$, this._sideScreen$$, this._soundPlayer$$);
+    this._map$$.deploySquad$$(this._squad$$);
+    this._squad$$.setMap$$(this._map$$);
     this._layoutRooms$$();
     this._layoutEnemies$$();
     this._layoutDoors$$();
     this._deploySquad$$(4, 8);
+    this._placeItems$$();
+  }
+
+  getSoundPlayer$$() {
+    return this._soundPlayer$$;
   }
 
   getMap$$() {
     return this._map$$;
   }
 
-  placeItems$$(squad, map, virus) {
+  getTerminal$$() {
+    return this._terminal$$;
+  }
+
+  getSideScreen$$() {
+    return this._sideScreen$$;
+  }
+
+  _placeItems$$() {
     this.projCommand$$ = new ProjCommand();
-    this.powerCommand$$ = new PowerCommand(this._services$$);
+    this.powerCommand$$ = new PowerCommand(this._map$$);
     this.crewCommand$$ = new CrewCommand();
-    this.virusCommand$$ = new VirusCommand(map.getVirus$$());
-    this.doorCommand$$ = new DoorCommand(map, squad);
-    this.dockCommand$$ = new DockCommand(map, this._sideScreen, this._capsuleDoor$$);
-    this.gunCommand$$ = new GunCommand(map);
-    this.sniffCommand$$ = new SniffCommand(this._services$$);
+    this.virusCommand$$ = new VirusCommand(this._map$$);
+    this.doorCommand$$ = new DoorCommand(this._map$$);
+    this.dockCommand$$ = new DockCommand(this._map$$, this._sideScreen$$, this._capsuleDoor$$);
+    this.gunCommand$$ = new GunCommand(this._map$$);
+    this.sniffCommand$$ = new SniffCommand(this._map$$);
 
     let config = (x, y, i) => {
       this._map$$.getRoom$$(x, y).addItem$$(i);
@@ -50,7 +71,7 @@ export default class MapBuilder {
 
     config(3, 3, new Disk(this.projCommand$$));
     config(4, 0, new Disk(this.powerCommand$$));
-    config(2, 3, new StaticItem(`SIG-18 communication module (host: ${virus.unitZero$$})`));
+    config(2, 3, new StaticItem(`SIG-18 communication module (host: ${this._map$$.getVirus$$().unitZero$$})`));
     config(7, 2, new Note('Rescue Capsule Auth Code: U317AB'));
     config(7, 2, new KeyCard('blue'));
     config(8, 3, new Disk(this.sniffCommand$$));

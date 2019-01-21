@@ -3,9 +3,9 @@ import KeyCard from '../../../world/item/KeyCard.js';
 
 export default class DebugCommand extends Command {
 
-  constructor(builder, squad) {
+  constructor(builder) {
     super();
-    this._squad = squad;
+    this._squad = builder._squad$$;
     this._map = builder.getMap$$();
     this._builder = builder;
     this.name$$ = DEBUG_MODE ? 'debug' : null;

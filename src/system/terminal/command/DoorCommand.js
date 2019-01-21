@@ -2,9 +2,9 @@ import Command from '../Command.js';
 
 export default class DoorCommand extends Command {
 
-  constructor(map, squad) {
+  constructor(map) {
     super();
-    this._squad = squad;
+    this._squad = map.getSquad$$();
     this._map = map;
 
     this.name$$ = 'door';

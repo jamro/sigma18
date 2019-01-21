@@ -2,9 +2,9 @@ import Command from '../Command.js';
 
 export default class SniffCommand extends Command {
 
-  constructor(services) {
+  constructor(map) {
     super();
-    this._services$$ = services;
+    this._services$$ = map.getServiceDirectory$$();
 
     this.serviceName$$ = null;
     this.loop$$ = null;
