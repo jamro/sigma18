@@ -99,6 +99,8 @@ export default class PowerCommand extends Command {
             } else {
               this._serviceDirectory$$.off$$(name);
             }
+            this._terminal$$.println$$("");
+            this._terminal$$.println$$(`Current power consumption: s{${this._serviceDirectory$$.getTotalPower$$().toFixed(2)}kW}s / ${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW`);
           }}
         ];
         if(service.name$$ == 'oxygen-generator' && !status) {
@@ -116,6 +118,8 @@ export default class PowerCommand extends Command {
             {c:'load'},
             {c: () => {
               this._serviceDirectory$$.on$$(name);
+              this._terminal$$.println$$("");
+              this._terminal$$.println$$(`Current power consumption: s{${this._serviceDirectory$$.getTotalPower$$().toFixed(2)}kW}s / ${this._serviceDirectory$$.getPowerSupply$$().toFixed(2)}kW`);
             }},
             `Service restored`,
             {c:'sound',d:'ok'}
