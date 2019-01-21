@@ -101,7 +101,7 @@ if(!DEBUG_MODE) {
       });
     }},
     "Map preview available.",
-    "",
+    "r{WARNING: the connection may be unstable due to low bandwidth}r",
     "",
     "Welcome to Space Station Sigma-18",
     "Type s{help}s and press ENTER to see available commands.",
