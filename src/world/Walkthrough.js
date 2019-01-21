@@ -42,7 +42,7 @@ export default class Walkthrough {
       new Validator('item-disk-dock', "Find application to manage docks in the warehouse m{([A:6])}m."),
       new Validator('item-note', "Find rescue capsule auth code in the warehouse of the lab area on the east m{([H:3])}m."),
       new Validator('com-pump-station-on', "Turn pump station to fuel rescue capsule by running s{power up pump-station}s. Powering down of some services may be required to have enough power. Check the list of services by running s{power list}s and turn selected services off by s{power down X}s."),
-      new Validator('', "Enter rescue capsule m{([D:10])}m. Close its door by running s{door close DXX}s. Next, fuel the capsule by s{dock fuel DS002}s command and launch it running s{dock launch DS002}s")
+      new Validator('', "Enter rescue capsule m{([D:10])}m. Close its door by running s{door close DXX}s. Next, fuel the capsule by s{dock fuel DS002}s command and launch it running s{dock launch DS002}s. If you do not remember auth code that you have already found, run s{com status}s")
     ];
   }
 
