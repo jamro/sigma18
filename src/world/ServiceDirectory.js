@@ -17,6 +17,38 @@ export default class ServiceDirectory {
     this.addService$$('lab-services', '40.32.125.100', 19).off$$();
     this.addService$$('security', '40.32.125.87', 10).off$$().secure$$();
     this.addService$$('doors', '40.32.125.133', 9);
+
+    [
+      [543299, 'Security breach detected at [G:4]'],
+      [542904, 'r{Unauthorized access to yellow restricted area}r'],
+      [483843, 'Security breach detected at [F:8]'],
+      [481275, 'r{Unauthorized access to blue restricted area}r'],
+      [359939, 'Security breach detected at [F:8]'],
+      [341905, 'The gateway not compromised.'],
+      [340320, 'Red restricted area secured']
+    ].forEach((row) => this.getService$$('monitoring').log$$(row[1], row[0]));
+
+    [
+      [692313, 'Starting launching sequence at DS001'],
+      [687240, `Launching sequence completed`],
+      [323955, `s{Sierra-23}s is approaching DS003`],
+      [314980, `Error: docking station damaged during landing`],
+    ].forEach((row) => this.getService$$('docker').log$$(row[1], row[0]));
+
+
+    [
+      [594312, 'r{WARNING! Power outage detected}r'],
+      [582733, 'Reducing power consumption...'],
+      [578269, 'Non critical services stopped']
+    ].forEach((row) => this.getService$$('oxygen-generator').log$$(row[1], row[0]));
+
+    [
+      [594396, 'r{WARNING! Power outage detected}r'],
+      [582734, 'Reducing power consumption...'],
+      [581191, 'Power down lights-east service']
+    ].forEach((row) => this.getService$$('lights-east').log$$(row[1], row[0]));
+
+
   }
 
   getPowerSupply$$() {
