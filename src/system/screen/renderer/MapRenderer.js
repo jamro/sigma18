@@ -1,11 +1,20 @@
 import ScreenRenderer from '../ScreenRenderer.js';
 
+class Circle {
+  constructor(x, y, f) {
+    this.frame = 0;
+    this.x = x;
+    this.y = y;
+  }
+}
+
 export default class MapRenderer extends ScreenRenderer {
 
   constructor(soundPlayer, map) {
     super(soundPlayer);
+    this._time$$ = 0;
     this._map$$ = map;
-
+    this._circleList$$ = [];
     this.render$$();
   }
 
@@ -28,6 +37,7 @@ export default class MapRenderer extends ScreenRenderer {
     if(!this.screenView$$) {
       return;
     }
+    this._time$$++;
     let ctx = this.screenView$$.context$$;
     let w = this.screenView$$.getWidth$$();
     let h = this.screenView$$.getHeight$$();
@@ -43,6 +53,25 @@ export default class MapRenderer extends ScreenRenderer {
     let segmentSize = Math.round(Math.min(w, h)/12);
     let startX = w/2 - (segmentSize*12)/2;
     let startY = h/2 - (segmentSize*12)/2;
+
+    let blink = (x, y) => {
+      x = startX + (1 + x + 0.5)*segmentSize;
+      y = startY + (1 + y + 0.5)*segmentSize;
+      this._circleList$$.push(new Circle(x, y, 0));
+    };
+
+    let renderCircle = (c) => {
+      c.frame++;
+      if(c.frame < 0) {
+        return;
+      }
+      ctx.beginPath();
+      ctx.fillStyle = null;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = this.screenView$$.getPrimaryColor$$(c.frame/30);
+      ctx.arc(c.x, c.y, 40*Math.sqrt(0.25*c.frame), 0, 2 * Math.PI);
+      ctx.stroke();
+    };
 
     let renderRoom = (x, y) => {
       ctx.lineWidth = 3;
@@ -156,6 +185,10 @@ export default class MapRenderer extends ScreenRenderer {
           continue;
         }
         room = this._map$$.getRoom$$(x, y);
+        if(room.highlightCounter$$ > 0 && this._time$$ % 6 == 0) {
+          blink(x, y);
+          room.highlightCounter$$--;
+        }
         if(!room.isVisited$$()) {
           continue;
         }
@@ -231,6 +264,9 @@ export default class MapRenderer extends ScreenRenderer {
     // render squad position
     pos = this._map$$.getSquadPosition$$();
     renderSquad(pos.x, pos.y, color);
+
+    this._circleList$$.forEach((c) => renderCircle(c));
+    this._circleList$$ = this._circleList$$.filter((c) => c.frame < 30);
   }
 
 }

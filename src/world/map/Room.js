@@ -4,6 +4,7 @@ export default class Room {
 
   constructor(lightService, x, y) {
     this.animation$$ = 0;
+    this.highlightCounter$$ = 0;
     this._lightService$$ = lightService;
     this._position$$ = new Position(x, y);
     this._isVisited$$ = false;
@@ -34,6 +35,7 @@ export default class Room {
       this.enemy$$ = this._trap$$;
       this._onChangeList$$.forEach((c) => c());
       this._trap$$ = 0;
+      this.blink();
     }
     return result;
   }
@@ -82,6 +84,11 @@ export default class Room {
       this._isVisited$$ = true;
       this._onChangeList$$.forEach((c) => c());
     }
+    this.blink();
+  }
+
+  blink() {
+    this.highlightCounter$$ += 3;
   }
 
   isVisited$$() {
