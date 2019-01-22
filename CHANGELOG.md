@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/jamro/sigma18/compare/v1.0.0...v1.1.0) (2019-01-22)
+
+
+### Features
+
+* add "turn the sound on" hint to the intro ([d3ac42d](https://github.com/jamro/sigma18/commit/d3ac42d))
+* add blink effect to indicate trap in the map ([8bf0724](https://github.com/jamro/sigma18/commit/8bf0724))
+* add screen switching animation to side screen ([1d04729](https://github.com/jamro/sigma18/commit/1d04729))
+* improve service logs (history and new events) ([bd20f4e](https://github.com/jamro/sigma18/commit/bd20f4e))
+* inject current game version to terminal intro ([2fb10ea](https://github.com/jamro/sigma18/commit/2fb10ea))
+* make found items more noticable ([73fe344](https://github.com/jamro/sigma18/commit/73fe344))
+
 # 1.0.0 (2019-01-21)
 
 
