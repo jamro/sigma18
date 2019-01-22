@@ -1,4 +1,12 @@
-# [1.1.0](https://github.com/jamro/sigma18/compare/v1.0.0...v1.1.0) (2019-01-22)
+## 1.1.1 (2019-01-22)
+
+
+### Bug Fixes
+
+* improve map notifications ([451bd3a](https://github.com/jamro/sigma18/commit/451bd3a))
+* remove blink on room visit ([64454dc](https://github.com/jamro/sigma18/commit/64454dc))
+
+# 1.1.0 (2019-01-22)
 
 
 ### Features
@@ -8,7 +16,7 @@
 * add screen switching animation to side screen ([1d04729](https://github.com/jamro/sigma18/commit/1d04729))
 * improve service logs (history and new events) ([bd20f4e](https://github.com/jamro/sigma18/commit/bd20f4e))
 * inject current game version to terminal intro ([2fb10ea](https://github.com/jamro/sigma18/commit/2fb10ea))
-* make found items more noticable ([73fe344](https://github.com/jamro/sigma18/commit/73fe344))
+* make found items more noticeable ([73fe344](https://github.com/jamro/sigma18/commit/73fe344))
 
 # 1.0.0 (2019-01-21)
 
@@ -57,7 +65,7 @@
 * add sentry guns ([9549a3e](https://github.com/jamro/sigma18/commit/9549a3e))
 * add sniff app ([c40d513](https://github.com/jamro/sigma18/commit/c40d513))
 * add sound effects ([1cf0f24](https://github.com/jamro/sigma18/commit/1cf0f24))
-* add spaceship fuelling ([41006c7](https://github.com/jamro/sigma18/commit/41006c7))
+* add spaceship fueling ([41006c7](https://github.com/jamro/sigma18/commit/41006c7))
 * add special thanks to credits ([38e5a36](https://github.com/jamro/sigma18/commit/38e5a36))
 * add speech generation ([923acf6](https://github.com/jamro/sigma18/commit/923acf6))
 * add unstable connection message ([77eb457](https://github.com/jamro/sigma18/commit/77eb457))
@@ -103,7 +111,7 @@
 
 * add uglifyjs to compress code further ([abd3af4](https://github.com/jamro/sigma18/commit/abd3af4))
 * compressing method names ([aa18250](https://github.com/jamro/sigma18/commit/aa18250))
-* imporove compress alghoritm ([2bc65af](https://github.com/jamro/sigma18/commit/2bc65af))
+* improve compress alghoritm ([2bc65af](https://github.com/jamro/sigma18/commit/2bc65af))
 * minify html and css ([f74f7be](https://github.com/jamro/sigma18/commit/f74f7be))
 * narrow target browsers to reduce file size ([dd73fc4](https://github.com/jamro/sigma18/commit/dd73fc4))
 * optimize code for smaller file size ([5a0629f](https://github.com/jamro/sigma18/commit/5a0629f))
@@ -114,8 +122,8 @@
 * remove sound players getters to reduce file size ([bc8244c](https://github.com/jamro/sigma18/commit/bc8244c))
 * removing getters from items to reduce file size ([a9e34fc](https://github.com/jamro/sigma18/commit/a9e34fc))
 * removing getters from screen modules to reduce file size ([3b0527b](https://github.com/jamro/sigma18/commit/3b0527b))
-* removing getters from services to reduce filesize ([d1d1e44](https://github.com/jamro/sigma18/commit/d1d1e44))
+* removing getters from services to reduce file size ([d1d1e44](https://github.com/jamro/sigma18/commit/d1d1e44))
 * removing getters from Virus class to reduce file size ([0655ded](https://github.com/jamro/sigma18/commit/0655ded))
 * removing getView getters to reduce file size ([4a64b2f](https://github.com/jamro/sigma18/commit/4a64b2f))
-* rerender map onoy on change ([9ea1632](https://github.com/jamro/sigma18/commit/9ea1632))
+* render map onoy on change ([9ea1632](https://github.com/jamro/sigma18/commit/9ea1632))
 * shorten method names ([d1e158e](https://github.com/jamro/sigma18/commit/d1e158e))
