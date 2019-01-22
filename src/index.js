@@ -53,7 +53,7 @@ if(DEBUG_MODE) {
   sideScreen.showMap$$(map);
 } else {
   let intro = new Intro(system);
-  intro.play$$(hasCorrectBrowser);  
+  intro.play$$(hasCorrectBrowser);
 }
 
 window.onbeforeunload = function() {

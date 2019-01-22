@@ -18,6 +18,7 @@ export default class Intro {
       chromeInfo,
       "",
       "s{PRESS ENTER TO BEGIN YOUR ADVENTURE :)}s",
+      'Turn the sound on for the best player experience',
       "",
       {c:'pause'},
       {c:'sound', d:'ok'},
