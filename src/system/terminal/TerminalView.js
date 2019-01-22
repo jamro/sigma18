@@ -162,8 +162,9 @@ export default class TerminalView extends View {
 
 
   submit$$() {
-    let command = this._view$$.input.textField.element.value;
+    let command = this._view$$.input.textField.element.value.trim();
     if(command == '') {
+      this._view$$.input.textField.element.value = '';
       return;
     }
     this._historyFull$$.unshift(command);
