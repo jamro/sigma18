@@ -161,6 +161,7 @@ export default class Squad {
 
   requestMove$$(direction, done) {
     let msgQueue = [];
+    let actionQueue = [];
     let items = [];
     let invalidReason = '';
     let pos = this._map$$.getSquadPosition$$();
@@ -178,8 +179,10 @@ export default class Squad {
 
     if(this._map$$.getBattle$$()) {
       msgQueue.push(['commander', `r{We are under fire!}r Cannot move anywhere!`]);
+      actionQueue.push({c:'chat', d:msgQueue});
     } else if(invalidReason) {
       msgQueue.push(['commander', `Cannot move to the ${this._directionMap$$[direction]}! ${invalidReason}`]);
+      actionQueue.push({c:'chat', d:msgQueue});
     } else {
       let dx = 0;
       let dy = 0;
@@ -220,12 +223,19 @@ export default class Squad {
       pos = this._map$$.getSquadPosition$$();
 
       let msg = `Location m{${pos.toString()}}m secured. ${this._map$$.getRoom$$(pos.x, pos.y).getDescription$$()}`;
+      msgQueue.push(['commander', msg]);
+      actionQueue.push({c:'chat', d:msgQueue});
+      msgQueue = [];
+
       if(items.length > 0) {
-        msg += "m{<br/><br/>We have found:<br/>";
+        msg = "We have found something:m{<br/>";
         items.forEach((i) => msg += ` * ${i}<br/>`);
         msg += "}m";
+        actionQueue.push({c:'off'});
+        actionQueue.push({c:'chat', d:msg, f:'commander'});
+        actionQueue.push({c:'on'});
       }
-      msgQueue.push(['commander', msg]);
+
       if(trapSize) {
         msgQueue.push(['commander', `It was a trap! There are ${trapSize} SIG-18 units blocking the entrance at ${pos.toString()}.`]);
       }
@@ -234,12 +244,14 @@ export default class Squad {
       if(disks.length > 0) {
         msgQueue.push(['commander', 'I\'ve got a data storage here! Uploading...']);
       }
+      if(msgQueue.length > 0) {
+        actionQueue.push({c:'chat', d:msgQueue});
+      }
     }
-
-    this._terminal$$.sequence$$(
-      {c:'chat', d:msgQueue},
-      {c:() => done(items)}
-    );
+    actionQueue.push({c:() => {
+      done(items);
+    }});
+    this._terminal$$.sequence$$(actionQueue);
   }
 
   requestStatus$$(done) {
