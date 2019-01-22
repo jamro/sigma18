@@ -126,10 +126,7 @@ if(!DEBUG_MODE) {
     "Buffering...",
     {c: 'sound', d: 'ok', t:0},
     {c: (done) => {
-      sideScreen.view$$.turnOn$$(() => {
-        sideScreen.showMap$$(map);
-        done();
-      });
+      sideScreen.showMap$$(map, done);
     }},
     "Map preview available.",
     "r{WARNING: the connection may be unstable due to low bandwidth}r",
@@ -144,7 +141,5 @@ if(!DEBUG_MODE) {
     return 'Are you sure you want to leave?';
   };
 } else {
-  sideScreen.view$$.turnOn$$(() => {
-    sideScreen.showMap$$(map);
-  });
+  sideScreen.showMap$$(map);
 }

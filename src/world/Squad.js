@@ -69,8 +69,8 @@ export default class Squad {
     battle.onFinish$$(() => this.stopBattle$$());
     let enemy = battle.getDroids$$().length;
     let enemies = `${enemy} armed, battle droid${enemy > 1 ? 's' : ''} SIG-18`;
-    this._screen$$.showBattle$$(battle);
     this._terminal$$.sequence$$([
+      {c: (done) => this._screen$$.showBattle$$(battle, done)},
       {c:'chat', d:[
         ['commander', `Enemy units encountered m{(${enemies})}m.`],
         ['commander', 'We have been spotted. SIG-18 opened fire! <br/>We are trying to push back the attack...']
@@ -204,7 +204,10 @@ export default class Squad {
 
       let battleRoom = this._map$$.getRoom$$(newX, newY);
       if(battleRoom.enemy$$ > 0) {
-        this.startBattle$$(battleRoom, door, () => done(items));
+        this._terminal$$.sequence$$(
+          {c:'chat', d:msgQueue},
+          {c:() => this.startBattle$$(battleRoom, door, () => done(items))}
+        );
         return;
       }
 

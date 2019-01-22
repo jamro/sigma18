@@ -17,25 +17,38 @@ export default class Screen {
     this.soundPlayer$$ = system.getSoundPlayer$$();
   }
 
-  showMap$$(map) {
-    this._setRenderer$$(new MapRenderer(this.soundPlayer$$, map));
+  showMap$$(map, done) {
+    this._setRenderer$$(new MapRenderer(this.soundPlayer$$, map), done);
   }
 
-  showBattle$$(battle) {
-    this._setRenderer$$(new BattleRenderer(this.soundPlayer$$, battle));
+  showBattle$$(battle, done) {
+    this._setRenderer$$(new BattleRenderer(this.soundPlayer$$, battle), done);
   }
 
-  showRadar$$() {
-    this._setRenderer$$(new RadarRenderer(this.soundPlayer$$));
+  showRadar$$(done) {
+    this._setRenderer$$(new RadarRenderer(this.soundPlayer$$), done);
   }
 
-  _setRenderer$$(r) {
+  _setRenderer$$(r, done) {
     if(this._renderer$$) {
       this._renderer$$.detach$$();
+      this._renderer$$ = null;
+      this.view$$.noise$$.prevent$$();
+      this.view$$.switchScreen$$(() => {
+        this._renderer$$ = r;
+        this._renderer$$.attach$$(this.view$$);
+        this._renderer$$.render$$();
+        if(done) done();
+      });
+    } else {
+      this.view$$.noise$$.prevent$$();
+      this.view$$.turnOn$$(() => {
+        this._renderer$$ = r;
+        this._renderer$$.attach$$(this.view$$);
+        this._renderer$$.render$$();
+        if(done) done();
+      });
     }
-    this._renderer$$ = r;
-    this._renderer$$.attach$$(this.view$$);
-    this._renderer$$.render$$();
   }
 
 }

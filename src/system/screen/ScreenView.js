@@ -13,8 +13,8 @@ export default class ScreenView extends View {
       cssClass: "screen-root"
     });
 
-    this._noise$$ = new DigitalNoise(document);
-    this._view$$.element.appendChild(this._noise$$.getDOM$$());
+    this.noise$$ = new DigitalNoise(document);
+    this._view$$.element.appendChild(this.noise$$.getDOM$$());
 
     this._view$$.canvas = this.createElement$$("CANVAS", {
       cssClass: "screen-canvas",
@@ -31,7 +31,7 @@ export default class ScreenView extends View {
     let el = this._view$$.canvas.element;
     el.width = el.parentElement.clientWidth;
     el.height = el.parentElement.clientHeight;
-    this._noise$$.rescale$$();
+    this.noise$$.rescale$$();
     this.clear$$();
   }
 
@@ -62,15 +62,24 @@ export default class ScreenView extends View {
     this.rescale$$();
   }
 
-  turnOn$$(done) {
-    let frame = 0;
+  switchScreen$$(done) {
+    this.turnOn$$(() => {
+      this.turnOn$$(() => {
+        done();
+      }, 5);
+    }, -5);
+  }
+
+  turnOn$$(done, speed) {
+    speed = speed || 1;
+    let frame = (speed > 0) ? 0 : 35;
     let w = this.getWidth$$();
     let h = this.getHeight$$();
     let ctx = this.context$$;
     let p;
     let loop = setInterval(() => {
       this.clear$$();
-      frame++;
+      frame+=speed;
       ctx.beginPath();
       ctx.strokeStyle = null;
       if(frame <= 20) {
@@ -92,9 +101,9 @@ export default class ScreenView extends View {
       }
       ctx.fill();
 
-      if(frame >= 35) {
+      if((speed > 0 && frame >= 35) || (speed < 0 && frame <= 0)) {
         clearInterval(loop);
-        this._noise$$.start$$();
+        this.noise$$.start$$();
         done();
       }
     }, 30);
