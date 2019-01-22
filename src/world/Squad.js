@@ -39,27 +39,23 @@ export default class Squad {
     this._map$$.stopBattle$$();
     let pos = this._map$$.getSquadPosition$$();
     let virusActive = this._map$$.getVirus$$().isActive$$;
-    let queue = [
-      {c:'off', t:0},
-      {c: () => {this._screen$$.showMap$$(this._map$$); }}
-    ];
-    let msgQueue = [];
+
+    this._screen$$.showMap$$(this._map$$);
+    let msg;
     if(winner) {
-      msgQueue.push(['commander' ,`Enemy defeated!`]);
+      msg = `Enemy defeated!`;
     } else {
-      msgQueue.push(['commander' ,`Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`]);
+      msg = `Thanks! We're at safe spot now: m{${pos.toString()}}m. That was close!`;
     }
     if(!winner) {
       if(droidsCount > 10) {
-        msgQueue.push(['commander' ,`They are too many of them. We need another way to defeat them.`]);
+        msg += ` They are too many of them. We need another way to defeat them.`;
       } else if(!virusActive) {
-        msgQueue.push(['commander' ,`They are calling backups. You must block their communication somehow so we can defeat them in smaller groups.`]);
+        msg += ` They are calling backups. You must block their communication, so we can defeat them in smaller groups.`;
       }
     }
-    queue.push({c: 'chat', d: msgQueue});
-    queue.push({c:'on'});
 
-    this._terminal$$.sequence$$(queue);
+    this._terminal$$.printChat$$([['commander', msg]]);
   }
 
   startBattle$$(room, door, done) {
