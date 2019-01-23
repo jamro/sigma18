@@ -166,8 +166,8 @@ export default class MapBuilder {
     addDoor$$(5, 5, 5, 6, true); // canteen -> kitchen
     addDoor$$(5, 7, 6, 7, true, 'blue', 'blue'); // warehouse -> corridor
     addDoor$$(6, 7, 6, 6); // corridor -> corridor
-    addDoor$$(6, 6, 6, 5).damage$$(); // corridor -> corridor
-    addDoor$$(6, 5, 6, 4).damage$$(); // corridor -> corridor
+    addDoor$$(6, 6, 6, 5); // corridor -> corridor
+    addDoor$$(6, 5, 6, 4); // corridor -> corridor
     addDoor$$(6, 4, 6, 3, true); // corridor -> security check
     addDoor$$(5, 3, 6, 3, true); // corridor -> security check
     addDoor$$(4, 3, 5, 3); // corridor -> corridor
@@ -176,8 +176,8 @@ export default class MapBuilder {
     addDoor$$(7, 3, 7, 2, true); // lab -> warehouse
     addDoor$$(7, 3, 8, 3, true); // lab -> conference room
     addDoor$$(7, 3, 7, 4, true, 'lab-server').lock$$('wirving', 'First name of an engineer who has red hair', /duncan/i); // lab -> server room
-    addDoor$$(2, 5, 3, 5).damage$$(); // corridor -> corridor
-    addDoor$$(1, 5, 2, 5).damage$$(); // corridor -> corridor
+    addDoor$$(2, 5, 3, 5); // corridor -> corridor
+    addDoor$$(1, 5, 2, 5); // corridor -> corridor
     addDoor$$(3, 6, 2, 6); // corridor -> crew quarter
     addDoor$$(2, 5, 2, 6, true); // corridor -> crew quarter
     addDoor$$(1, 5, 1, 6, true); // corridor -> crew quarter
