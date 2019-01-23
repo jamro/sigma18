@@ -124,7 +124,7 @@ export default class MapBuilder {
     _describe$$(1, 6, "It is a s{room of crew members}s. It has 16 beds. The room is very clean comparing to other locations. Seems like it wasn't used recently.");
     _describe$$(0, 5, "We are inside the s{commander's quarter}s. It is demolished but there are no signs of a fight. It seems that someone was searching for something here.");
     _describe$$(2, 3, 'A s{corridor}s is leading to office and administration section of the space station. There is a destroyed battle droid (model SIG-18) on the floor.', 'corridor');
-    _describe$$(1, 3, "We are in the s{office}s part of the station. We see a heap of papers and electronics in the centre of the room. It's partially burned. Seems like someone was trying to destroy all records. There are bullet holes on the walls.");
+    _describe$$(1, 3, "We are in the s{office}s part of the station. We see a heap of papers and electronics in the centre of the room. It's partially burned. Seems like someone was trying to destroy all records. There are bullet holes in the walls.");
     _describe$$(2, 2, 'This is an s{office}s after a huge battle: blood, bullet holes, shells and cartridges on the floor, burned equipment. In the corner, we see a destroyed battle droid SIG-18.');
     _describe$$(3, 2, "It's the north s{corridor}s. Some documents from the lobby are spread all over the floor.", 'corridor');
     _describe$$(3, 1, 'We are in a s{corridor}s. In the end, there is an entrance to the internal services area.', 'corridor');

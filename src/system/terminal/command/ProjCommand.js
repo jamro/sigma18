@@ -57,7 +57,7 @@ export default class ProjCommand extends Command {
       "s{2080-07-26 22:09:19.208}s",
       ln, // ----------
       "",
-      "SIG-18s broke into the armoury and take control over the space station. They were trying to access oxygen generator, but unsuccessfully. Droids have numerical superiority. We need to evacuate from the station.",
+      "SIG-18s had broken into the armoury and took control over the space station. They were trying to access oxygen generator, but unsuccessfully. Droids have numerical superiority. We need to evacuate from the station.",
       {c:'sound', d: 'ok', t:0},
       "",
       "s{--- END OF DATA ---}s",
