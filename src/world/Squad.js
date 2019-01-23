@@ -164,7 +164,9 @@ export default class Squad {
     let room = this._map$$.getRoom$$(pos.x, pos.y);
     let door = room.getDoors$$()[direction];
 
-    if(!door) {
+    if(!room.hasLight$$() && (!door || door.isClosed$$())) {
+      invalidReason = "We've got total s{darkness}s here. Can't see anything. There is no point to explore this location. Try to turn the lights on at first.";
+    } else if(!door) {
       invalidReason = 'No doors on that side.';
     } else if(door.isClosed$$()) {
       invalidReason = 'The door is closed. ';
