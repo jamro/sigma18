@@ -105,7 +105,7 @@ export default class Battle {
       this._onFinishList$$.forEach((c) => c());
       return;
     }
-    if(this._backupTime$$ > 70 && this._droids$$.length < 100) {
+    if(this._backupTime$$ > 70 && this._droids$$.length < 8) {
       this._backupTime$$ = 0;
       if(Math.random() > this._virus$$.getStatus$$().stats.activation) {
         this._addDroid$$();

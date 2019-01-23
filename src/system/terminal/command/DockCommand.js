@@ -104,7 +104,7 @@ export default class DockCommand extends Command {
           {c: 'chat', d: 's{GOOD JOB SOLDIER!}s<br/>\n We are saved! Going back home!', f: 'commander', t: 2000},
           {c: 'chat', d: 'Roger that! Good luck commander!', f: 'hacker'},
           {c: 'ln', d: '<div class="finito"><h1>THE END</h1></div>', t: 1000},
-          {c: 'ln', d: 's{Special thanks}s: Monika Jamroz, Tomasz Stocki, Piotr Jamroz, Grzegorz P.', t: 1000},
+          {c: 'ln', d: 's{Special thanks}s: Monika Jamroz, Tomasz Stocki, Piotr Jamroz, Grzegorz P., nxn', t: 1000},
           {c: 'sound', d: 'ok', t: 0},
           {c: () => this._terminal$$.view$$._noise$$.boost$$(10)}
         );
