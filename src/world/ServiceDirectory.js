@@ -5,18 +5,18 @@ export default class ServiceDirectory {
   constructor() {
     this._data$$ = [];
     this.totalPowerSuply$$ = 75.480;
-    this.addService$$('power-manager', '40.32.125.1', 3);
-    this.addService$$('message-hub', '40.32.125.68', 8);
+    this.addService$$('power-manager', '40.32.125.1', 4);
+    this.addService$$('message-hub', '40.32.125.68', 3);
     this.addService$$('docker', '40.32.125.120', 12);
     this.addService$$('lights-east', '40.32.125.231', 13).off$$();
     this.addService$$('lights-west', '40.32.125.232', 11);
-    this.addService$$('monitoring', '40.32.125.12', 5);
+    this.addService$$('monitoring', '40.32.125.12', 6);
     this.addService$$('oxygen-generator', '40.32.125.193', 13);
     this.addService$$('pump-station', '40.32.125.43', 20).off$$();
     this.addService$$('data-warehouse', '40.32.125.73', 14);
     this.addService$$('lab-services', '40.32.125.100', 19).off$$();
     this.addService$$('security', '40.32.125.87', 10).off$$().secure$$();
-    this.addService$$('doors', '40.32.125.133', 9);
+    this.addService$$('doors', '40.32.125.133', 11);
 
     [
       [543299, 'Security breach detected at [G:4]'],

@@ -111,10 +111,10 @@ export default class PowerCommand extends Command {
             {c:'chat', d:'Oxygen level is low. Putting on the masks.', f:'commander', t:1500}
           ]);
         }
-        if(service.name$$ == 'power-manager' && !status) {
+        if((service.name$$ == 'power-manager' || service.name$$ == 'message-hub') && !status) {
           queue = queue.concat([
             "",
-            {c:'ln', d:"Warning! s{power-manager}s is a core service and cannot be powered down!", t:1000},
+            {c:'ln', d:`Warning! s{${service.name$$}}s is a core service and cannot be powered down!`, t:1000},
             {c:'sound',d:'err', t:500},
             `Restoring service ${name}...`,
             {c:'load'},
