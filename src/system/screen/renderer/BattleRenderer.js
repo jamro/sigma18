@@ -61,6 +61,7 @@ export default class BattleRenderer extends ScreenRenderer {
   detach$$() {
     clearInterval(this._loop$$);
     this.soundPlayer$$.stop$$('gun');
+    this.soundPlayer$$.stop$$('gun2');
     super.detach$$();
   }
 
