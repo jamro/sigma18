@@ -17,6 +17,14 @@ Create a game that meets the following requirements:
 
 More details at [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=697)
 
+# Software Requirements
+To reduce file size (see challenge rules for more details), the game will work only in following web browsers:
+- Google Chrome: version 56+, **(RECOMMENDED)**
+- FireFox: version: 51+,
+- Microsoft Edge: version 15+,
+- Safari: version 10+,
+- Opera: version 42+
+
 # The Plot
 It's the year 2080. You are a space marine's tech who specializes in security and hacking. The squad that you are supporting is leading by commander Alex Decker. They are on their way back home from a reconnaissance mission in The Teta Colony. Unfortunately, the spaceship was damaged and they were forced to have an emergency landing at International Space Station Sigma-18. The ship was wrecked during the landing so you must help the squad to find another way out.
 
@@ -33,6 +41,10 @@ You should be able to find all instruction in the game. Here are a few hints for
 - to get help about specific command run **[CommandName help]**. (For example **sfx help**)
 - You can communicate with commander Decker via **com** command. See **com help** for more info.
 - If you really got stuck, you can ask commander Decker for help by running **com hint**. However you should be able to complete the game without that.
+
+# Known issues
+- Not working on Internet Explorer (due to code optimization to meet 128000 bytes size limit). Recommended to play on latest version of Chrome.
+- The game does not save the progress. After closing the web browser your progress will be lost.
 
 # Code Quality
 Due to the limit of 128000 bytes, this is not the most beautiful code that you can find on the Internet :) Focus on the gameplay and have fun instead :)
