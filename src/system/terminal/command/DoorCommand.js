@@ -20,7 +20,7 @@ export default class DoorCommand extends Command {
       let pos = this._map$$.getSquadPosition$$();
       let room = this._map$$.getRoom$$(pos.x, pos.y);
       let door = room.getDoors$$()[direction.toLowerCase()];
-      if(!room.hasLight$$() && !this._map$$.getBattle$$()) {
+      if(!room.hasLight$$() && !this._map$$.getBattle$$() && !room.isVisited$$()) {
         return null;
       }
       if(door) {
