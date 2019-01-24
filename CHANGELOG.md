@@ -1,3 +1,18 @@
+# 1.2.0 (2019-01-24)
+
+
+### Bug Fixes
+
+* add info that sniff is running in the background ([c30fe9c](https://github.com/jamro/sigma18/commit/c30fe9c))
+* allow openning doors in darkness if the room was visited before ([a692c98](https://github.com/jamro/sigma18/commit/a692c98))
+* block powering down message-hub ([c4b96c4](https://github.com/jamro/sigma18/commit/c4b96c4))
+
+
+### Features
+
+* add numers to auth codes in sniffer ([68938a7](https://github.com/jamro/sigma18/commit/68938a7))
+* animate sniffer popup ([cf6a335](https://github.com/jamro/sigma18/commit/cf6a335))
+
 # 1.1.3 (2019-01-24)
 
 
