@@ -51,8 +51,6 @@ export default class SniffCommand extends Command {
       `Encryping log file`,
       {c:'pass',d:20,l:'Password'},
       '',
-      `streaming /var/log/${this.serviceName$$}.log`,
-      'run s{sniff off}s to close sniffer window',
     ], () => {
       this.serviceName$$ = name;
       this._terminal$$.showPopup$$(true);
@@ -61,7 +59,11 @@ export default class SniffCommand extends Command {
         this._terminal$$.view$$.printPopup$$(`/var/log/${this.serviceName$$}.log`, logs);
       }, 30);
       this._terminal$$.sequence$$(
-        "Done",
+        `streaming /var/log/${this.serviceName$$}.log`,
+        '',
+        `Sniffer is running in the background.`,
+        `You can continue the work in the terminal.`,
+        'run s{sniff off}s to close sniffer window',
         {c:'on'}
       );
     });
