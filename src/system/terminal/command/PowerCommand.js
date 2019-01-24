@@ -5,6 +5,7 @@ export default class PowerCommand extends Command {
   constructor() {
     super();
     this._serviceDirectory$$ = null;
+    this.authCodeNo = 0;
     this.name$$ = 'power';
     this.help$$ = 'Manage power supply for space station';
   }
@@ -50,12 +51,13 @@ export default class PowerCommand extends Command {
       'Enter the code to log in.',
       {c:'sound', d:'ok'},
       {c: () => {
+        this.authCodeNo++;
         let code = Math.floor(Math.random()*0xffff).toString(16).toUpperCase().replace(/0/g, "X");
-        this._terminal$$.log$$('message-hub', 'MSG [to: ngallegos, authCode: ' + code + ']');
-        this._terminal$$.prompt$$('Auth code:', (txt) => {
+        this._terminal$$.log$$('message-hub', `MSG [to: ngallegos, authCode_${this.authCodeNo}: ${code}]`);
+        this._terminal$$.prompt$$(`Auth code #${this.authCodeNo}:`, (txt) => {
           txt = txt.toUpperCase();
           if(txt == code) {
-            this._terminal$$.println$$('Auth code: ****** (correct)');
+            this._terminal$$.println$$(`Auth code #${this.authCodeNo}: ****** (correct)`);
             this._terminal$$.println$$('');
             done();
           } else {
