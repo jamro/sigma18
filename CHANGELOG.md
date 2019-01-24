@@ -1,4 +1,4 @@
-## [1.1.3](https://github.com/jamro/sigma18/compare/v1.1.2...v1.1.3) (2019-01-24)
+# 1.1.3 (2019-01-24)
 
 
 ### Bug Fixes
@@ -11,7 +11,7 @@
 * speed up first message during the battle ([60e385c](https://github.com/jamro/sigma18/commit/60e385c))
 * turn sentry gun sound off after the battle ([31848f9](https://github.com/jamro/sigma18/commit/31848f9))
 
-## [1.1.2] (2019-01-24)
+# 1.1.2 (2019-01-24)
 
 
 ### Bug Fixes
@@ -24,7 +24,7 @@
 * remove interference of chat after won fight with the virus status ([586a2e4](https://github.com/jamro/sigma18/commit/586a2e4))
 * update hints to make them more clear and aligned with new features ([cb7e36a](https://github.com/jamro/sigma18/commit/cb7e36a))
 
-## 1.1.1 (2019-01-22)
+# 1.1.1 (2019-01-22)
 
 
 ### Bug Fixes
