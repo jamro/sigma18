@@ -105,9 +105,10 @@ export default class Battle {
       this._onFinishList$$.forEach((c) => c());
       return;
     }
+    let virusCoverage = this._virus$$.getStatus$$().stats.activation;
     if(this._backupTime$$ > 70 && this._droids$$.length < 8) {
       this._backupTime$$ = 0;
-      if(Math.random() > this._virus$$.getStatus$$().stats.activation) {
+      if(Math.random() > virusCoverage) {
         this._addDroid$$();
         this._log$$(`MSG [to: sig18/${Math.floor(Math.random()*0x8888).toString(16)}, body: "Backups to ${this._room$$.getPosition$$().toString()}"]`);
       } else if(Math.random() > 0.5) {
@@ -121,7 +122,7 @@ export default class Battle {
     }
     if(this._shootCounter$$ == 0 && this._backupTime$$ >= 0) {
       this._shootCounter$$ = (Math.random() > 0.5) ? 30 + 30*Math.random() : -15 - 15*Math.random();
-      if(this._shootCounter$$ < 0 && Math.random() > 0.5 && this._droids$$.length > 0 && this._droids$$.length <= 10) {
+      if(this._shootCounter$$ < 0 && Math.random() > 0.5 && this._droids$$.length > 0 && this._droids$$.length <= 10 && (virusCoverage > 0 || this._droids$$.length > 1)) {
         this._droids$$.shift();
       }
       this._shootCounter$$ = Math.round(this._shootCounter$$);
