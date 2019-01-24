@@ -35,7 +35,7 @@ export default class Room {
       this.enemy$$ = this._trap$$;
       this._onChangeList$$.forEach((c) => c());
       this._trap$$ = 0;
-      this.blink();
+      this.blink$$();
     }
     return result;
   }
@@ -86,7 +86,7 @@ export default class Room {
     }
   }
 
-  blink() {
+  blink$$() {
     this.highlightCounter$$ += 3;
   }
 

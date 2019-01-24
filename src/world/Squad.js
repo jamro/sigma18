@@ -205,6 +205,8 @@ export default class Squad {
 
       let battleRoom = this._map$$.getRoom$$(newX, newY);
       if(battleRoom.enemy$$ > 0) {
+        battleRoom.visit$$();
+        battleRoom.blink$$();
         this._terminal$$.sequence$$(
           {c:'chat', d:msgQueue},
           {c:() => this.startBattle$$(battleRoom, door, () => done(items))}
