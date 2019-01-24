@@ -1,3 +1,16 @@
+## [1.1.3](https://github.com/jamro/sigma18/compare/v1.1.2...v1.1.3) (2019-01-24)
+
+
+### Bug Fixes
+
+* add AI version to end of project log for easier searching ([3d3741a](https://github.com/jamro/sigma18/commit/3d3741a))
+* add hint for proj app ([4b49627](https://github.com/jamro/sigma18/commit/4b49627))
+* add release version info to proj app ([a511477](https://github.com/jamro/sigma18/commit/a511477))
+* disable defeating SIG18s when the virus is inactive ([719ae6a](https://github.com/jamro/sigma18/commit/719ae6a))
+* mark rooms with SIG18s as visited ([dcb0e15](https://github.com/jamro/sigma18/commit/dcb0e15))
+* speed up first message during the battle ([60e385c](https://github.com/jamro/sigma18/commit/60e385c))
+* turn sentry gun sound off after the battle ([31848f9](https://github.com/jamro/sigma18/commit/31848f9))
+
 ## [1.1.2] (2019-01-24)
 
 
