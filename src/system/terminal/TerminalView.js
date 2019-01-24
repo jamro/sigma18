@@ -86,7 +86,21 @@ export default class TerminalView extends View {
   }
 
   showPopup$$(value) {
-    this._view$$.popup.element.style.display = value ? 'block' : 'none';
+    this._view$$.popup.element.style.display = 'block';
+    this._view$$.popup.element.style.bottom = "100%";
+    this._view$$.popup.element.style.overflow = 'hidden';
+    let frameMax = 15;
+    let frame = value ? 0 : frameMax;
+    let loop = setInterval(() => {
+      frame += value ? 1 : -1;
+      this._view$$.popup.element.style.bottom = Math.round(100-50*frame/frameMax) + "%";
+      if((value && frame >= frameMax) || (!value && frame <= 0)) {
+        clearInterval(loop);
+        this._view$$.popup.element.style.bottom = "";
+        this._view$$.popup.element.style.overflow = "";
+        this._view$$.popup.element.style.display = value ? 'block' : 'none';
+      }
+    }, 30);
   }
 
   setEventBuffer$$(event) {
