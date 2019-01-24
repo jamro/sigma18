@@ -31,7 +31,7 @@ export default class Squad {
 
   stopBattle$$() {
     if(this._battleLoop$$) {
-      clearInterval(this._battleLoop$$);
+      clearTimeout(this._battleLoop$$);
     }
     let droidsCount = this._map$$.getBattle$$().getDroids$$().length;
     let winner = (droidsCount == 0);
@@ -73,7 +73,7 @@ export default class Squad {
       ]},
       {c: done}
     ]);
-    this._battleLoop$$ = setInterval(() => {
+    let communicate = () => {
       let doorDirection = this._map$$.getRoom$$(squadPosition.x, squadPosition.y).getDoorDirection$$(battle.getDoor$$());
       doorDirection = this._directionMap$$[doorDirection];
       let items;
@@ -107,15 +107,16 @@ export default class Squad {
         ];
       }
       if(!virusActive || Math.random() > 0.6) {
-        if(room.gun$$ && room.gun$$.online$$) {
-          return;
+        if(!room.gun$$ || !room.gun$$.online$$) {
+          this._terminal$$.printChat$$([[
+            'commander',
+            items[Math.floor(Math.random()*items.length)]
+          ]]);
         }
-        this._terminal$$.printChat$$([[
-          'commander',
-          items[Math.floor(Math.random()*items.length)]
-        ]]);
       }
-    }, 10000);
+      this._battleLoop$$ = setTimeout(communicate, 10000);
+    };
+    this._battleLoop$$ = setTimeout(communicate, 5000);
     door.onChange$$(() => {
       if(!this._map$$.getBattle$$()) return true;
       if(door.isClosed$$()) {
