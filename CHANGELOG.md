@@ -1,3 +1,16 @@
+## [1.1.2] (2019-01-24)
+
+
+### Bug Fixes
+
+* disable door opening in the darkness ([bead542](https://github.com/jamro/sigma18/commit/bead542))
+* fix typos ([c6afc53](https://github.com/jamro/sigma18/commit/c6afc53))
+* handle sending a white chars command only (empty after trim) ([19fa954](https://github.com/jamro/sigma18/commit/19fa954))
+* make doors in eastern corridor working ([d32df7f](https://github.com/jamro/sigma18/commit/d32df7f))
+* reduce maximum amount of backup SIG18s during the battle ([9c4ad22](https://github.com/jamro/sigma18/commit/9c4ad22))
+* remove interference of chat after won fight with the virus status ([586a2e4](https://github.com/jamro/sigma18/commit/586a2e4))
+* update hints to make them more clear and aligned with new features ([cb7e36a](https://github.com/jamro/sigma18/commit/cb7e36a))
+
 ## 1.1.1 (2019-01-22)
 
 
