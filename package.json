@@ -5,6 +5,7 @@
   "description": "Game for Gynvael's Winter GameDev Challenge 2018/19",
   "main": "index.js",
   "scripts": {
+    "start": "http-server ./dist",
     "clean": "rimraf dist",
     "lint": "jshint --config ./jshint.config.json src/",
     "build": "webpack --config ./webpack.config.js --mode=production",
@@ -43,6 +44,7 @@
     "cz-conventional-changelog": "^2.1.0",
     "get-folder-size": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "http-server": "^0.11.1",
     "jshint": "^2.9.7",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",

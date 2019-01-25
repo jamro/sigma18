@@ -4,21 +4,16 @@ My entry for [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwi
 # Rules of the Challenge
 Create a game that meets the following requirements:
 
-- The game must be an unrealistic hacking simulator.
-- The game setting must be: the player is a space marine's tech/hacker that aids a squad of space marines while they explore an abandoned space station.
-- The game must be made in client-side web technology that runs by default on the newest stable Chrome on Windows 10 (1803/1809)
-- The game has to render in a 1920x1080 resolution (please assume Chrome in full screen mode at that exact resolution)
-- It must render [this placeholder image](resources/img/gwgc201819_overlay.png) on top of everything - this image effectively only allows to draw game content in two regions (assume these are two separate displays on a spaceship's console).
-- The size of the whole game (i.e. sum of sizes of all the files) must be at most 128000 bytes (everything, including all art, fonts, etc). Please note that the provided overlay image does NOT count towards the limit (neither do the readme file, nor the source package).
-- All the game files and directories must use the 8.3 filename format (i.e. 8 letters for the filename and 3 letters for the extension or less). There cannot be more than 20 files + directories in total. Minor exception: feel free to use .html and .wasm extensions as well (but only these two; the 8-character file name limit still applies in these cases).
-- The text in game, if any, must be in English.
-- The game must have a title and a text readme file containing a description how to play.
-- Submission deadline is 31st of January 2019 at 11:59pm (23:59) AoE
+- **Theme:** unrealistic hacking simulator, the player is a space marine's tech/hacker that aids a squad of space marines while they explore an abandoned space station.
+- **Dual screen:** It must render [this overlay](resources/img/gwgc201819_overlay.png) on top of everything - it only allows to draw game content in two regions (assume these are two separate displays on a spaceship's console).
+- **Technology:** client-side web technology that runs on the newest stable Chrome on Windows 10 (1803/1809) in a 1920x1080 resolution.
+- **File size limit:** 128000 bytes (excluding overlay image, source codes and documentation)
+- **Submission deadline:** 31st of January 2019, 11:59pm AoE
 
 More details at [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=697)
 
 # Software Requirements
-To reduce file size (see challenge rules for more details), the game will work only in following web browsers:
+In order to reduce file size (see challenge rules for more details), the game works only in following web browsers:
 - Google Chrome: version 56+, **(RECOMMENDED)**
 - FireFox: version: 51+,
 - Microsoft Edge: version 15+,
@@ -28,6 +23,14 @@ To reduce file size (see challenge rules for more details), the game will work o
 # The Plot
 It's the year 2080. You are a space marine's tech who specializes in security and hacking. The squad that you are supporting is leading by commander Alex Decker. They are on their way back home from a reconnaissance mission in The Teta Colony. Unfortunately, the spaceship was damaged and they were forced to have an emergency landing at International Space Station Sigma-18. The ship was wrecked during the landing so you must help the squad to find another way out.
 
+# How to Start
+Go to game directory and run `npm start`. It sould start a local web server available at [http://localhost:8080/](http://localhost:8080/). Open the webpage and have fun!
+```bash
+Starting up http-server, serving ./dist
+Available on:
+  http://127.0.0.1:8080
+Hit CTRL-C to stop the server
+```
 
 # How to Play
 ![Game Screenhot](docs/screenshot.png)
@@ -42,7 +45,7 @@ You should be able to find all instruction in the game. Here are a few hints for
 - You can communicate with commander Decker via **com** command. See **com help** for more info.
 - If you really got stuck, you can ask commander Decker for help by running **com hint**. However you should be able to complete the game without that.
 
-# Known issues
+# Known Issues
 - Not working on Internet Explorer (due to code optimization to meet 128000 bytes size limit). Recommended to play on latest version of Chrome.
 - The game does not save the progress. After closing the web browser your progress will be lost.
 
