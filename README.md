@@ -1,6 +1,7 @@
 # Sigma-18 Game
-My entry for [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=697)
-The **DEMO** is available here: [http://sigma18.jmrlab.com](http://sigma18.jmrlab.com)
+My submission to [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=697).
+
+The **DEMO** is available here: [http://sigma18.jmrlab.com](http://sigma18.jmrlab.com).
 
 # Rules of the Challenge
 Create a game that meets the following requirements:
