@@ -192,6 +192,8 @@ export default class MapBuilder {
     addDoor$$(3, 0, 2, 0, true); // oxy gen -> power gen
     addDoor$$(6, 6, 5, 6, true); // back corridor -> kitchen
 
+    addDoor$$(1, 6, 1, 7, true, 'black', 'black'); // back door of crew room
+
   }
 
   _deploySquad$$(x, y) {
