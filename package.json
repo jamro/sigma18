@@ -1,6 +1,6 @@
 {
   "name": "sigma18",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "Game for Gynvael's Winter GameDev Challenge 2018/19",
   "main": "index.js",

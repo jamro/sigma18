@@ -1,3 +1,10 @@
+## 1.2.1 (2019-01-26)
+
+
+### Bug Fixes
+
+* add back doors to crew room to provoke entry ([bdb9a2a](https://github.com/jamro/sigma18/commit/bdb9a2a))
+
 # 1.2.0 (2019-01-24)
 
 
