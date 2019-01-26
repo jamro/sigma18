@@ -52,9 +52,9 @@ let config = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname + '/resources/img/**/*.*'),
-        context: path.resolve(__dirname + '/resources/img'),
-        to: path.resolve(__dirname + '/dist/img')
+        from: path.resolve(__dirname + '/resources/gwgc201819_overlay.png'),
+        context: path.resolve(__dirname + '/resources'),
+        to: path.resolve(__dirname + '/dist/gwgc201819_overlay.png')
       }, {
         from: path.resolve(__dirname + '/resources/audio/**/*.*'),
         context: path.resolve(__dirname + '/resources/audio'),

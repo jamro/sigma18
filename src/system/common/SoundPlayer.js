@@ -48,7 +48,7 @@ export default class SoundPlayer {
     try {
       this._sounds$$[id].play();
     } catch(err) {
-      console.log(err);
+      console.error("Cannot play sound", err);
     }
   }
 

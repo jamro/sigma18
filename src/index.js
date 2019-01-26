@@ -28,7 +28,7 @@ document.body.appendChild(screenBElement);
 
 overlayElement = document.createElement('IMG');
 overlayElement.id = "overlay";
-overlayElement.src = '../img/gwgc201819_overlay.png';
+overlayElement.src = '../gwgc201819_overlay.png';
 document.body.appendChild(overlayElement);
 
 let screenA = new Container(screenAElement, overlayElement, 64, 185, 1025, 770);
