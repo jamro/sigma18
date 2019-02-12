@@ -3,6 +3,9 @@ My submission to [Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.co
 
 The **DEMO** is available here: [http://sigma18.jmrlab.com](http://sigma18.jmrlab.com).
 
+## Results
+I am proud to announce that **Sigma-18** has taken [the 1st place in Gynvael's Winter GameDev Challenge 2018/19](https://gynvael.coldwind.pl/?lang=en&id=703). See the game and results live stream in [YouTube](https://youtu.be/LntSN7JsR_A?t=3129).
+
 # Rules of the Challenge
 Create a game that meets the following requirements:
 
