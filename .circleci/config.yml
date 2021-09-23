@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - node/install
-      - run: sudo apt install python2
+      - run: sudo apt install python2.7
       - restore_cache:
           keys:
             - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
