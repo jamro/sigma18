@@ -13,7 +13,7 @@ jobs:
           name: Installing Python
           command: |
             sudo apt-get -y -qq update
-            sudo apt-get install python-pip python-dev build-essential
+            sudo apt-get install python
       - restore_cache:
           keys:
             - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
