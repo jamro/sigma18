@@ -9,7 +9,11 @@ jobs:
     steps:
       - checkout
       - node/install
-      - run: sudo apt install python2.7
+      - run:
+          name: Installing Python
+          command: |
+            sudo apt-get -y -qq update
+            sudo apt-get install python-pip python-dev build-essential
       - restore_cache:
           keys:
             - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
