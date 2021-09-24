@@ -2,6 +2,11 @@ version: 2.1
 orbs:
   node: circleci/node@4.7.0
 
+parameters:
+  build-script:
+    type: string
+    default: "ci"
+
 jobs:
   build:
     docker:
@@ -18,7 +23,7 @@ jobs:
           paths:
             - ~/project/node_modules
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm run ci
+      - run: npm run << pipeline.parameters.build-script >>
       - run: 
           name: Compress artefact
           command: cd dist; zip -r ../sigma18_dist.zip *
