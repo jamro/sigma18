@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@4.7.0
 
 jobs:
-  build_dev:
+  build:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -26,39 +26,47 @@ jobs:
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm run ci
       - run: cd dist; zip -r ../sigma18_dist.zip *
-      - run: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/sigma18-dev/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
-  
-  build_prod:
+      - persist_to_workspace:
+          root: ~/project/
+          paths:
+            - sigma18_dist.zip
+
+  deploy_dev:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - checkout
-      - node/install
-      - restore_cache:
-          keys:
-            - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-            - node-v1-{{ .Branch }}-
-            - node-v1-
-      - run: npm install
-      - save_cache:
-          paths:
-            - ~/project/node_modules
-          key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm run ci
-      - run: cd dist; zip -r ../sigma18_dist.zip *
-      - run: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/sigma18/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
+      - attach_workspace:
+          at: ~/project/
+      - run: 
+          name: Deploy to DEV
+          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/sigma18-dev/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
+  
+  deploy_prod:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - attach_workspace:
+          at: ~/project/
+      - run: 
+          name: Depoy to PROD
+          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/sigma18/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
 
 workflows:
   cicd-workflow:
     jobs:
-      - build_dev:
+      - build
+      - deploy_dev:
+          requires:
+            - build
           context:
             - nodepad.jmrlab.com
           filters:
               branches:
                 only:
                   - develop
-      - build_prod:
+      - deploy_prod:
+          requires:
+            - build
           context:
             - nodepad.jmrlab.com
           filters:
