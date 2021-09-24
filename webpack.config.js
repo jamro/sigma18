@@ -3,14 +3,12 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 let config = {
   mode: "production",
   entry: path.resolve(__dirname, 'src/index.js'),
-  node: {
-    fs: 'empty'
-  },
+  target: 'node',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'sigma18.js'
@@ -26,41 +24,59 @@ let config = {
     rules: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        query: {
-          presets: [["@babel/preset-env", {
-            targets: {
-              chrome: "56",
-              firefox: "51",
-              edge: "15",
-              safari: "10",
-              opera: "42"
-            }
-          }]]
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [['@babel/preset-env', {
+              targets: {
+                chrome: "56",
+                firefox: "51",
+                edge: "15",
+                safari: "10",
+                opera: "42"
+              }
+            }]]
+          }
         }
       },
       {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader"
-        ]
+        test: /.s?css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       }
-    ]
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: [
+            "default",
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
+      }),
+    ],
   },
   plugins: [
-    new CopyWebpackPlugin([
+    new CopyWebpackPlugin(
       {
-        from: path.resolve(__dirname + '/resources/gwgc201819_overlay.png'),
-        context: path.resolve(__dirname + '/resources'),
-        to: path.resolve(__dirname + '/dist/gwgc201819_overlay.png')
-      }, {
-        from: path.resolve(__dirname + '/resources/audio/**/*.*'),
-        context: path.resolve(__dirname + '/resources/audio'),
-        to: path.resolve(__dirname + '/dist/audio')
-      },
-    ]),
+        patterns: [
+          {
+            from: path.resolve(__dirname + '/resources/gwgc201819_overlay.png'),
+            context: path.resolve(__dirname + '/resources'),
+            to: path.resolve(__dirname + '/dist/gwgc201819_overlay.png')
+          }, {
+            from: path.resolve(__dirname + '/resources/audio/**/*.*'),
+            context: path.resolve(__dirname + '/resources/audio'),
+            to: path.resolve(__dirname + '/dist/audio')
+          },
+        ]
+      }
+    ),
     new MiniCssExtractPlugin({
         filename: "[name].css",
         chunkFilename: "[id].css"
@@ -76,13 +92,6 @@ let config = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true
       }
-    }),
-    new OptimizeCssAssetsPlugin({
-      cssProcessor: require('cssnano'),
-      cssProcessorPluginOptions: {
-        preset: ['default', { discardComments: { removeAll: true } }],
-      },
-      canPrint: true
     })
   ]
 };
