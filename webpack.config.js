@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 let config = {
   mode: "production",
@@ -59,6 +60,7 @@ let config = {
           ],
         },
       }),
+      new TerserPlugin()
     ],
   },
   plugins: [
