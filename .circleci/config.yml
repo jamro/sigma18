@@ -25,7 +25,9 @@ jobs:
             - ~/project/node_modules
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
       - run: npm run ci
-      - run: cd dist; zip -r ../sigma18_dist.zip *
+      - run: 
+          name: Compress artefact
+          command: cd dist; zip -r ../sigma18_dist.zip *
       - persist_to_workspace:
           root: ~/project/
           paths:
