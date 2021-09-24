@@ -5,7 +5,7 @@ orbs:
 parameters:
   app-id:
     type: string
-    default: "sigma-18"
+    default: "sigma18"
 
 jobs:
   build:
@@ -26,11 +26,11 @@ jobs:
       - run: npm run ci
       - run: 
           name: Compress artefact
-          command: cd dist; zip -r ../sigma18_dist.zip *
+          command: cd dist; zip -r ../dist.zip *
       - persist_to_workspace:
           root: ~/project/
           paths:
-            - sigma18_dist.zip
+            - dist.zip
 
   deploy_dev:
     docker:
@@ -40,7 +40,7 @@ jobs:
           at: ~/project/
       - run: 
           name: Deploy to DEV
-          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/<< pipeline.parameters.app-id >>-dev/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
+          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/<< pipeline.parameters.app-id >>-dev/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@dist.zip;type=application/zip'"      
   
   deploy_prod:
     docker:
@@ -50,7 +50,7 @@ jobs:
           at: ~/project/
       - run: 
           name: Depoy to PROD
-          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/<< pipeline.parameters.app-id >>/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@sigma18_dist.zip;type=application/zip'"      
+          command: "curl -u $AUTH_TOKEN -f -X 'POST' \"https://$NODEPAD_HOST/api/apps/<< pipeline.parameters.app-id >>/content/zip\" -H 'accept: application/json' -H 'Content-Type: multipart/form-data' -F 'bin=@dist.zip;type=application/zip'"      
 
 workflows:
   cicd-workflow:
