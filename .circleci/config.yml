@@ -52,11 +52,15 @@ workflows:
   cicd-workflow:
     jobs:
       - build_dev:
+          context:
+            - nodepad.jmrlab.com
           filters:
               branches:
                 only:
                   - develop
       - build_prod:
+          context:
+            - nodepad.jmrlab.com
           filters:
               branches:
                 only:
