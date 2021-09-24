@@ -5,15 +5,9 @@ orbs:
 jobs:
   build:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'circleci/node:stable'
     steps:
       - checkout
-      - node/install
-      - run:
-          name: Installing Python
-          command: |
-            sudo apt-get -y -qq update
-            sudo apt-get install python
       - restore_cache:
           keys:
             - node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
